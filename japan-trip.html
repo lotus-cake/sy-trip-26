@@ -490,6 +490,9 @@ if(db) db.on("value", snap=>{
   }
   if(S.trip && S.trip.title) $("#brandTitle").textContent = S.trip.title;
   render();
+}, err=>{
+  goLocal("云端拒绝访问(多为 Firebase 规则未开放 trip-japan-2026 节点)");
+  toast("Firebase 错误:"+(err&&err.code||err),5000);
 });
 function save(path,val){ if(LOCAL||!db){ toast("预览模式:修改不会保存"); return; } return db.child(path).set(val); }
 function push(path,val){ if(LOCAL||!db){ toast("预览模式:修改不会保存"); return null; } const id=uid(); db.child(path+"/"+id).set(val); return id; }
