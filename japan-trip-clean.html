@@ -53,6 +53,7 @@ h2.sec small{font-family:var(--body); font-weight:400; font-size:12px; color:var
 .day-badge{background:var(--indigo); color:#EDF2F8; font-size:12px; padding:2px 10px; border-radius:12px;}
 
 .big-card .hero-wrap{position:relative;}
+.big-card .hero-wrap.noimg{background:var(--indigo); min-height:92px;}
 .big-card .hero-wrap .ph{width:100%; height:150px; object-fit:cover; display:block;}
 .big-card .frost{position:absolute; left:0; right:0; bottom:0; padding:9px 14px 8px; background:rgba(26,32,44,.40); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4);}
 .big-card .frost .kicker{font-size:10.5px; letter-spacing:.14em; color:rgba(255,255,255,.78); text-transform:uppercase; margin-bottom:1px;}
@@ -446,12 +447,13 @@ function renderToday(){
   h+=`<button class="btn ghost full" onclick="openEventForm(null,'${showDate}')">＋ 添加安排</button>`;
   $("#view").innerHTML=h;
 }
+function heroFail(img){ img.parentNode.classList.add("noimg"); img.remove(); }
 function bigCard(kicker,ico,o,subText,path){
   const tap=path?` onclick="pickCardPhoto('${path}')"`:"";
   let inner;
   if(o.photo){
     inner=`<div class="hero-wrap">
-      <img class="ph" src="${esc(o.photo)}" alt="">
+      <img class="ph" src="${esc(o.photo)}" onerror="heroFail(this)" alt="">
       ${path?`<button class="cam-chip"${tap} title="更换图片">📷</button>`:""}
       <div class="frost">
         <div class="kicker">${kicker}</div>
