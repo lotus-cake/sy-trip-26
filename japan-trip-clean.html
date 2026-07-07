@@ -34,6 +34,10 @@ html,body{margin:0; padding:0; background:var(--paper); color:var(--ink); font-f
 header.top{display:flex; align-items:center; justify-content:space-between; padding:14px 18px 10px; border-bottom:1px solid var(--line);}
 header.top .brand{font-family:var(--disp); font-size:17px; font-weight:600; letter-spacing:.06em; display:flex; align-items:center; gap:8px;}
 .seal{width:24px; height:24px; background:#B03A2E; color:#FBF6EF; border-radius:5px; display:inline-flex; align-items:center; justify-content:center; font-family:var(--disp); font-size:13px; font-weight:600; transform:rotate(-4deg); flex:0 0 auto;}
+.conn{display:inline-flex; align-items:center; gap:5px; font-size:10.5px; color:var(--sub); margin-right:2px;}
+.conn .cdot{width:7px; height:7px; border-radius:50%; background:#C9A227;}
+.conn.on .cdot{background:#2F6B57;}
+.conn.off .cdot{background:#B03A2E;}
 header.top .gear{background:none; border:none; color:var(--sub); font-size:20px; padding:6px; cursor:pointer;}
 .pill small.wd0{color:#B03A2E;} .pill small.wd6{color:#2E5E8C;}
 .pill.on small.wd0,.pill.on small.wd6{color:inherit; opacity:.85;}
@@ -75,7 +79,7 @@ h2.sec small{font-family:var(--body); font-weight:400; font-size:12px; color:var
 .actions button span.ico{font-size:17px;}
 
 /* timeline */
-.day-pills{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 10px; scrollbar-width:none;}
+.day-pills{position:relative; display:flex; gap:8px; overflow-x:auto; padding:4px 2px 10px; scrollbar-width:none;}
 .day-pills::-webkit-scrollbar{display:none;}
 .pill{flex:0 0 auto; border:1px solid var(--line2); background:var(--card); color:var(--sub); border-radius:18px; padding:6px 13px; font-size:13px; font-family:var(--body); cursor:pointer; text-align:center; line-height:1.25;}
 .pill b{display:block; font-size:13px; font-weight:500; color:inherit;}
@@ -216,7 +220,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <div id="app">
   <header class="top">
     <div class="brand"><span class="seal">旅</span><span id="brandTitle">日本行</span></div>
-    <button class="gear" onclick="openSettings()">⚙︎</button>
+    <span class="conn" id="connBadge"><span class="cdot"></span><span class="t">连接中</span></span><button class="gear" onclick="openSettings()">⚙︎</button>
   </header>
   <div id="view" class="page"><div class="tl-empty">加载中…</div></div>
 </div>
@@ -249,10 +253,12 @@ try{
   firebase.initializeApp({ databaseURL: FB_URL });
   db = firebase.database().ref(NODE);
 }catch(e){ LOCAL=true; }
+function setConn(state,label){ const b=document.getElementById("connBadge"); if(!b) return; b.className="conn "+state; b.querySelector(".t").textContent=label; }
 function goLocal(msg){
   if(S) return;
   LOCAL=true;
   S=JSON.parse(JSON.stringify(SEED));
+  setConn("off","未连接·本地");
   render();
   setTimeout(()=>toast(msg||"预览模式:未连接云端,修改不会保存",3500),400);
 }
@@ -348,6 +354,7 @@ if(db) db.on("value", snap=>{
     db.set(merged); return;
   }
   LOCAL=false;
+  setConn("on","云端同步");
   S=v;
   if(!selDay){
     const t=todayTokyo(), days=tripDays();
@@ -356,6 +363,7 @@ if(db) db.on("value", snap=>{
   if(S.trip && S.trip.title) $("#brandTitle").textContent = S.trip.title;
   render();
 }, err=>{
+  setConn("off","云端拒绝");
   goLocal("云端拒绝访问(多为 Firebase 规则未开放 trip-japan-2026 节点)");
   toast("Firebase 错误:"+(err&&err.code||err),5000);
 });
@@ -617,7 +625,7 @@ function renderPlan(){
   <button class="btn ghost full" style="margin-top:8px;" onclick="exportItinerary()">📄 导出出差行程单(CRA 存档)</button>`;
   $("#view").innerHTML=h;
   const wrap=$("#dayPills"), on=wrap&&wrap.querySelector(".pill.on");
-  if(wrap&&on) wrap.scrollLeft=Math.max(0, on.offsetLeft - wrap.clientWidth/2 + on.clientWidth/2);
+  if(wrap&&on) wrap.scrollLeft = on.offsetLeft - (wrap.clientWidth - on.clientWidth)/2;
 }
 function exportItinerary(){
   const evs=Object.values(S.events||{}).filter(e=>e.biz==="business")
