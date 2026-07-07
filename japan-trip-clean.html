@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="日本行">
+<link rel="apple-touch-icon" href="japan-trip-icon.png">
+<link rel="icon" type="image/png" href="japan-trip-icon.png">
+<meta name="theme-color" content="#F2E7D6">
+<title>日本行 · Japan Trip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F5F0; --card:#FFFFFF; --ink:#23262D; --sub:#71747C; --faint:#A5A8AE;
+  --line:#E7E4DB; --line2:#D8D4C8;
+  --indigo:#2E4A6B; --indigo-bg:#E9EFF6; --indigo-dk:#1E3450;
+  --teal:#2F6B57; --teal-bg:#E4F0EA; --teal-dk:#1E4A3C;
+  --purple:#5A4B8A; --purple-bg:#ECE8F6; --purple-dk:#3E3263;
+  --persim:#B65C38; --persim-bg:#F8EAE2; --persim-dk:#8A4225;
+  --amber:#8A6A24; --amber-bg:#F5EDD8; --amber-dk:#63490F;
+  --danger:#A33131;
+  --disp:'Shippori Mincho',serif;
+  --body:'Zen Kaku Gothic New',-apple-system,'Hiragino Sans','PingFang SC',sans-serif;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0; padding:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.55;}
+#app{max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:calc(76px + env(safe-area-inset-bottom));}
+.hidden{display:none !important;}
+
+header.top{display:flex; align-items:center; justify-content:space-between; padding:14px 18px 10px; border-bottom:1px solid var(--line);}
+header.top .brand{font-family:var(--disp); font-size:17px; font-weight:600; letter-spacing:.06em; display:flex; align-items:center; gap:8px;}
+.seal{width:24px; height:24px; background:#B03A2E; color:#FBF6EF; border-radius:5px; display:inline-flex; align-items:center; justify-content:center; font-family:var(--disp); font-size:13px; font-weight:600; transform:rotate(-4deg); flex:0 0 auto;}
+header.top .gear{background:none; border:none; color:var(--sub); font-size:20px; padding:6px; cursor:pointer;}
+.pill small.wd0{color:#B03A2E;} .pill small.wd6{color:#2E5E8C;}
+.pill.on small.wd0,.pill.on small.wd6{color:inherit; opacity:.85;}
+.pill .today-dot{display:inline-block; width:5px; height:5px; border-radius:50%; background:#B03A2E; margin-left:3px; vertical-align:2px;}
+
+.page{padding:6px 16px 20px;}
+h2.sec{font-family:var(--disp); font-size:16px; font-weight:600; margin:20px 2px 10px; letter-spacing:.05em; display:flex; align-items:center; gap:8px;}
+h2.sec small{font-family:var(--body); font-weight:400; font-size:12px; color:var(--faint); letter-spacing:0;}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+.card + .card{margin-top:12px;}
+
+/* today hero */
+.today-date{font-family:var(--disp); font-size:26px; font-weight:600; letter-spacing:.04em; margin:8px 2px 2px;}
+.today-meta{color:var(--sub); font-size:13px; margin:0 2px 14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+.wx{display:inline-flex; align-items:center; gap:5px;}
+.day-badge{background:var(--indigo); color:#EDF2F8; font-size:12px; padding:2px 10px; border-radius:12px;}
+
+.big-card .hero-wrap{position:relative;}
+.big-card .hero-wrap .ph{width:100%; height:150px; object-fit:cover; display:block;}
+.big-card .frost{position:absolute; left:0; right:0; bottom:0; padding:9px 14px 8px; background:rgba(26,32,44,.40); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4);}
+.big-card .frost .kicker{font-size:10.5px; letter-spacing:.14em; color:rgba(255,255,255,.78); text-transform:uppercase; margin-bottom:1px;}
+.big-card .frost .name{font-family:var(--disp); font-size:16.5px; font-weight:600; color:#FFF; line-height:1.3; text-shadow:0 1px 2px rgba(0,0,0,.25);}
+.big-card .frost .sub{color:rgba(255,255,255,.85); font-size:11.5px; margin-top:1px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; white-space:pre-line;}
+.cam-chip{position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; border:none; background:rgba(26,32,44,.38); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); color:#fff; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+.hero-grid{display:grid; grid-template-columns:1fr; gap:12px;}
+@media(min-width:640px){ .hero-grid{grid-template-columns:1fr 1fr;} }
+.hero-grid .card{margin-top:0;}
+.big-card .top{display:flex; gap:12px; padding:12px 13px 0; align-items:flex-start;}
+.big-card .thumb{width:84px; height:84px; border-radius:10px; object-fit:cover; flex:0 0 auto; background:var(--indigo-bg); display:flex; align-items:center; justify-content:center; font-size:30px;}
+.big-card .body{flex:1; min-width:0; padding:0;}
+.big-card .kicker{font-size:11px; letter-spacing:.12em; color:var(--sub); text-transform:uppercase; display:flex; align-items:center; gap:5px; margin-bottom:2px;}
+.big-card .name{font-family:var(--disp); font-size:16.5px; font-weight:600; line-height:1.35;}
+.big-card .sub{color:var(--sub); font-size:12px; margin-top:2px; white-space:pre-line; overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;}
+.actions{display:flex; border-top:1px solid var(--line); margin-top:12px;}
+.actions button{flex:1; background:none; border:none; border-left:1px solid var(--line); padding:11px 4px; font-family:var(--body); font-size:13px; color:var(--indigo); font-weight:500; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px;}
+.actions button:first-child{border-left:none;}
+.actions button span.ico{font-size:17px;}
+
+/* timeline */
+.day-pills{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 10px; scrollbar-width:none;}
+.day-pills::-webkit-scrollbar{display:none;}
+.pill{flex:0 0 auto; border:1px solid var(--line2); background:var(--card); color:var(--sub); border-radius:18px; padding:6px 13px; font-size:13px; font-family:var(--body); cursor:pointer; text-align:center; line-height:1.25;}
+.pill b{display:block; font-size:13px; font-weight:500; color:inherit;}
+.pill small{font-size:10.5px; opacity:.75;}
+.pill.on{background:var(--indigo); border-color:var(--indigo); color:#EDF2F8;}
+.tl-item{display:flex; gap:12px; margin-bottom:10px;}
+.tl-time{min-width:42px; padding-top:11px; font-size:12.5px; color:var(--faint); font-variant-numeric:tabular-nums; text-align:right;}
+.tl-card{flex:1; border-radius:11px; padding:10px 13px; cursor:pointer;}
+.tl-card .t{font-size:14.5px; font-weight:500; display:flex; align-items:center; gap:7px;}
+.tl-card .n{font-size:12.5px; margin-top:2px; opacity:.85; white-space:pre-line;}
+.tl-empty{color:var(--faint); text-align:center; padding:34px 0; font-size:14px;}
+.c-indigo{background:var(--indigo-bg); color:var(--indigo-dk);}
+.c-teal{background:var(--teal-bg); color:var(--teal-dk);}
+.c-purple{background:var(--purple-bg); color:var(--purple-dk);}
+.c-persim{background:var(--persim-bg); color:var(--persim-dk);}
+.c-amber{background:var(--amber-bg); color:var(--amber-dk);}
+
+/* expenses */
+.stat-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px;}
+.stat .lb{font-size:12px; color:var(--sub); display:flex; align-items:center; gap:6px;}
+.stat .yen{font-family:var(--disp); font-size:21px; font-weight:600; margin-top:2px;}
+.stat .cad{font-size:12.5px; color:var(--sub);}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.dot.b{background:var(--teal);} .dot.p{background:var(--persim);}
+.quick{display:flex; gap:8px; margin:14px 0 6px;}
+.quick input{flex:1; min-width:0; border:1px solid var(--line2); border-radius:10px; padding:10px 12px; font-size:16px; font-family:var(--body); background:var(--card); color:var(--ink);}
+.quick input:focus{outline:none; border-color:var(--indigo);}
+.btn{border:none; border-radius:10px; padding:10px 14px; font-size:14px; font-family:var(--body); font-weight:500; cursor:pointer;}
+.btn.b{background:var(--teal); color:#fff;}
+.btn.p{background:var(--persim); color:#fff;}
+.btn.ghost{background:var(--card); border:1px solid var(--line2); color:var(--ink);}
+.btn.full{width:100%; padding:12px;}
+.btn.indigo{background:var(--indigo); color:#fff;}
+.btn:disabled{opacity:.5;}
+.cam-row{display:flex; gap:8px; margin-bottom:4px;}
+.exp-item{display:flex; align-items:center; gap:10px; padding:10px 2px; border-bottom:1px solid var(--line);}
+.exp-item .thumb{width:38px; height:38px; border-radius:8px; object-fit:cover; border:1px solid var(--line); flex:0 0 auto;}
+.exp-item .thumb-ph{width:38px; height:38px; border-radius:8px; background:var(--paper); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--faint); font-size:15px; flex:0 0 auto;}
+.exp-item .mid{flex:1; min-width:0;}
+.exp-item .m1{font-size:14px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.exp-item .m2{font-size:12px; color:var(--sub);}
+.exp-item .amt{text-align:right; font-variant-numeric:tabular-nums;}
+.exp-item .amt .y{font-weight:500; font-size:14.5px;}
+.exp-item .amt .c{font-size:11.5px; color:var(--sub);}
+.tag{font-size:10.5px; padding:2px 8px; border-radius:10px; font-weight:500;}
+.tag.b{background:var(--teal-bg); color:var(--teal-dk);}
+.tag.p{background:var(--persim-bg); color:var(--persim-dk);}
+
+/* places */
+.chips{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 12px; scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{flex:0 0 auto; border:1px solid var(--line2); background:var(--card); color:var(--sub); border-radius:16px; padding:5px 13px; font-size:13px; cursor:pointer;}
+.chip.on{background:var(--ink); border-color:var(--ink); color:#fff;}
+.place{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:13px 15px; margin-bottom:10px;}
+.place .row1{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+.place .nm{font-size:15.5px; font-weight:500; line-height:1.35;}
+.place .cat{font-size:11px; color:var(--sub); margin-top:1px;}
+.place .dist{font-size:12.5px; color:var(--indigo); font-weight:500; white-space:nowrap;}
+.place .visited{color:var(--teal); font-size:12px; font-weight:500; white-space:nowrap;}
+.place .p-actions{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;}
+.pbtn{border:1px solid var(--line2); background:var(--paper); border-radius:9px; padding:6px 11px; font-size:12.5px; font-family:var(--body); color:var(--ink); cursor:pointer;}
+.pbtn.hot{border-color:var(--indigo); color:var(--indigo); font-weight:500;}
+.place .note-open{margin-top:10px; border-top:1px dashed var(--line); padding-top:10px;}
+.note-photos{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+.note-photos img{width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid var(--line);}
+textarea.note{width:100%; border:1px solid var(--line2); border-radius:10px; padding:9px 11px; font-family:var(--body); font-size:14px; min-height:64px; background:#FDFCFA; color:var(--ink); resize:vertical;}
+textarea.note:focus{outline:none; border-color:var(--indigo);}
+
+/* shopping */
+.shop-add{display:flex; gap:8px; margin-bottom:14px;}
+.shop-add input{flex:1; min-width:0; border:1px solid var(--line2); border-radius:10px; padding:10px 12px; font-size:15px; font-family:var(--body); background:var(--card); color:var(--ink);}
+.shop-add input:focus{outline:none; border-color:var(--indigo);}
+.shop-item{display:flex; align-items:center; gap:11px; padding:11px 2px; border-bottom:1px solid var(--line);}
+.shop-item .ck{width:22px; height:22px; border-radius:7px; border:1.5px solid var(--line2); flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; cursor:pointer;}
+.shop-item.done .ck{background:var(--teal); border-color:var(--teal);}
+.shop-item .tx{flex:1; font-size:14.5px;}
+.shop-item.done .tx{color:var(--faint); text-decoration:line-through;}
+.del{background:none; border:none; color:var(--faint); font-size:15px; padding:6px; cursor:pointer;}
+
+/* guide */
+.g-card{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:14px 16px 10px; margin-bottom:12px;}
+.g-card h3{font-family:var(--disp); font-size:15.5px; margin:0 0 9px; font-weight:600; letter-spacing:.03em;}
+.g-card ul{margin:0; padding-left:18px;}
+.g-card li{font-size:13.5px; line-height:1.6; margin-bottom:7px;}
+
+/* tab bar */
+nav.tabs{position:fixed; bottom:0; left:0; right:0; max-width:480px; margin:0 auto; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-top:1px solid var(--line); display:flex; padding-bottom:env(safe-area-inset-bottom); z-index:50;}
+nav.tabs button{flex:1; background:none; border:none; padding:9px 0 7px; font-family:var(--body); font-size:10.5px; color:var(--faint); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px;}
+nav.tabs button .ico{font-size:20px; line-height:1;}
+nav.tabs button.on{color:var(--indigo); font-weight:700;}
+
+/* modal */
+.overlay{position:fixed; inset:0; background:rgba(30,30,30,.45); z-index:100; display:flex; align-items:flex-end; justify-content:center;}
+.sheet{background:var(--card); width:100%; max-width:480px; border-radius:18px 18px 0 0; padding:18px 18px calc(20px + env(safe-area-inset-bottom)); max-height:88vh; overflow-y:auto;}
+.sheet h3{font-family:var(--disp); font-size:17px; margin:0 0 14px; font-weight:600;}
+.f{margin-bottom:12px;}
+.f label{display:block; font-size:12.5px; color:var(--sub); margin-bottom:4px;}
+.f input,.f select,.f textarea{width:100%; border:1px solid var(--line2); border-radius:10px; padding:10px 12px; font-size:15px; font-family:var(--body); background:#FDFCFA; color:var(--ink);}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none; border-color:var(--indigo);}
+.f-row{display:flex; gap:10px;} .f-row .f{flex:1;}
+.sheet .btns{display:flex; gap:10px; margin-top:16px;}
+.geo-row{display:flex; gap:8px; margin-bottom:8px;}
+.geo-row input{flex:1; min-width:0; border:1px solid var(--line2); border-radius:10px; padding:10px 12px; font-size:15px; font-family:var(--body); background:#FDFCFA; color:var(--ink);}
+.geo-row input:focus{outline:none; border-color:var(--indigo);}
+.geo-res{margin:0 0 10px; max-height:190px; overflow-y:auto;}
+.geo-item{padding:9px 11px; border:1px solid var(--line); border-radius:10px; margin-bottom:6px; font-size:13px; cursor:pointer; background:#FDFCFA;}
+.geo-item b{display:block; font-size:13.5px; font-weight:500;}
+.geo-item span{color:var(--sub); font-size:12px;}
+.geo-item:active{background:var(--indigo-bg);}
+.geo-ok{font-size:12.5px; color:var(--teal); margin:-2px 0 8px;}
+.sheet .btns .btn{flex:1; padding:12px;}
+.seg{display:flex; gap:8px;}
+.seg button{flex:1; border:1px solid var(--line2); background:var(--card); border-radius:10px; padding:10px; font-size:14px; font-family:var(--body); color:var(--sub); cursor:pointer;}
+.seg button.on.b{background:var(--teal); border-color:var(--teal); color:#fff; font-weight:500;}
+.seg button.on.p{background:var(--persim); border-color:var(--persim); color:#fff; font-weight:500;}
+.receipt-preview{width:100%; max-height:200px; object-fit:contain; border-radius:10px; border:1px solid var(--line); background:var(--paper);}
+
+/* taxi card */
+.taxi{position:fixed; inset:0; background:#FFFFFF; z-index:200; display:flex; flex-direction:column; padding:20px; align-items:center; justify-content:center; text-align:center;}
+.taxi .lbl{font-size:14px; color:var(--sub); letter-spacing:.2em; margin-bottom:6px;}
+.taxi .jp-name{font-family:var(--disp); font-size:clamp(24px,7vw,34px); font-weight:600; margin-bottom:18px; line-height:1.4;}
+.taxi .jp-addr{font-family:var(--disp); font-size:clamp(26px,7.5vw,38px); font-weight:600; line-height:1.6; word-break:break-all; max-width:92vw;}
+.taxi .stamp{margin-top:26px; width:58px; height:58px; border:2.5px solid var(--danger); border-radius:50%; color:var(--danger); display:flex; align-items:center; justify-content:center; font-family:var(--disp); font-size:15px; font-weight:600; transform:rotate(-8deg);}
+.taxi .taxi-btns{display:flex; gap:12px; margin-top:30px;}
+.taxi .taxi-btns .btn{padding:13px 26px; font-size:15px; border-radius:12px;}
+
+.spin{display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:sp .7s linear infinite; vertical-align:-2px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.toast{position:fixed; bottom:calc(90px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; font-size:13.5px; padding:10px 18px; border-radius:22px; z-index:300; max-width:86vw; text-align:center;}
+.muted{color:var(--faint); font-size:12.5px;}
+.sample-note{background:var(--amber-bg); color:var(--amber-dk); border-radius:10px; padding:9px 13px; font-size:12.5px; margin-bottom:12px;}
+.link-a{color:var(--indigo); text-decoration:none; font-weight:500;}
+img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain; background:rgba(20,20,20,.94); z-index:250;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="brand"><span class="seal">旅</span><span id="brandTitle">日本行</span></div>
+    <button class="gear" onclick="openSettings()">⚙︎</button>
+  </header>
+  <div id="view" class="page"><div class="tl-empty">加载中…</div></div>
+</div>
+
+<nav class="tabs" id="tabbar">
+  <button data-tab="today" class="on"><span class="ico">☀</span>今日</button>
+  <button data-tab="plan"><span class="ico">🗓</span>行程</button>
+  <button data-tab="money"><span class="ico">¥</span>花费</button>
+  <button data-tab="places"><span class="ico">📍</span>地点</button>
+  <button data-tab="shop"><span class="ico">☑</span>清单</button>
+  <button data-tab="guide"><span class="ico">📖</span>攻略</button>
+</nav>
+
+<div id="modalRoot"></div>
+<input type="file" id="receiptInput" accept="image/*" capture="environment" class="hidden">
+<input type="file" id="noteInput" accept="image/*" class="hidden">
+<input type="file" id="cardPhotoInput" accept="image/*" class="hidden">
+
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
+<script>
+/* ================= CONFIG ================= */
+const FB_URL = "https://lotus-inventory-default-rtdb.firebaseio.com";
+const NODE = "trip-japan-2026";
+const DEFAULT_RATE = 0.0093;
+const TZ = "Asia/Tokyo";
+
+let db=null, LOCAL=false;
+try{
+  firebase.initializeApp({ databaseURL: FB_URL });
+  db = firebase.database().ref(NODE);
+}catch(e){ LOCAL=true; }
+function goLocal(msg){
+  if(S) return;
+  LOCAL=true;
+  S=JSON.parse(JSON.stringify(SEED));
+  render();
+  setTimeout(()=>toast(msg||"预览模式:未连接云端,修改不会保存",3500),400);
+}
+
+/* ================= SEED (无数据版:全部行程数据仅存于 Firebase 云端) ================= */
+const SEED = {
+  trip: { title:"旅の手帳", start:"2026-07-06", end:"2026-07-23", city:"Osaka",
+          lat:34.6937, lng:135.5023, seedVersion:7, traveler:"", purpose:"" },
+  hotels: {}, events: {}, places: {}, shopping: {}, expenses: {}, guide: []
+};
+
+/* ================= STATE ================= */
+let S = null;            // synced firebase data
+let tab = "today";
+let selDay = null;       // plan tab selected date
+let placeFilter = "全部";
+let userPos = null;      // {lat,lng}
+let liveRate = null;
+let wx = null;           // weather
+let openPlaceId = null;  // expanded place
+
+/* ================= HELPERS ================= */
+const $ = s => document.querySelector(s);
+const esc = t => (t||"").toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const q = t => esc((t||"").toString().replace(/\\/g,"\\\\").replace(/'/g,"\\'"));
+const fmtY = n => "¥" + Math.round(n).toLocaleString("ja-JP");
+const rate = () => (S && S.trip && S.trip.rateManual) ? S.trip.rateManual : (liveRate || DEFAULT_RATE);
+const toCAD = jpy => "C$" + (jpy * rate()).toFixed(2);
+function todayTokyo(){
+  return new Intl.DateTimeFormat("sv-SE",{timeZone:TZ}).format(new Date()); // YYYY-MM-DD
+}
+function dstr(d){ const [y,m,dd]=d.split("-"); return `${+m}/${+dd}`; }
+function weekday(d){ return ["日","一","二","三","四","五","六"][new Date(d+"T12:00:00").getDay()]; }
+function tripDays(){
+  if(!S||!S.trip) return [];
+  const out=[]; let cur=new Date(S.trip.start+"T12:00:00"); const end=new Date(S.trip.end+"T12:00:00");
+  while(cur<=end){ out.push(cur.toISOString().slice(0,10)); cur.setDate(cur.getDate()+1); }
+  return out;
+}
+function dayIndex(d){ return tripDays().indexOf(d); }
+function uid(){ return "k"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function toast(msg, ms=2200){
+  const t=document.createElement("div"); t.className="toast"; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(), ms);
+}
+function mapsLink(o){
+  if(o.mapUrl) return o.mapUrl;
+  if(o.lat&&o.lng) return `https://www.google.com/maps/search/?api=1&query=${o.lat},${o.lng}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(o.jpAddress||o.nameJP||o.name||"")}`;
+}
+function haversine(a,b){
+  const R=6371, rad=x=>x*Math.PI/180;
+  const dLat=rad(b.lat-a.lat), dLng=rad(b.lng-a.lng);
+  const h=Math.sin(dLat/2)**2 + Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLng/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+function distLabel(km){ return km<1 ? Math.round(km*1000)+" m" : km.toFixed(1)+" km"; }
+function speakJP(text){
+  if(!("speechSynthesis" in window)){ toast("此设备不支持语音朗读"); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="ja-JP"; u.rate=0.85;
+  const v=speechSynthesis.getVoices().find(v=>v.lang.startsWith("ja"));
+  if(v) u.voice=v;
+  speechSynthesis.speak(u);
+}
+function compressImage(file, maxDim, quality){
+  return new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>{
+      let {width:w,height:h}=img;
+      if(Math.max(w,h)>maxDim){ const k=maxDim/Math.max(w,h); w=Math.round(w*k); h=Math.round(h*k); }
+      const c=document.createElement("canvas"); c.width=w; c.height=h;
+      c.getContext("2d").drawImage(img,0,0,w,h);
+      res(c.toDataURL("image/jpeg",quality));
+    };
+    img.onerror=rej;
+    img.src=URL.createObjectURL(file);
+  });
+}
+
+/* ================= FIREBASE SYNC ================= */
+if(db) db.on("value", snap=>{
+  const v=snap.val();
+  if(!v){ db.set(SEED); return; }
+  if(v.trip && (v.trip.seedVersion||0) < SEED.trip.seedVersion){
+    const userKeys=o=>Object.fromEntries(Object.entries(o||{}).filter(([k])=>k[0]==="k"));
+    const merged={...SEED,
+      expenses:v.expenses||{},
+      shopping:Object.keys(v.shopping||{}).length?v.shopping:SEED.shopping,
+      events:{...SEED.events, ...userKeys(v.events)},
+      places:{...SEED.places, ...userKeys(v.places)} };
+    db.set(merged); return;
+  }
+  LOCAL=false;
+  S=v;
+  if(!selDay){
+    const t=todayTokyo(), days=tripDays();
+    selDay = days.includes(t) ? t : days[0];
+  }
+  if(S.trip && S.trip.title) $("#brandTitle").textContent = S.trip.title;
+  render();
+}, err=>{
+  goLocal("云端拒绝访问(多为 Firebase 规则未开放 trip-japan-2026 节点)");
+  toast("Firebase 错误:"+(err&&err.code||err),5000);
+});
+function save(path,val){ if(LOCAL||!db){ toast("预览模式:修改不会保存"); return; } return db.child(path).set(val); }
+function push(path,val){ if(LOCAL||!db){ toast("预览模式:修改不会保存"); return null; } const id=uid(); db.child(path+"/"+id).set(val); return id; }
+function del(path){ if(LOCAL||!db){ toast("预览模式:修改不会保存"); return; } db.child(path).remove(); }
+function resetAll(){ if(LOCAL||!db){ toast("预览模式:无法重置"); return; } db.set(null); toast("已重置"); closeSheet(); }
+
+/* ================= EXTERNAL DATA ================= */
+async function fetchRate(){
+  try{
+    const r=await fetch("https://api.frankfurter.dev/v1/latest?base=JPY&symbols=CAD");
+    const j=await r.json();
+    if(j&&j.rates&&j.rates.CAD){ liveRate=j.rates.CAD; localStorage.setItem("jt_rate", liveRate); render(); }
+  }catch(e){
+    const c=localStorage.getItem("jt_rate"); if(c) liveRate=parseFloat(c);
+  }
+}
+async function fetchWeather(){
+  try{
+    const h0=S?currentHotel(todayTokyo()):null;
+    const lat=(h0&&h0.lat)||(S&&S.trip&&S.trip.lat)||34.69, lng=(h0&&h0.lng)||(S&&S.trip&&S.trip.lng)||135.50;
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=${encodeURIComponent(TZ)}&forecast_days=1`);
+    const j=await r.json();
+    wx={ now:Math.round(j.current.temperature_2m), code:j.current.weather_code,
+         max:Math.round(j.daily.temperature_2m_max[0]), min:Math.round(j.daily.temperature_2m_min[0]),
+         rain:j.daily.precipitation_probability_max[0] };
+    render();
+  }catch(e){}
+}
+function wxIcon(code){
+  if(code===0) return "☀"; if(code<=3) return "⛅"; if(code<=48) return "🌫";
+  if(code<=67||[80,81,82].includes(code)) return "🌧"; if(code<=77) return "🌨";
+  if(code>=95) return "⛈"; return "☁";
+}
+
+/* ================= RENDER ROOT ================= */
+document.querySelectorAll("nav.tabs button").forEach(b=>{
+  b.onclick=()=>{ tab=b.dataset.tab;
+    document.querySelectorAll("nav.tabs button").forEach(x=>x.classList.toggle("on",x===b));
+    render(); window.scrollTo(0,0); };
+});
+function render(){
+  if(!S){ $("#view").innerHTML='<div class="tl-empty">连接中…</div>'; return; }
+  if(tab==="today") renderToday();
+  else if(tab==="plan") renderPlan();
+  else if(tab==="money") renderMoney();
+  else if(tab==="places") renderPlaces();
+  else if(tab==="guide") renderGuide();
+  else renderShop();
+}
+
+/* ================= TODAY ================= */
+function currentHotel(date){
+  const hs=S.hotels||{};
+  for(const id in hs){ const h=hs[id]; if(date>=h.checkIn && date<h.checkOut) return {...h,id}; }
+  return null;
+}
+function renderToday(){
+  const t=todayTokyo(), days=tripDays();
+  let showDate=t, banner="";
+  if(days.length){
+    if(t<days[0]){ showDate=days[0]; banner=`行程 ${dstr(days[0])} 开始 · 先预览第一天`; }
+    else if(t>days[days.length-1]){ showDate=days[days.length-1]; banner="行程已结束"; }
+  }
+  const di=dayIndex(showDate);
+  const hotel=currentHotel(showDate);
+  const evs=Object.entries(S.events||{}).map(([id,e])=>({...e,id}))
+    .filter(e=>e.date===showDate).sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+  const resto=evs.find(e=>e.type==="food"&&e.reserved);
+
+  let h=`<div class="today-date">${dstr(showDate)} <span style="font-size:16px;">星期${weekday(showDate)}</span></div>
+  <div class="today-meta">
+    ${di>=0?`<span class="day-badge">Day ${di+1}</span>`:""}
+    ${wx?`<span class="wx">${wxIcon(wx.code)} ${wx.now}° <span class="muted">${wx.min}–${wx.max}° · 降雨 ${wx.rain}%</span></span>`:""}
+    ${banner?`<span class="muted">${banner}</span>`:""}
+  </div>`;
+
+
+  h+=`<div class="hero-grid">`;
+  h+= hotel ? bigCard("🏨 今晚入住","🏨",hotel,hotel.conf? hotel.conf+"\n"+(hotel.jpAddress||"") : (hotel.jpAddress||""),"hotels/"+hotel.id)
+            : `<div class="card" style="padding:18px;text-align:center;color:var(--faint);">今晚暂无酒店记录</div>`;
+  h+= resto ? bigCard("🍽 今日餐厅","🍽",resto,(resto.time?resto.time+" · ":"")+(resto.note||""),"events/"+resto.id)
+            : `<div class="card" style="padding:18px;text-align:center;color:var(--faint);">今天没有预订餐厅</div>`;
+  h+=`</div>`;
+
+  h+=`<h2 class="sec">今日安排 <small>${evs.length} 项</small></h2>`;
+  h+= evs.length ? evs.map(tlItem).join("") : `<div class="tl-empty">今天还没有安排</div>`;
+  h+=`<button class="btn ghost full" onclick="openEventForm(null,'${showDate}')">＋ 添加安排</button>`;
+  $("#view").innerHTML=h;
+}
+function bigCard(kicker,ico,o,subText,path){
+  const tap=path?` onclick="pickCardPhoto('${path}')"`:"";
+  let inner;
+  if(o.photo){
+    inner=`<div class="hero-wrap">
+      <img class="ph" src="${esc(o.photo)}" alt="">
+      ${path?`<button class="cam-chip"${tap} title="更换图片">📷</button>`:""}
+      <div class="frost">
+        <div class="kicker">${kicker}</div>
+        <div class="name">${esc(o.name||o.title||"")}</div>
+        ${subText||o.nameJP?`<div class="sub">${esc(o.nameJP?o.nameJP+(subText?" · ":""):"")}${esc(subText||"")}</div>`:""}
+      </div>
+    </div>`;
+  }else{
+    inner=`<div class="top">
+      <div class="thumb"${tap}>${ico}</div>
+      <div class="body">
+        <div class="kicker">${kicker}</div>
+        <div class="name">${esc(o.name||o.title||"")}</div>
+        ${o.nameJP?`<div class="sub">${esc(o.nameJP)}</div>`:""}
+        ${subText?`<div class="sub">${esc(subText)}</div>`:""}
+      </div>
+    </div>`;
+  }
+  return `<div class="card big-card">
+    ${inner}
+    <div class="actions">
+      <button onclick="window.open('${q(mapsLink(o))}','_blank')"><span class="ico">🧭</span>导航</button>
+      <button onclick="openTaxi('${q(o.nameJP||o.name||o.title||"")}','${q(o.jpAddress||"")}')"><span class="ico">🚕</span>日文地址</button>
+      <button onclick="speakJP('${q(o.jpAddress||o.nameJP||"")}')"><span class="ico">🔊</span>朗读</button>
+    </div>
+  </div>`;
+}
+
+/* ================= TAXI CARD ================= */
+function openTaxi(name,addr){
+  if(!addr){ toast("此条目还没有日文地址"); return; }
+  const el=document.createElement("div");
+  el.className="taxi"; el.id="taxiCard";
+  el.innerHTML=`
+    <div class="lbl">ここまでお願いします</div>
+    <div class="jp-name">${esc(name)}</div>
+    <div class="jp-addr">${esc(addr)}</div>
+    <div class="stamp">行先</div>
+    <div class="taxi-btns">
+      <button class="btn indigo" onclick="speakJP('${q(addr)}')">🔊 朗读地址</button>
+      <button class="btn ghost" onclick="document.getElementById('taxiCard').remove()">关闭</button>
+    </div>`;
+  document.body.appendChild(el);
+}
+
+/* ---- 地点搜索(OpenStreetMap,免费无key)---- */
+function geoRowHTML(prefix){
+  return `<div class="f"><label>🔍 搜索地点(自动填地址和坐标)</label>
+    <div class="geo-row">
+      <input id="${prefix}_geoq" placeholder="店名/地名,如:grains de vanille 京都" onkeydown="if(event.key==='Enter'){event.preventDefault();geoSearch('${prefix}')}">
+      <button type="button" class="btn indigo" onclick="geoSearch('${prefix}')">搜索</button>
+    </div>
+    <div class="geo-row" style="margin-top:6px;">
+      <input id="${prefix}_gm" placeholder="或粘贴 Google Maps 分享链接">
+      <button type="button" class="btn ghost" onclick="parseGmaps('${prefix}')">解析</button>
+    </div>
+    <div id="${prefix}_geores" class="geo-res"></div>
+    <div id="${prefix}_geook"></div>
+  </div>`;
+}
+function parseGmaps(prefix){
+  const raw=$("#"+prefix+"_gm").value.trim();
+  if(!raw){ toast("先粘贴 Google Maps 分享内容"); return; }
+  const um=raw.match(/https?:\/\/\S+/);
+  if(!um){ toast("没有检测到链接"); return; }
+  const url=um[0];
+  let name="", lat=null, lng=null;
+  const pm=url.match(/\/place\/([^\/@?]+)/);
+  if(pm){ try{ name=decodeURIComponent(pm[1]).replace(/\+/g," ").trim(); }catch(e){} }
+  if(!name){
+    const rest=raw.replace(url,"").replace(/[\r\n]+/g," ").replace(/["'「」]/g,"").trim();
+    if(rest && rest.length<60) name=rest;
+  }
+  const cm=url.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || url.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/) || url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if(cm){ lat=parseFloat(cm[1]); lng=parseFloat(cm[2]); }
+  const mapEl=$("#"+prefix+"_map"); if(mapEl) mapEl.value=url;
+  const latEl=$("#"+prefix+"_lat"), lngEl=$("#"+prefix+"_lng");
+  if(lat!=null){ if(latEl) latEl.value=lat.toFixed(6); if(lngEl) lngEl.value=lng.toFixed(6); }
+  const nmEl=$("#"+prefix+"_name")||$("#"+prefix+"_title");
+  if(nmEl && name && !nmEl.value.trim()) nmEl.value=name;
+  $("#"+prefix+"_geook").innerHTML=`<div class="geo-ok">✓ 链接已保存,「导航」将直达该图钉${lat!=null?" · 坐标已提取":" · 短链接无坐标,可再用上方🔍搜索补坐标(用于距离排序)"}</div>`;
+}
+async function geoSearch(prefix){
+  const qv=$("#"+prefix+"_geoq").value.trim();
+  if(!qv) return;
+  const box=$("#"+prefix+"_geores");
+  box.innerHTML=`<div class="muted" style="padding:6px 2px;">搜索中…</div>`;
+  try{
+    const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=ja&q=${encodeURIComponent(qv)}`);
+    const list=await r.json();
+    if(!list.length){ box.innerHTML=`<div class="muted" style="padding:6px 2px;">没有找到,试试加上城市名,或手动粘贴地址</div>`; return; }
+    box.innerHTML=list.map((it,i)=>{
+      const nm=(it.name||it.display_name.split(",")[0]).trim();
+      return `<div class="geo-item" onclick="geoPick('${prefix}',${i})"><b>${esc(nm)}</b><span>${esc(cleanJPAddr(it))}</span></div>`;
+    }).join("");
+    window._geoList=list;
+  }catch(e){ box.innerHTML=`<div class="muted" style="padding:6px 2px;">搜索失败,请检查网络后重试</div>`; }
+}
+function cleanJPAddr(it){
+  const parts=it.display_name.split(",").map(s=>s.trim())
+    .filter(s=>s && s!=="日本" && !/^\d{3}-?\d{4}$/.test(s));
+  return parts.reverse().join("");
+}
+function geoPick(prefix,i){
+  const it=window._geoList[i];
+  const addr=cleanJPAddr(it);
+  const addrEl=$("#"+prefix+"_addr")||$("#"+prefix+"_jp");
+  if(addrEl) addrEl.value=addr;
+  const latEl=$("#"+prefix+"_lat"), lngEl=$("#"+prefix+"_lng");
+  if(latEl) latEl.value=parseFloat(it.lat).toFixed(6);
+  if(lngEl) lngEl.value=parseFloat(it.lon).toFixed(6);
+  const nmEl=$("#"+prefix+"_name")||$("#"+prefix+"_title");
+  if(nmEl && !nmEl.value.trim()) nmEl.value=(it.name||"").trim();
+  $("#"+prefix+"_geores").innerHTML="";
+  $("#"+prefix+"_geook").innerHTML=`<div class="geo-ok">✓ 已定位:${esc((it.name||addr).slice(0,30))} · 导航将使用精确坐标</div>`;
+}
+
+const TYPES={ transport:["交通","✈️","c-indigo"], hotel:["住宿","🏨","c-teal"], work:["工作/采购","💼","c-purple"], food:["餐饮","🍽","c-persim"], activity:["游玩/探店","🎐","c-amber"] };
+function tlItem(e){
+  const [_,ico,cls]=TYPES[e.type]||TYPES.activity;
+  return `<div class="tl-item">
+    <div class="tl-time">${esc(e.time||"")}</div>
+    <div class="tl-card ${cls}" onclick="openEventDetail('${e.id}')">
+      <div class="t">${ico} ${esc(e.title)}${e.reserved?" ✓订":""}${e.biz==="business"?' <span class="tag b">B</span>':e.biz==="personal"?' <span class="tag p">P</span>':""}</div>
+      ${e.note||e.jpAddress?`<div class="n">${esc(e.note||"")}${e.note&&e.jpAddress?"\n":""}${esc(e.jpAddress||"")}</div>`:""}
+    </div>
+  </div>`;
+}
+function openEventDetail(id){
+  const e=(S.events||{})[id]; if(!e) return;
+  const [lbl,ico]=TYPES[e.type]||TYPES.activity;
+  const hasLoc=!!(e.jpAddress||e.lat||e.mapUrl);
+  sheet(`
+    <h3>${ico} ${esc(e.title)}</h3>
+    <div class="muted" style="margin:-8px 0 10px;">${esc(e.date)}(周${weekday(e.date)})${e.time?" · "+esc(e.time):""} · ${lbl}${e.reserved?" · ✓ 已预订":""}${e.biz==="business"?" · Business 出差":e.biz==="personal"?" · Personal 私人":""}</div>
+    ${e.note?`<div style="font-size:14px; line-height:1.6; white-space:pre-line; margin-bottom:10px;">${esc(e.note)}</div>`:""}
+    ${e.jpAddress?`<div style="font-size:13.5px; color:var(--sub); margin-bottom:12px;">📍 ${esc(e.jpAddress)}</div>`:""}
+    ${hasLoc?`<div class="p-actions" style="margin-bottom:4px;">
+      <button class="pbtn hot" onclick="window.open('${q(mapsLink(e))}','_blank')">🧭 导航</button>
+      <button class="pbtn" onclick="pickCardPhoto('events/${id}')">📷 图片</button>
+      ${e.jpAddress?`<button class="pbtn" onclick="openTaxi('${q(e.title)}','${q(e.jpAddress)}')">🚕 打车卡</button>
+      <button class="pbtn" onclick="speakJP('${q(e.jpAddress)}')">🔊 朗读</button>`:""}
+    </div>`:""}
+    <div class="btns">
+      <button class="btn ghost" onclick="openEventForm('${id}')">✏️ 编辑</button>
+      <button class="btn indigo" onclick="closeSheet()">关闭</button>
+    </div>`);
+}
+function renderPlan(){
+  const days=tripDays();
+  const tk=todayTokyo();
+  let h=`<div class="day-pills" id="dayPills">`+days.map((d,i)=>{
+    const wd=new Date(d+"T12:00:00").getDay();
+    const wcls=wd===0?" wd0":wd===6?" wd6":"";
+    return `<button class="pill ${d===selDay?"on":""}" onclick="selDay='${d}';render()"><b>${dstr(d)}${d===tk?'<span class="today-dot"></span>':""}</b><small class="${wcls.trim()}">周${weekday(d)} · D${i+1}</small></button>`;
+  }).join("")+`</div>`;
+  const evs=Object.entries(S.events||{}).map(([id,e])=>({...e,id}))
+    .filter(e=>e.date===selDay).sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+  h+= evs.length ? evs.map(tlItem).join("") : `<div class="tl-empty">这一天还没有安排</div>`;
+  h+=`<button class="btn ghost full" onclick="openEventForm(null,'${selDay}')">＋ 添加安排</button>
+  <button class="btn ghost full" style="margin-top:8px;" onclick="exportItinerary()">📄 导出出差行程单(CRA 存档)</button>`;
+  $("#view").innerHTML=h;
+  const wrap=$("#dayPills"), on=wrap&&wrap.querySelector(".pill.on");
+  if(wrap&&on) wrap.scrollLeft=Math.max(0, on.offsetLeft - wrap.clientWidth/2 + on.clientWidth/2);
+}
+function exportItinerary(){
+  const evs=Object.values(S.events||{}).filter(e=>e.biz==="business")
+    .sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
+  if(!evs.length){ toast("还没有标注为 Business 的安排"); return; }
+  const days=[...new Set(evs.map(e=>e.date))];
+  const rows=evs.map(e=>`<tr><td>${e.date}(周${weekday(e.date)})</td><td>${esc(e.time||"—")}</td><td>${esc(e.title)}</td><td>${esc(e.jpAddress||"")}</td><td>${esc(e.note||"")}</td></tr>`).join("");
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>出差行程单 Business Travel Itinerary</title>
+  <style>body{font-family:'Zen Kaku Gothic New','Hiragino Sans',sans-serif;padding:32px;color:#23262D;max-width:900px;margin:0 auto;}
+  h1{font-size:20px;margin-bottom:2px;} .sub{color:#666;font-size:13px;margin-bottom:18px;}
+  .meta{font-size:13.5px;line-height:1.9;margin-bottom:18px;}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;}
+  td,th{border-bottom:1px solid #e5e2da;padding:7px 8px;text-align:left;vertical-align:top;}
+  th{background:#f5f3ec;} .foot{color:#888;font-size:12px;margin-top:18px;line-height:1.7;}</style></head><body>
+  <h1>出差行程单 · Business Travel Itinerary</h1>
+  <div class="sub">${esc((S.trip&&S.trip.title)||"")} · 2026-07-06 至 2026-07-23 · 日本(大阪/京都/神户/东京)</div>
+  <div class="meta">
+    出行人 Traveler:${esc((S.trip&&S.trip.traveler)||"")}<br>
+    出差目的 Purpose:${esc((S.trip&&S.trip.purpose)||"")}<br>
+    商务事项 Business activities:${evs.length} 项,覆盖 ${days.length} 天
+  </div>
+  <table><tr><th>日期 Date</th><th>时间 Time</th><th>事项 Activity</th><th>地点 Location</th><th>备注 Notes</th></tr>${rows}</table>
+  <div class="foot">生成时间 Generated:${new Date().toLocaleString()} · 由 L'otus 行程系统导出<br>
+  配套文件:差旅费用报销单(含收据影像,见「花费」页导出),两份文件互相对应,一并存档备查。</div>
+  </body></html>`;
+  dl(new Blob([html],{type:"text/html"}), "business-travel-itinerary.html");
+  toast("已下载出差行程单(打开后可打印成 PDF)");
+}
+function openEventForm(id,dateDefault){
+  const e = id ? {...(S.events||{})[id]} : { date:dateDefault||selDay||todayTokyo(), time:"", type:"activity", title:"", note:"", jpAddress:"", reserved:false };
+  sheet(`
+    <h3>${id?"编辑安排":"添加安排"}</h3>
+    <div class="f-row">
+      <div class="f"><label>日期</label><input id="ev_date" type="date" value="${esc(e.date)}"></div>
+      <div class="f"><label>时间</label><input id="ev_time" type="time" value="${esc(e.time)}"></div>
+    </div>
+    <div class="f"><label>类型</label><select id="ev_type">${Object.entries(TYPES).map(([k,v])=>`<option value="${k}" ${e.type===k?"selected":""}>${v[1]} ${v[0]}</option>`).join("")}</select></div>
+    <div class="f"><label>标题</label><input id="ev_title" value="${esc(e.title)}" placeholder="如:午餐 · 挽肉と米"></div>
+    <div class="f"><label>备注(确认号 / 人数等)</label><input id="ev_note" value="${esc(e.note)}"></div>
+    ${geoRowHTML('ev')}
+    <div class="f"><label>日文地址(打车用)</label><input id="ev_jp" value="${esc(e.jpAddress||"")}" placeholder="東京都..."></div>
+    <input type="hidden" id="ev_lat" value="${e.lat||""}"><input type="hidden" id="ev_lng" value="${e.lng||""}"><input type="hidden" id="ev_map" value="${esc(e.mapUrl||"")}">
+    <div class="f"><label>归属(用于生成出差行程单)</label><select id="ev_biz">
+      <option value="" ${!e.biz?"selected":""}>不标注</option>
+      <option value="business" ${e.biz==="business"?"selected":""}>Business 出差</option>
+      <option value="personal" ${e.biz==="personal"?"selected":""}>Personal 私人</option>
+    </select></div>
+    <div class="f"><label><input type="checkbox" id="ev_res" ${e.reserved?"checked":""} style="width:auto;margin-right:6px;">已预订(餐厅会显示在今日页)</label></div>
+    <div class="btns">
+      ${id?`<button class="btn ghost" style="color:var(--danger)" onclick="del('events/${id}');closeSheet()">删除</button>`:""}
+      <button class="btn indigo" onclick="saveEvent('${id||""}')">保存</button>
+    </div>`);
+}
+function saveEvent(id){
+  const e={ date:$("#ev_date").value, time:$("#ev_time").value, type:$("#ev_type").value,
+    title:$("#ev_title").value.trim(), note:$("#ev_note").value.trim(),
+    jpAddress:$("#ev_jp").value.trim(), reserved:$("#ev_res").checked };
+  const la=parseFloat($("#ev_lat").value), ln=parseFloat($("#ev_lng").value);
+  if(!isNaN(la)) e.lat=la; if(!isNaN(ln)) e.lng=ln;
+  const mu=$("#ev_map").value.trim(); if(mu) e.mapUrl=mu;
+  const bz=$("#ev_biz").value; if(bz) e.biz=bz;
+  if(!e.title){ toast("标题不能为空"); return; }
+  const old = id ? (S.events||{})[id] : null;
+  if(old && old.photo) e.photo = old.photo;
+  if(id) save("events/"+id, e); else push("events", e);
+  closeSheet();
+}
+
+/* ================= MONEY ================= */
+function renderMoney(){
+  const ex=Object.entries(S.expenses||{}).map(([id,e])=>({...e,id})).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const tb=ex.filter(e=>e.type==="business").reduce((s,e)=>s+(+e.amountJPY||0),0);
+  const tp=ex.filter(e=>e.type==="personal").reduce((s,e)=>s+(+e.amountJPY||0),0);
+  let h=`<div class="stat-row">
+    <div class="stat"><div class="lb"><span class="dot b"></span>公司报销 Business</div><div class="yen">${fmtY(tb)}</div><div class="cad">≈ ${toCAD(tb)}</div></div>
+    <div class="stat"><div class="lb"><span class="dot p"></span>私人 Personal</div><div class="yen">${fmtY(tp)}</div><div class="cad">≈ ${toCAD(tp)}</div></div>
+  </div>
+  <div class="muted" style="margin:8px 2px 0;">汇率 ¥1 = C$${rate().toFixed(5)} ${S.trip&&S.trip.rateManual?"(手动)":liveRate?"(实时)":"(默认)"}</div>
+  <div class="cam-row" style="margin-top:14px;">
+    <button class="btn indigo full" onclick="document.getElementById('receiptInput').click()">📷 拍收据识别入账</button>
+  </div>
+  <div class="quick">
+    <input id="qAmt" type="number" inputmode="decimal" placeholder="¥ 金额">
+    <input id="qMemo" type="text" placeholder="备注(可选)" style="flex:1.2;">
+  </div>
+  <div class="quick" style="margin-top:0;">
+    <button class="btn b" style="flex:1;" onclick="quickAdd('business')">存为公司</button>
+    <button class="btn p" style="flex:1;" onclick="quickAdd('personal')">存为私人</button>
+  </div>
+  <h2 class="sec">流水 <small>${ex.length} 笔</small>
+    <span style="flex:1"></span>
+    <button class="pbtn" onclick="exportCSV()">导出 CSV</button>
+    <button class="pbtn" onclick="exportReport()">报销单</button>
+  </h2>`;
+  h+= ex.length ? ex.map(e=>`
+    <div class="exp-item">
+      ${e.receipt?`<img class="thumb" src="${e.receipt}" onclick="viewReceipt('${e.id}')">`:`<div class="thumb-ph">¥</div>`}
+      <div class="mid" onclick="openExpenseForm('${e.id}')">
+        <div class="m1">${esc(e.merchant||e.note||"未命名")}</div>
+        <div class="m2">${esc(e.date||"")} ${e.category?"· "+esc(e.category):""}</div>
+      </div>
+      <div class="amt" onclick="openExpenseForm('${e.id}')">
+        <div class="y">${fmtY(e.amountJPY)}</div>
+        <div class="c">${toCAD(e.amountJPY)} <span class="tag ${e.type==="business"?"b":"p"}">${e.type==="business"?"公司":"私人"}</span></div>
+      </div>
+    </div>`).join("") : `<div class="tl-empty">还没有记录 · 拍张收据试试</div>`;
+  $("#view").innerHTML=h;
+}
+function quickAdd(type){
+  const a=parseFloat($("#qAmt").value);
+  if(!a){ toast("先输入金额"); return; }
+  push("expenses",{ amountJPY:a, type, merchant:$("#qMemo").value.trim(), date:todayTokyo(), ts:Date.now() });
+  $("#qAmt").value=""; $("#qMemo").value="";
+  toast(type==="business"?"已存入公司报销":"已存入私人");
+}
+function viewReceipt(id){
+  const e=(S.expenses||{})[id]; if(!e||!e.receipt) return;
+  const img=document.createElement("img"); img.className="rc-full"; img.src=e.receipt;
+  img.onclick=()=>img.remove(); document.body.appendChild(img);
+}
+function openExpenseForm(id){
+  const e={...(S.expenses||{})[id]};
+  sheet(`
+    <h3>编辑记录</h3>
+    ${e.receipt?`<img class="receipt-preview" src="${e.receipt}" style="margin-bottom:12px;">`:""}
+    <div class="f-row">
+      <div class="f"><label>金额 ¥</label><input id="ex_amt" type="number" value="${e.amountJPY||""}"></div>
+      <div class="f"><label>日期</label><input id="ex_date" type="date" value="${esc(e.date||"")}"></div>
+    </div>
+    <div class="f"><label>商家 / 备注</label><input id="ex_mer" value="${esc(e.merchant||"")}"></div>
+    <div class="f"><label>分类</label><input id="ex_cat" value="${esc(e.category||"")}" placeholder="餐饮 / 交通 / 采购 / 购物…"></div>
+    <div class="f"><label>归属</label><div class="seg">
+      <button id="sg_b" class="${e.type==="business"?"on b":""}" onclick="segPick('business')">公司报销</button>
+      <button id="sg_p" class="${e.type==="personal"?"on p":""}" onclick="segPick('personal')">私人</button>
+    </div></div>
+    <div class="btns">
+      <button class="btn ghost" style="color:var(--danger)" onclick="del('expenses/${id}');closeSheet()">删除</button>
+      <button class="btn indigo" onclick="saveExpense('${id}')">保存</button>
+    </div>`);
+  window._seg = e.type||"business";
+}
+function segPick(v){ window._seg=v;
+  $("#sg_b").className=v==="business"?"on b":""; $("#sg_p").className=v==="personal"?"on p":""; }
+function saveExpense(id){
+  const old=(S.expenses||{})[id]||{};
+  save("expenses/"+id,{ ...old, amountJPY:parseFloat($("#ex_amt").value)||0, date:$("#ex_date").value,
+    merchant:$("#ex_mer").value.trim(), category:$("#ex_cat").value.trim(), type:window._seg||"business" });
+  closeSheet();
+}
+
+/* ---- receipt OCR ---- */
+$("#receiptInput").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value="";
+  if(!f) return;
+  toast("正在压缩图片…",1200);
+  const b64=await compressImage(f,1200,0.55);
+  const key=localStorage.getItem("jt_apikey");
+  let guess={ amount:"", merchant:"", date:todayTokyo(), category:"" };
+  if(key){
+    toast("Claude 正在识别收据…",6000);
+    try{
+      const r=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json", "x-api-key":key,
+          "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" },
+        body:JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:300,
+          messages:[{ role:"user", content:[
+            { type:"image", source:{ type:"base64", media_type:"image/jpeg", data:b64.split(",")[1] }},
+            { type:"text", text:"这是一张日本收据。只返回JSON,不要其他文字:{\"amount\":总金额数字(日元,税込),\"merchant\":\"商家名(尽量中文或原文)\",\"date\":\"YYYY-MM-DD\",\"category\":\"餐饮|交通|采购|购物|住宿|其他 之一\"}" }]}]})
+      });
+      const j=await r.json();
+      const txt=(j.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("");
+      const m=txt.match(/\{[\s\S]*\}/);
+      if(m){ const p=JSON.parse(m[0]);
+        guess={ amount:p.amount||"", merchant:p.merchant||"", date:p.date||todayTokyo(), category:p.category||"" }; }
+    }catch(e){ toast("识别失败,请手动填写"); }
+  }
+  sheet(`
+    <h3>确认收据</h3>
+    <img class="receipt-preview" src="${b64}" style="margin-bottom:12px;">
+    <div class="f-row">
+      <div class="f"><label>金额 ¥</label><input id="rc_amt" type="number" inputmode="decimal" value="${guess.amount}"></div>
+      <div class="f"><label>日期</label><input id="rc_date" type="date" value="${esc(guess.date)}"></div>
+    </div>
+    <div class="f"><label>商家</label><input id="rc_mer" value="${esc(guess.merchant)}"></div>
+    <div class="f"><label>分类</label><input id="rc_cat" value="${esc(guess.category)}"></div>
+    ${key?"":`<div class="muted" style="margin-bottom:10px;">提示:在设置里填入 Claude API key 可自动识别金额与商家</div>`}
+    <div class="btns">
+      <button class="btn b" onclick="saveReceipt('business')">For Business</button>
+      <button class="btn p" onclick="saveReceipt('personal')">Personal</button>
+    </div>`);
+  window._rcB64=b64;
+});
+function saveReceipt(type){
+  const a=parseFloat($("#rc_amt").value);
+  if(!a){ toast("请填写金额"); return; }
+  push("expenses",{ amountJPY:a, type, merchant:$("#rc_mer").value.trim(),
+    category:$("#rc_cat").value.trim(), date:$("#rc_date").value, receipt:window._rcB64, ts:Date.now() });
+  window._rcB64=null; closeSheet();
+  toast(type==="business"?"已存入公司报销 ✓":"已存入私人 ✓");
+}
+
+/* ---- export ---- */
+function exportCSV(){
+  const ex=Object.entries(S.expenses||{}).map(([id,e])=>e).sort((a,b)=>(a.ts||0)-(b.ts||0));
+  let csv="\uFEFF日期,商家/备注,分类,归属,JPY,汇率,CAD\n";
+  ex.forEach(e=>{
+    csv+=`${e.date||""},"${(e.merchant||"").replace(/"/g,'""')}",${e.category||""},${e.type==="business"?"公司报销":"私人"},${e.amountJPY},${rate().toFixed(5)},${(e.amountJPY*rate()).toFixed(2)}\n`;
+  });
+  const tb=ex.filter(e=>e.type==="business").reduce((s,e)=>s+(+e.amountJPY||0),0);
+  const tp=ex.filter(e=>e.type==="personal").reduce((s,e)=>s+(+e.amountJPY||0),0);
+  csv+=`\n公司合计,,,,${tb},,${(tb*rate()).toFixed(2)}\n私人合计,,,,${tp},,${(tp*rate()).toFixed(2)}\n`;
+  dl(new Blob([csv],{type:"text/csv"}), "japan-trip-expenses.csv");
+}
+function exportReport(){
+  const ex=Object.entries(S.expenses||{}).map(([id,e])=>e).filter(e=>e.type==="business").sort((a,b)=>(a.ts||0)-(b.ts||0));
+  if(!ex.length){ toast("还没有公司报销记录"); return; }
+  const tb=ex.reduce((s,e)=>s+(+e.amountJPY||0),0);
+  let rows=ex.map((e,i)=>`<tr><td>${i+1}</td><td>${e.date||""}</td><td>${esc(e.merchant||"")}</td><td>${esc(e.category||"")}</td><td style="text-align:right">${fmtY(e.amountJPY)}</td><td style="text-align:right">${toCAD(e.amountJPY)}</td></tr>
+    ${e.receipt?`<tr><td colspan="6"><img src="${e.receipt}" style="max-width:340px;max-height:420px;border:1px solid #ddd;border-radius:6px;margin:4px 0 12px;"></td></tr>`:""}`).join("");
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>报销单</title>
+  <style>body{font-family:'Zen Kaku Gothic New','Hiragino Sans',sans-serif;padding:28px;color:#23262D;}
+  h1{font-size:20px;} table{border-collapse:collapse;width:100%;font-size:13px;}
+  td,th{border-bottom:1px solid #e5e2da;padding:7px 8px;text-align:left;vertical-align:top;}
+  .tot{font-weight:700;font-size:15px;margin-top:14px;}</style></head><body>
+  <h1>${esc((S.trip&&S.trip.title)||"日本行")} · 差旅报销单</h1>
+  <p>导出时间:${new Date().toLocaleString()} · 汇率 ¥1 = C$${rate().toFixed(5)}</p>
+  <table><tr><th>#</th><th>日期</th><th>商家</th><th>分类</th><th>JPY</th><th>CAD</th></tr>${rows}</table>
+  <p class="tot">合计:${fmtY(tb)} ≈ ${toCAD(tb)}</p>
+  <p style="color:#888;font-size:12px;">打印为 PDF 后可直接归档 QuickBooks。</p></body></html>`;
+  dl(new Blob([html],{type:"text/html"}), "japan-trip-report.html");
+  toast("已下载报销单(打开后可打印成 PDF)");
+}
+function dl(blob,name){
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ================= PLACES ================= */
+const CATS=["全部","蛋糕店","餐厅","采购","景点","购物"];
+function renderPlaces(){
+  const ps=Object.entries(S.places||{}).map(([id,p])=>({...p,id}));
+  let list=placeFilter==="全部"?ps:ps.filter(p=>p.category===placeFilter);
+  if(userPos) list.forEach(p=>{ if(p.lat&&p.lng) p._d=haversine(userPos,p); });
+  list.sort((a,b)=>(a._d??999)-(b._d??999) || (a.name>b.name?1:-1));
+  const pool=list.filter(p=>p.status!=="planned");
+  const planned=list.filter(p=>p.status==="planned");
+
+  let h=`<div class="chips">${CATS.map(c=>`<button class="chip ${c===placeFilter?"on":""}" onclick="placeFilter='${c}';render()">${c}</button>`).join("")}</div>
+  <div class="cam-row">
+    <button class="btn ghost full" onclick="locate()">📡 ${userPos?"重新定位":"定位 · 按距离排序"}</button>
+    <button class="btn indigo" onclick="openPlaceForm()">＋ 新地点</button>
+  </div>
+  <h2 class="sec">候选池 <small>随时就近插入行程 · ${pool.length}</small></h2>`;
+  h+= pool.length?pool.map(placeCard).join(""):`<div class="tl-empty">候选池是空的</div>`;
+  if(planned.length){
+    h+=`<h2 class="sec">已排入行程 <small>${planned.length}</small></h2>`+planned.map(placeCard).join("");
+  }
+  $("#view").innerHTML=h;
+}
+function placeCard(p){
+  const open=openPlaceId===p.id;
+  return `<div class="place">
+    <div class="row1" onclick="openPlaceId=openPlaceId==='${p.id}'?null:'${p.id}';render()">
+      <div><div class="nm">${esc(p.name)}${p.nameJP?` <span class="muted">${esc(p.nameJP)}</span>`:""}</div>
+        <div class="cat">${esc(p.category||"")} ${p.note&&!open?"· "+esc(p.note.slice(0,18))+(p.note.length>18?"…":""):""}</div></div>
+      <div style="text-align:right; display:flex; align-items:flex-start; gap:2px;">
+        <div>
+          ${p.visited?`<div class="visited">✓ 已去过</div>`:""}
+          ${p._d!=null?`<div class="dist">${distLabel(p._d)}</div>`:""}
+        </div>
+        <button class="del" style="margin:-4px -6px 0 0;" onclick="event.stopPropagation();if(confirm('删除这个地点?'))del('places/${p.id}')">✕</button>
+      </div>
+    </div>
+    <div class="p-actions">
+      <button class="pbtn" onclick="window.open('${q(mapsLink(p))}','_blank')">🧭 导航</button>
+      <button class="pbtn" onclick="openTaxi('${q(p.nameJP||p.name)}','${q(p.jpAddress||"")}')">🚕 地址</button>
+      ${p.xhs?`<button class="pbtn" onclick="window.open('${q(p.xhs)}','_blank')">📕 小红书</button>`:""}
+      ${p.status!=="planned"?`<button class="pbtn hot" onclick="addToPlan('${p.id}')">＋ 加入今天</button>`:""}
+      <button class="pbtn" onclick="toggleVisited('${p.id}')">${p.visited?"↺ 取消已去":"✓ 已去过"}</button>
+    </div>
+    ${open?`<div class="note-open">
+      <textarea class="note" id="pn_${p.id}" placeholder="探店笔记:口味 / 结构 / 定价 / 可借鉴…">${esc(p.note||"")}</textarea>
+      <div class="p-actions">
+        <button class="pbtn" onclick="savePlaceNote('${p.id}')">保存笔记</button>
+        <button class="pbtn" onclick="addNotePhoto('${p.id}')">📷 加照片</button>
+        <button class="pbtn" onclick="openPlaceForm('${p.id}')">编辑</button>
+        <button class="pbtn" style="color:var(--danger)" onclick="if(confirm('删除该地点?')){del('places/${p.id}');openPlaceId=null;}">删除</button>
+      </div>
+      ${p.photos?`<div class="note-photos">${Object.values(p.photos).map(x=>`<img src="${x}" onclick="viewPhoto('${x.slice(0,0)}',this.src)">`).join("")}</div>`:""}
+    </div>`:""}
+  </div>`;
+}
+function viewPhoto(_,src){
+  const img=document.createElement("img"); img.className="rc-full"; img.src=src;
+  img.onclick=()=>img.remove(); document.body.appendChild(img);
+}
+function locate(){
+  if(!navigator.geolocation){ toast("此设备不支持定位"); return; }
+  toast("定位中…",1500);
+  navigator.geolocation.getCurrentPosition(
+    pos=>{ userPos={lat:pos.coords.latitude,lng:pos.coords.longitude}; render(); toast("已按距离排序 ✓"); },
+    ()=>toast("定位失败,请检查权限"), {enableHighAccuracy:true,timeout:8000});
+}
+function toggleVisited(id){ const p=(S.places||{})[id]; save("places/"+id+"/visited", !p.visited); }
+function savePlaceNote(id){ save("places/"+id+"/note", $("#pn_"+id).value.trim()); toast("笔记已保存 ✓"); }
+function addNotePhoto(id){
+  window._notePid=id; $("#noteInput").click();
+}
+function pickCardPhoto(path){ window._cardPath=path; $("#cardPhotoInput").click(); }
+$("#cardPhotoInput").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value="";
+  if(!f||!window._cardPath) return;
+  toast("处理图片中…",1500);
+  const b64=await compressImage(f,900,0.65);
+  save(window._cardPath+"/photo", b64);
+  toast("图片已设置 ✓");
+});
+$("#noteInput").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value="";
+  if(!f||!window._notePid) return;
+  const b64=await compressImage(f,900,0.6);
+  push("places/"+window._notePid+"/photos", b64);
+  toast("照片已保存 ✓");
+});
+function addToPlan(id){
+  const p=(S.places||{})[id];
+  const t=todayTokyo(), days=tripDays();
+  const date=days.includes(t)?t:days[0]||t;
+  const now=new Date().toLocaleTimeString("en-GB",{timeZone:TZ,hour:"2-digit",minute:"2-digit"});
+  push("events",{ date, time:now, type:p.category==="蛋糕店"||p.category==="餐厅"?"food":"activity",
+    title:(p.category==="蛋糕店"?"探店 · ":"")+p.name, note:p.note||"", jpAddress:p.jpAddress||"" });
+  save("places/"+id+"/status","planned");
+  toast("已加入今天的行程 ✓");
+}
+function openPlaceForm(id){
+  const p= id ? {...(S.places||{})[id]} : { name:"",nameJP:"",category:"蛋糕店",status:"pool",jpAddress:"",xhs:"",note:"" };
+  sheet(`
+    <h3>${id?"编辑地点":"新地点"}</h3>
+    <div class="f"><label>名称</label><input id="pl_name" value="${esc(p.name)}"></div>
+    ${geoRowHTML('pl')}
+    <div class="f"><label>日文名(可选)</label><input id="pl_jp" value="${esc(p.nameJP||"")}"></div>
+    <div class="f-row">
+      <div class="f"><label>分类</label><select id="pl_cat">${CATS.slice(1).map(c=>`<option ${p.category===c?"selected":""}>${c}</option>`).join("")}</select></div>
+      <div class="f"><label>状态</label><select id="pl_st"><option value="pool" ${p.status!=="planned"?"selected":""}>候选池</option><option value="planned" ${p.status==="planned"?"selected":""}>已排行程</option></select></div>
+    </div>
+    <div class="f"><label>日文地址</label><input id="pl_addr" value="${esc(p.jpAddress||"")}" placeholder="東京都..."></div>
+    <div class="f-row">
+      <div class="f"><label>纬度(可选,用于测距)</label><input id="pl_lat" type="number" step="any" value="${p.lat||""}"></div>
+      <div class="f"><label>经度</label><input id="pl_lng" type="number" step="any" value="${p.lng||""}"></div>
+    </div>
+    <div class="f"><label>小红书链接(可选)</label><input id="pl_xhs" value="${esc(p.xhs||"")}"></div>
+    <div class="f"><label>备注</label><input id="pl_note" value="${esc(p.note||"")}"></div>
+    <input type="hidden" id="pl_map" value="${esc(p.mapUrl||"")}">
+    <div class="btns"><button class="btn indigo" onclick="savePlace('${id||""}')">保存</button></div>`);
+}
+function savePlace(id){
+  const old = id ? (S.places||{})[id]||{} : {};
+  const p={ ...old, name:$("#pl_name").value.trim(), nameJP:$("#pl_jp").value.trim(),
+    category:$("#pl_cat").value, status:$("#pl_st").value, jpAddress:$("#pl_addr").value.trim(),
+    xhs:$("#pl_xhs").value.trim(), note:$("#pl_note").value.trim() };
+  const la=parseFloat($("#pl_lat").value), ln=parseFloat($("#pl_lng").value);
+  if(!isNaN(la)) p.lat=la; if(!isNaN(ln)) p.lng=ln;
+  const mu=$("#pl_map").value.trim(); if(mu) p.mapUrl=mu;
+  if(!p.name){ toast("名称不能为空"); return; }
+  if(id) save("places/"+id,p); else push("places",p);
+  closeSheet();
+}
+
+/* ================= GUIDE ================= */
+
+function renderGuide(){
+  let h=`<div class="muted" style="margin:2px 2px 12px;">为这次行程定制 · 想补充或修改内容,发消息给 Claude 即可</div>`;
+  if(!S||!S.guide||!S.guide.length){ $("#view").innerHTML=h+`<div class="tl-empty">攻略内容存于云端,连接后显示</div>`; return; }
+  h+=((S&&S.guide)||[]).map(s=>`<div class="g-card"><h3>${s.t}</h3><ul>${s.items.map(i=>`<li>${i}</li>`).join("")}</ul></div>`).join("");
+  $("#view").innerHTML=h;
+}
+
+/* ================= SHOPPING ================= */
+function renderShop(){
+  const items=Object.entries(S.shopping||{}).map(([id,x])=>({...x,id}))
+    .sort((a,b)=>(a.done-b.done)||((a.ts||0)-(b.ts||0)));
+  let h=`<div class="shop-add">
+    <input id="shopText" placeholder="要买什么?如:15cm 慕斯圈 ×20" onkeydown="if(event.key==='Enter')addShop()">
+    <button class="btn indigo" onclick="addShop()">添加</button>
+  </div>`;
+  h+= items.length?items.map(x=>`
+    <div class="shop-item ${x.done?"done":""}">
+      <div class="ck" onclick="save('shopping/${x.id}/done',${!x.done})">${x.done?"✓":""}</div>
+      <div class="tx">${esc(x.text)}${x.note?` <span class="muted">· ${esc(x.note)}</span>`:""}</div>
+      <button class="del" onclick="del('shopping/${x.id}')">✕</button>
+    </div>`).join(""):`<div class="tl-empty">清单是空的</div>`;
+  const doneN=items.filter(x=>x.done).length;
+  if(items.length) h+=`<div class="muted" style="margin-top:12px;text-align:center;">已买 ${doneN} / ${items.length}</div>`;
+  $("#view").innerHTML=h;
+}
+function addShop(){
+  const t=$("#shopText").value.trim();
+  if(!t) return;
+  push("shopping",{ text:t, done:false, ts:Date.now() });
+  $("#shopText").value="";
+}
+
+/* ================= SETTINGS ================= */
+function openSettings(){
+  const key=localStorage.getItem("jt_apikey")||"";
+  const manual=(S&&S.trip&&S.trip.rateManual)||"";
+  sheet(`
+    <h3>设置</h3>
+    <div class="f"><label>Claude API key(仅存本机,用于收据识别)</label>
+      <input id="st_key" type="password" value="${esc(key)}" placeholder="sk-ant-..."></div>
+    <div class="f"><label>手动汇率 ¥1 = C$?(留空则用实时汇率${liveRate?" "+liveRate.toFixed(5):""})</label>
+      <input id="st_rate" type="number" step="any" value="${manual}" placeholder="${(liveRate||DEFAULT_RATE).toFixed(5)}"></div>
+    <div class="btns"><button class="btn indigo" onclick="saveSettings()">保存</button></div>
+    <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px;">
+      <div class="muted" style="margin-bottom:10px;">分享:把本页网址发给同行人即可,数据实时同步。</div>
+      <button class="btn ghost full" onclick="if(confirm('清空全部数据并恢复初始行程?此操作不可撤销'))resetAll()" style="color:var(--danger)">重置全部数据</button>
+    </div>`);
+}
+function saveSettings(){
+  const k=$("#st_key").value.trim();
+  if(k) localStorage.setItem("jt_apikey",k); else localStorage.removeItem("jt_apikey");
+  const r=parseFloat($("#st_rate").value);
+  save("trip/rateManual", isNaN(r)?null:r);
+  closeSheet(); toast("设置已保存 ✓");
+}
+
+/* ================= SHEET ================= */
+function sheet(inner){
+  $("#modalRoot").innerHTML=`<div class="overlay" onclick="if(event.target===this)closeSheet()"><div class="sheet">${inner}</div></div>`;
+}
+function closeSheet(){ $("#modalRoot").innerHTML=""; }
+
+/* ================= INIT ================= */
+if(!db) goLocal("未连接云端 · 无数据版需部署后使用");
+else setTimeout(()=>goLocal(), 5000);
+fetchRate();
+setTimeout(fetchWeather, 600);
+if("speechSynthesis" in window) speechSynthesis.getVoices();
+</script>
+</body>
+</html>
