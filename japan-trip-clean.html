@@ -254,6 +254,22 @@ try{
   db = firebase.database().ref(NODE);
 }catch(e){ LOCAL=true; }
 function setConn(state,label){ const b=document.getElementById("connBadge"); if(!b) return; b.className="conn "+state; b.querySelector(".t").textContent=label; }
+function migrate(v){
+  const userKeys=o=>Object.fromEntries(Object.entries(o||{}).filter(([k])=>k[0]==="k"));
+  const merged={...SEED,
+    expenses:(v&&v.expenses)||{},
+    shopping:Object.keys((v&&v.shopping)||{}).length?v.shopping:SEED.shopping,
+    events:{...SEED.events, ...userKeys(v&&v.events)},
+    places:{...SEED.places, ...userKeys(v&&v.places)} };
+  db.set(merged)
+    .then(()=>toast("初始数据已同步到云端 ✓ v"+SEED.trip.seedVersion))
+    .catch(err=>{ setConn("off","写入被拒"); toast("云端写入失败:"+(err&&err.code||err)+" · 请检查 Firebase 规则的 .write 权限",6000); });
+}
+function forceSync(){
+  if(!db){ toast("当前无数据库连接"); return; }
+  db.get ? null : null;
+  db.once("value").then(s=>{ migrate(s.val()||{}); closeSheet(); });
+}
 function goLocal(msg){
   if(S) return;
   LOCAL=true;
@@ -344,15 +360,7 @@ function compressImage(file, maxDim, quality){
 if(db) db.on("value", snap=>{
   const v=snap.val();
   if(!v){ db.set(SEED); return; }
-  if(v.trip && (v.trip.seedVersion||0) < SEED.trip.seedVersion){
-    const userKeys=o=>Object.fromEntries(Object.entries(o||{}).filter(([k])=>k[0]==="k"));
-    const merged={...SEED,
-      expenses:v.expenses||{},
-      shopping:Object.keys(v.shopping||{}).length?v.shopping:SEED.shopping,
-      events:{...SEED.events, ...userKeys(v.events)},
-      places:{...SEED.places, ...userKeys(v.places)} };
-    db.set(merged); return;
-  }
+  if(v.trip && (v.trip.seedVersion||0) < SEED.trip.seedVersion){ migrate(v); return; }
   LOCAL=false;
   setConn("on","云端同步");
   S=v;
@@ -1042,6 +1050,7 @@ function openSettings(){
     <div class="btns"><button class="btn indigo" onclick="saveSettings()">保存</button></div>
     <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px;">
       <div class="muted" style="margin-bottom:10px;">分享:把本页网址发给同行人即可,数据实时同步。</div>
+      <button class="btn ghost full" style="margin-bottom:8px;" onclick="forceSync()">🔄 同步初始数据到云端(保留花费/清单)</button>
       <button class="btn ghost full" onclick="if(confirm('清空全部数据并恢复初始行程?此操作不可撤销'))resetAll()" style="color:var(--danger)">重置全部数据</button>
     </div>`);
 }
