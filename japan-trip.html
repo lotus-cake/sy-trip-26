@@ -52,6 +52,14 @@ h2.sec small{font-family:var(--body); font-weight:400; font-size:12px; color:var
 .wx{display:inline-flex; align-items:center; gap:5px;}
 .day-badge{background:var(--indigo); color:#EDF2F8; font-size:12px; padding:2px 10px; border-radius:12px;}
 
+.big-card .hero-wrap{position:relative;}
+.big-card .hero-wrap.noimg{background:var(--indigo); min-height:92px;}
+.big-card .hero-wrap .ph{width:100%; height:150px; object-fit:cover; display:block;}
+.big-card .frost{position:absolute; left:0; right:0; bottom:0; padding:9px 14px 8px; background:rgba(26,32,44,.40); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4);}
+.big-card .frost .kicker{font-size:10.5px; letter-spacing:.14em; color:rgba(255,255,255,.78); text-transform:uppercase; margin-bottom:1px;}
+.big-card .frost .name{font-family:var(--disp); font-size:16.5px; font-weight:600; color:#FFF; line-height:1.3; text-shadow:0 1px 2px rgba(0,0,0,.25);}
+.big-card .frost .sub{color:rgba(255,255,255,.85); font-size:11.5px; margin-top:1px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; white-space:pre-line;}
+.cam-chip{position:absolute; top:8px; right:8px; width:30px; height:30px; border-radius:50%; border:none; background:rgba(26,32,44,.38); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); color:#fff; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
 .hero-grid{display:grid; grid-template-columns:1fr; gap:12px;}
 @media(min-width:640px){ .hero-grid{grid-template-columns:1fr 1fr;} }
 .hero-grid .card{margin-top:0;}
@@ -225,6 +233,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <div id="modalRoot"></div>
 <input type="file" id="receiptInput" accept="image/*" capture="environment" class="hidden">
 <input type="file" id="noteInput" accept="image/*" class="hidden">
+<input type="file" id="cardPhotoInput" accept="image/*" class="hidden">
 
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
@@ -251,26 +260,26 @@ function goLocal(msg){
 /* ================= SEED (真实行程 v2 · 2026-07-06 更新) ================= */
 const SEED = {
   trip: { title:"日本行 2026", start:"2026-07-06", end:"2026-07-23", city:"Osaka",
-          lat:34.6937, lng:135.5023, seedVersion:7,
+          lat:34.6937, lng:135.5023, seedVersion:8,
           traveler:"Ya Qian (Stacy) Liang",
           purpose:"烘焙专业研修课程(K&H 日本大师烘焙团 7/11–7/18,大阪/京都/神户六家名店进店研修)、供应商拜访(宇治 三星園上林三入)及烘焙市场考察、器具采购" },
   hotels: {
     h1:{ name:"Conrad Osaka", nameJP:"コンラッド大阪",
          jpAddress:"大阪府大阪市北区中之島3-2-4", checkIn:"2026-07-07", checkOut:"2026-07-09",
          conf:"Amex FHR · 確認 9087258435299", lat:34.69333, lng:135.49564 },
-    h2:{ name:"西村屋招月庭(城崎温泉)", nameJP:"西村屋ホテル招月庭",
+    h2:{ photo:"https://www.nishimuraya.ne.jp/shogetsu/ogp.jpg", name:"西村屋招月庭(城崎温泉)", nameJP:"西村屋ホテル招月庭",
          jpAddress:"兵庫県豊岡市城崎町湯島1016-2", checkIn:"2026-07-09", checkOut:"2026-07-10",
          conf:"予約番号 155484 · 露天風呂付「桂月」特別室 · 朝夕食付(部屋食)", lat:35.62824, lng:134.79950 },
-    h3:{ name:"高山荘華野(有马温泉)", nameJP:"高山荘華野",
+    h3:{ photo:"https://arima-hanano.jp/share/im-hanano/01_index/index_hero_01.jpg", name:"高山荘華野(有马温泉)", nameJP:"高山荘華野",
          jpAddress:"兵庫県神戸市北区有馬町400-1", checkIn:"2026-07-10", checkOut:"2026-07-11",
          conf:"予約番号 6355 · 温泉付客室スイート · 懐石夕食 · 15:30 到着予定", lat:34.79700, lng:135.24945 },
-    h4:{ name:"InterContinental Osaka", nameJP:"インターコンチネンタルホテル大阪",
+    h4:{ photo:"https://icosaka.com/wp-content/uploads/2023/05/MicrosoftTeams-image-3-1440x810.jpg", name:"InterContinental Osaka", nameJP:"インターコンチネンタルホテル大阪",
          jpAddress:"大阪府大阪市北区大深町3-60", checkIn:"2026-07-11", checkOut:"2026-07-17",
          conf:"Amex FHR · 確認 9087199113475", lat:34.70643, lng:135.49429 },
-    h5:{ name:"Caption by Hyatt Namba", nameJP:"キャプション by Hyatt なんば大阪",
+    h5:{ photo:"https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2024/06/17/2300/OSACP-P0050-Entrance-Evening-View.jpg/OSACP-P0050-Entrance-Evening-View.16x9.jpg?imwidth=800", name:"Caption by Hyatt Namba", nameJP:"キャプション by Hyatt なんば大阪",
          jpAddress:"大阪府大阪市中央区日本橋2-7-5", checkIn:"2026-07-17", checkOut:"2026-07-18",
          conf:"確認番号 40023B20848205", lat:34.66377, lng:135.50585 },
-    h6:{ name:"Hotel Toranomon Hills", nameJP:"ホテル虎ノ門ヒルズ",
+    h6:{ photo:"https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2024/03/11/1914/TYOUB-P0204-Toranomon-Tower-View-Night.jpg/TYOUB-P0204-Toranomon-Tower-View-Night.16x9.jpg?imwidth=800", name:"Hotel Toranomon Hills", nameJP:"ホテル虎ノ門ヒルズ",
          jpAddress:"東京都港区虎ノ門2-6-4 虎ノ門ヒルズステーションタワー", checkIn:"2026-07-18", checkOut:"2026-07-23",
          conf:"確認番号 4384423", lat:35.66758, lng:139.74714 }
   },
@@ -571,9 +580,9 @@ function renderToday(){
 
 
   h+=`<div class="hero-grid">`;
-  h+= hotel ? bigCard("🏨 今晚入住","🏨",hotel,hotel.conf? hotel.conf+"\n"+(hotel.jpAddress||"") : (hotel.jpAddress||""))
+  h+= hotel ? bigCard("🏨 今晚入住","🏨",hotel,hotel.conf? hotel.conf+"\n"+(hotel.jpAddress||"") : (hotel.jpAddress||""),"hotels/"+hotel.id)
             : `<div class="card" style="padding:18px;text-align:center;color:var(--faint);">今晚暂无酒店记录</div>`;
-  h+= resto ? bigCard("🍽 今日餐厅","🍽",resto,(resto.time?resto.time+" · ":"")+(resto.note||""))
+  h+= resto ? bigCard("🍽 今日餐厅","🍽",resto,(resto.time?resto.time+" · ":"")+(resto.note||""),"events/"+resto.id)
             : `<div class="card" style="padding:18px;text-align:center;color:var(--faint);">今天没有预订餐厅</div>`;
   h+=`</div>`;
 
@@ -582,18 +591,33 @@ function renderToday(){
   h+=`<button class="btn ghost full" onclick="openEventForm(null,'${showDate}')">＋ 添加安排</button>`;
   $("#view").innerHTML=h;
 }
-function bigCard(kicker,ico,o,subText){
-  const thumb=o.photo?`<img class="thumb" src="${esc(o.photo)}" alt="">`:`<div class="thumb">${ico}</div>`;
-  return `<div class="card big-card">
-    <div class="top">
-      ${thumb}
+function heroFail(img){ img.parentNode.classList.add("noimg"); img.remove(); }
+function bigCard(kicker,ico,o,subText,path){
+  const tap=path?` onclick="pickCardPhoto('${path}')"`:"";
+  let inner;
+  if(o.photo){
+    inner=`<div class="hero-wrap">
+      <img class="ph" src="${esc(o.photo)}" onerror="heroFail(this)" alt="">
+      ${path?`<button class="cam-chip"${tap} title="更换图片">📷</button>`:""}
+      <div class="frost">
+        <div class="kicker">${kicker}</div>
+        <div class="name">${esc(o.name||o.title||"")}</div>
+        ${subText||o.nameJP?`<div class="sub">${esc(o.nameJP?o.nameJP+(subText?" · ":""):"")}${esc(subText||"")}</div>`:""}
+      </div>
+    </div>`;
+  }else{
+    inner=`<div class="top">
+      <div class="thumb"${tap}>${ico}</div>
       <div class="body">
         <div class="kicker">${kicker}</div>
         <div class="name">${esc(o.name||o.title||"")}</div>
         ${o.nameJP?`<div class="sub">${esc(o.nameJP)}</div>`:""}
         ${subText?`<div class="sub">${esc(subText)}</div>`:""}
       </div>
-    </div>
+    </div>`;
+  }
+  return `<div class="card big-card">
+    ${inner}
     <div class="actions">
       <button onclick="window.open('${q(mapsLink(o))}','_blank')"><span class="ico">🧭</span>导航</button>
       <button onclick="openTaxi('${q(o.nameJP||o.name||o.title||"")}','${q(o.jpAddress||"")}')"><span class="ico">🚕</span>日文地址</button>
@@ -713,6 +737,7 @@ function openEventDetail(id){
     ${e.jpAddress?`<div style="font-size:13.5px; color:var(--sub); margin-bottom:12px;">📍 ${esc(e.jpAddress)}</div>`:""}
     ${hasLoc?`<div class="p-actions" style="margin-bottom:4px;">
       <button class="pbtn hot" onclick="window.open('${q(mapsLink(e))}','_blank')">🧭 导航</button>
+      <button class="pbtn" onclick="pickCardPhoto('events/${id}')">📷 图片</button>
       ${e.jpAddress?`<button class="pbtn" onclick="openTaxi('${q(e.title)}','${q(e.jpAddress)}')">🚕 打车卡</button>
       <button class="pbtn" onclick="speakJP('${q(e.jpAddress)}')">🔊 朗读</button>`:""}
     </div>`:""}
@@ -1046,6 +1071,15 @@ function savePlaceNote(id){ save("places/"+id+"/note", $("#pn_"+id).value.trim()
 function addNotePhoto(id){
   window._notePid=id; $("#noteInput").click();
 }
+function pickCardPhoto(path){ window._cardPath=path; $("#cardPhotoInput").click(); }
+$("#cardPhotoInput").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value="";
+  if(!f||!window._cardPath) return;
+  toast("处理图片中…",1500);
+  const b64=await compressImage(f,900,0.65);
+  save(window._cardPath+"/photo", b64);
+  toast("图片已设置 ✓");
+});
 $("#noteInput").addEventListener("change", async ev=>{
   const f=ev.target.files[0]; ev.target.value="";
   if(!f||!window._notePid) return;
