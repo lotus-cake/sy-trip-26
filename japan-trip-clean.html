@@ -58,7 +58,7 @@ h2.sec small{font-family:var(--body); font-weight:400; font-size:12px; color:var
 
 .big-card .hero-wrap{position:relative;}
 .big-card .hero-wrap.noimg{background:var(--indigo); min-height:92px;}
-.big-card .hero-wrap .ph{width:100%; height:150px; object-fit:cover; display:block;}
+.big-card .hero-wrap .ph{width:100%; height:192px; object-fit:cover; display:block;}
 .big-card .frost{position:absolute; left:0; right:0; bottom:0; padding:9px 14px 8px; background:rgba(26,32,44,.40); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4);}
 .big-card .frost .kicker{font-size:10.5px; letter-spacing:.14em; color:rgba(255,255,255,.78); text-transform:uppercase; margin-bottom:1px;}
 .big-card .frost .name{font-family:var(--disp); font-size:16.5px; font-weight:600; color:#FFF; line-height:1.3; text-shadow:0 1px 2px rgba(0,0,0,.25);}
@@ -266,9 +266,7 @@ function migrate(v){
     .catch(err=>{ setConn("off","写入被拒"); toast("云端写入失败:"+(err&&err.code||err)+" · 请检查 Firebase 规则的 .write 权限",6000); });
 }
 function forceSync(){
-  if(!db){ toast("当前无数据库连接"); return; }
-  db.get ? null : null;
-  db.once("value").then(s=>{ migrate(s.val()||{}); closeSheet(); });
+  toast("此为无数据空壳版,不能执行同步。请临时换回完整版文件后再同步。",5000);
 }
 function goLocal(msg){
   if(S) return;
