@@ -847,15 +847,34 @@ function saveEvent(id){
 }
 
 /* ================= MONEY ================= */
+let expFilter="all";
+function cadOf(e){ return (+e.amountJPY||0)*(e.rate||rate()); }
+function expRow(e){
+  const warn=(e.type==="business"&&!e.receipt)?' <span class="tag" style="background:#F5EDD8;color:#63490F;">⚠️无收据</span>':"";
+  return `<div class="exp-item">
+      ${e.receipt?`<img class="thumb" src="${e.receipt}" onclick="viewReceipt('${e.id}')">`:`<div class="thumb-ph">¥</div>`}
+      <div class="mid" onclick="openExpenseForm('${e.id}')">
+        <div class="m1">${esc(e.merchant||e.note||"未命名")}</div>
+        <div class="m2">${e.category?esc(e.category):""}${e.detail?" · "+esc(e.detail):""}${warn}</div>
+      </div>
+      <div class="amt" onclick="openExpenseForm('${e.id}')">
+        <div class="y">${fmtY(e.amountJPY)}</div>
+        <div class="c">C$${cadOf(e).toFixed(2)} <span class="tag ${e.type==="business"?"b":"p"}">${e.type==="business"?"公司":"私人"}</span></div>
+      </div>
+    </div>`;
+}
 function renderMoney(){
-  const ex=Object.entries(S.expenses||{}).map(([id,e])=>({...e,id})).sort((a,b)=>(b.ts||0)-(a.ts||0));
-  const tb=ex.filter(e=>e.type==="business").reduce((s,e)=>s+(+e.amountJPY||0),0);
-  const tp=ex.filter(e=>e.type==="personal").reduce((s,e)=>s+(+e.amountJPY||0),0);
+  const all=Object.entries(S.expenses||{}).map(([id,e])=>({...e,id})).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const tb=all.filter(e=>e.type==="business").reduce((s,e)=>s+(+e.amountJPY||0),0);
+  const tp=all.filter(e=>e.type==="personal").reduce((s,e)=>s+(+e.amountJPY||0),0);
+  const tbC=all.filter(e=>e.type==="business").reduce((s,e)=>s+cadOf(e),0);
+  const tpC=all.filter(e=>e.type==="personal").reduce((s,e)=>s+cadOf(e),0);
+  const ex=expFilter==="all"?all:all.filter(e=>e.type===expFilter);
   let h=`<div class="stat-row">
-    <div class="stat"><div class="lb"><span class="dot b"></span>公司报销 Business</div><div class="yen">${fmtY(tb)}</div><div class="cad">≈ ${toCAD(tb)}</div></div>
-    <div class="stat"><div class="lb"><span class="dot p"></span>私人 Personal</div><div class="yen">${fmtY(tp)}</div><div class="cad">≈ ${toCAD(tp)}</div></div>
+    <div class="stat"><div class="lb"><span class="dot b"></span>公司报销 Business</div><div class="yen">${fmtY(tb)}</div><div class="cad">≈ C$${tbC.toFixed(2)}</div></div>
+    <div class="stat"><div class="lb"><span class="dot p"></span>私人 Personal</div><div class="yen">${fmtY(tp)}</div><div class="cad">≈ C$${tpC.toFixed(2)}</div></div>
   </div>
-  <div class="muted" style="margin:8px 2px 0;">汇率 ¥1 = C$${rate().toFixed(5)} ${S.trip&&S.trip.rateManual?"(手动)":liveRate?"(实时)":"(默认)"}</div>
+  <div class="muted" style="margin:8px 2px 0;">今日汇率 ¥1 = C$${rate().toFixed(5)} ${S.trip&&S.trip.rateManual?"(手动)":liveRate?"(实时)":"(默认)"} · 每笔按记账时汇率折算</div>
   <div class="cam-row" style="margin-top:14px;">
     <button class="btn indigo full" onclick="document.getElementById('receiptInput').click()">📷 拍收据识别入账</button>
   </div>
@@ -867,29 +886,37 @@ function renderMoney(){
     <button class="btn b" style="flex:1;" onclick="quickAdd('business')">存为公司</button>
     <button class="btn p" style="flex:1;" onclick="quickAdd('personal')">存为私人</button>
   </div>
+  <div class="chips" style="margin-top:12px; padding-bottom:2px;">
+    <button class="chip ${expFilter==="all"?"on":""}" onclick="expFilter='all';render()">全部</button>
+    <button class="chip ${expFilter==="business"?"on":""}" onclick="expFilter='business';render()">公司</button>
+    <button class="chip ${expFilter==="personal"?"on":""}" onclick="expFilter='personal';render()">私人</button>
+  </div>
   <h2 class="sec">流水 <small>${ex.length} 笔</small>
     <span style="flex:1"></span>
     <button class="pbtn" onclick="exportCSV()">导出 CSV</button>
     <button class="pbtn" onclick="exportReport()">报销单</button>
   </h2>`;
-  h+= ex.length ? ex.map(e=>`
-    <div class="exp-item">
-      ${e.receipt?`<img class="thumb" src="${e.receipt}" onclick="viewReceipt('${e.id}')">`:`<div class="thumb-ph">¥</div>`}
-      <div class="mid" onclick="openExpenseForm('${e.id}')">
-        <div class="m1">${esc(e.merchant||e.note||"未命名")}</div>
-        <div class="m2">${esc(e.date||"")} ${e.category?"· "+esc(e.category):""}${e.detail?" · "+esc(e.detail):""}</div>
-      </div>
-      <div class="amt" onclick="openExpenseForm('${e.id}')">
-        <div class="y">${fmtY(e.amountJPY)}</div>
-        <div class="c">${toCAD(e.amountJPY)} <span class="tag ${e.type==="business"?"b":"p"}">${e.type==="business"?"公司":"私人"}</span></div>
-      </div>
-    </div>`).join("") : `<div class="tl-empty">还没有记录 · 拍张收据试试</div>`;
+  if(!ex.length){
+    h+=`<div class="tl-empty">还没有记录 · 拍张收据试试</div>`;
+  }else{
+    const days={}, order=[];
+    ex.forEach(e=>{ const d=e.date||"未注明日期"; if(!days[d]){ days[d]=[]; order.push(d);} days[d].push(e); });
+    order.sort((a,b)=>b.localeCompare(a));
+    h+=order.map(d=>{
+      const list=days[d], sub=list.reduce((s,e)=>s+(+e.amountJPY||0),0);
+      const head=d==="未注明日期"?d:`${dstr(d)} 周${weekday(d)}`;
+      return `<div style="display:flex; justify-content:space-between; align-items:baseline; margin:16px 2px 2px;">
+        <span style="font-family:var(--disp); font-size:13.5px; font-weight:600;">${head}</span>
+        <span class="muted">小计 ${fmtY(sub)}</span>
+      </div>`+list.map(expRow).join("");
+    }).join("");
+  }
   $("#view").innerHTML=h;
 }
 function quickAdd(type){
   const a=parseFloat($("#qAmt").value);
   if(!a){ toast("先输入金额"); return; }
-  push("expenses",{ amountJPY:a, type, merchant:$("#qMemo").value.trim(), date:todayTokyo(), ts:Date.now() });
+  push("expenses",{ amountJPY:a, type, merchant:$("#qMemo").value.trim(), date:todayTokyo(), rate:rate(), ts:Date.now() });
   $("#qAmt").value=""; $("#qMemo").value="";
   toast(type==="business"?"已存入公司报销":"已存入私人");
 }
@@ -984,7 +1011,7 @@ function saveReceipt(type){
   const a=parseFloat($("#rc_amt").value);
   if(!a){ toast("请填写金额"); return; }
   push("expenses",{ amountJPY:a, type, merchant:$("#rc_mer").value.trim(),
-    category:$("#rc_cat").value.trim(), detail:$("#rc_detail").value.trim(), date:$("#rc_date").value, receipt:window._rcB64, ts:Date.now() });
+    category:$("#rc_cat").value.trim(), detail:$("#rc_detail").value.trim(), date:$("#rc_date").value, receipt:window._rcB64, rate:rate(), ts:Date.now() });
   window._rcB64=null; closeSheet();
   toast(type==="business"?"已存入公司报销 ✓":"已存入私人 ✓");
 }
@@ -994,18 +1021,19 @@ function exportCSV(){
   const ex=Object.entries(S.expenses||{}).map(([id,e])=>e).sort((a,b)=>(a.ts||0)-(b.ts||0));
   let csv="\uFEFF日期,商家/备注,分类,明细,归属,JPY,汇率,CAD\n";
   ex.forEach(e=>{
-    csv+=`${e.date||""},"${(e.merchant||"").replace(/"/g,'""')}",${e.category||""},"${(e.detail||"").replace(/"/g,'""')}",${e.type==="business"?"公司报销":"私人"},${e.amountJPY},${rate().toFixed(5)},${(e.amountJPY*rate()).toFixed(2)}\n`;
+    csv+=`${e.date||""},"${(e.merchant||"").replace(/"/g,'""')}",${e.category||""},"${(e.detail||"").replace(/"/g,'""')}",${e.type==="business"?"公司报销":"私人"},${e.amountJPY},${(e.rate||rate()).toFixed(5)},${cadOf(e).toFixed(2)}\n`;
   });
   const tb=ex.filter(e=>e.type==="business").reduce((s,e)=>s+(+e.amountJPY||0),0);
   const tp=ex.filter(e=>e.type==="personal").reduce((s,e)=>s+(+e.amountJPY||0),0);
-  csv+=`\n公司合计,,,,,${tb},,${(tb*rate()).toFixed(2)}\n私人合计,,,,,${tp},,${(tp*rate()).toFixed(2)}\n`;
+  const tbC=ex.filter(e=>e.type==="business").reduce((s,e)=>s+cadOf(e),0), tpC=ex.filter(e=>e.type==="personal").reduce((s,e)=>s+cadOf(e),0);
+  csv+=`\n公司合计,,,,,${tb},,${tbC.toFixed(2)}\n私人合计,,,,,${tp},,${tpC.toFixed(2)}\n`;
   dl(new Blob([csv],{type:"text/csv"}), "japan-trip-expenses.csv");
 }
 function exportReport(){
   const ex=Object.entries(S.expenses||{}).map(([id,e])=>e).filter(e=>e.type==="business").sort((a,b)=>(a.ts||0)-(b.ts||0));
   if(!ex.length){ toast("还没有公司报销记录"); return; }
   const tb=ex.reduce((s,e)=>s+(+e.amountJPY||0),0);
-  let rows=ex.map((e,i)=>`<tr><td>${i+1}</td><td>${e.date||""}</td><td>${esc(e.merchant||"")}${e.detail?`<br><span style="color:#888;font-size:11px;">${esc(e.detail)}</span>`:""}</td><td>${esc(e.category||"")}</td><td style="text-align:right">${fmtY(e.amountJPY)}</td><td style="text-align:right">${toCAD(e.amountJPY)}</td></tr>
+  let rows=ex.map((e,i)=>`<tr><td>${i+1}</td><td>${e.date||""}</td><td>${esc(e.merchant||"")}${e.detail?`<br><span style="color:#888;font-size:11px;">${esc(e.detail)}</span>`:""}</td><td>${esc(e.category||"")}</td><td style="text-align:right">${fmtY(e.amountJPY)}</td><td style="text-align:right">C$${cadOf(e).toFixed(2)}</td></tr>
     ${e.receipt?`<tr><td colspan="6"><img src="${e.receipt}" style="max-width:340px;max-height:420px;border:1px solid #ddd;border-radius:6px;margin:4px 0 12px;"></td></tr>`:""}`).join("");
   const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>报销单</title>
   <style>body{font-family:'Zen Kaku Gothic New','Hiragino Sans',sans-serif;padding:28px;color:#23262D;}
@@ -1013,9 +1041,9 @@ function exportReport(){
   td,th{border-bottom:1px solid #e5e2da;padding:7px 8px;text-align:left;vertical-align:top;}
   .tot{font-weight:700;font-size:15px;margin-top:14px;}</style></head><body>
   <h1>${esc((S.trip&&S.trip.title)||"日本行")} · 差旅报销单</h1>
-  <p>导出时间:${new Date().toLocaleString()} · 汇率 ¥1 = C$${rate().toFixed(5)}</p>
+  <p>导出时间:${new Date().toLocaleString()} · CAD 按每笔记账时汇率折算</p>
   <table><tr><th>#</th><th>日期</th><th>商家</th><th>分类</th><th>JPY</th><th>CAD</th></tr>${rows}</table>
-  <p class="tot">合计:${fmtY(tb)} ≈ ${toCAD(tb)}</p>
+  <p class="tot">合计:${fmtY(tb)} ≈ C$${ex.reduce((s,e)=>s+cadOf(e),0).toFixed(2)}</p>
   <p style="color:#888;font-size:12px;">打印为 PDF 后可直接归档 QuickBooks。</p></body></html>`;
   dl(new Blob([html],{type:"text/html"}), "japan-trip-report.html");
   toast("已下载报销单(打开后可打印成 PDF)");
