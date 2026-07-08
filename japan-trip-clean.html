@@ -243,6 +243,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
 <script>
 /* ================= CONFIG ================= */
+const BUILD = "2026-07-08 · b3";
 const FB_URL = "https://lotus-inventory-default-rtdb.firebaseio.com";
 const NODE = "trip-japan-2026";
 const DEFAULT_RATE = 0.0093;
@@ -1085,6 +1086,7 @@ function openSettings(){
     <div class="btns"><button class="btn indigo" onclick="saveSettings()">保存</button></div>
     <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px;">
       <div class="muted" style="margin-bottom:10px;">分享:把本页网址发给同行人即可,数据实时同步。</div>
+      <div class="muted" style="margin-bottom:10px;">当前构建版本:${BUILD}</div>
       <button class="btn ghost full" style="margin-bottom:8px;" onclick="forceSync()">🔄 同步初始数据到云端(保留花费/清单)</button>
       <button class="btn ghost full" onclick="if(confirm('清空全部数据并恢复初始行程?此操作不可撤销'))resetAll()" style="color:var(--danger)">重置全部数据</button>
     </div>`);
