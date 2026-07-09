@@ -283,7 +283,7 @@ function goLocal(msg){
 /* ================= SEED (真实行程 v2 · 2026-07-06 更新) ================= */
 const SEED = {
   trip: { title:"日本行 2026", start:"2026-07-06", end:"2026-07-23", city:"Osaka",
-          lat:34.6937, lng:135.5023, seedVersion:11,
+          lat:34.6937, lng:135.5023, seedVersion:12,
           traveler:"Ya Qian (Stacy) Liang",
           purpose:"烘焙专业研修课程(K&H 日本大师烘焙团 7/11–7/18,大阪/京都/神户六家名店进店研修)、供应商拜访(宇治 三星園上林三入)及烘焙市场考察、器具采购" },
   hotels: {
@@ -387,7 +387,23 @@ const SEED = {
     p22:{ name:"ASAKO IWAYANAGI(等々力)", nameJP:"パティスリィ アサコ イワヤナギ", category:"蛋糕店", status:"pool",
          jpAddress:"東京都世田谷区等々力4-4-5", lat:35.60805, lng:139.65015, xhs:"", note:"艺术级パフェ需预约 · 周一二休 · 可与自由が丘串成一条线", visited:false },
     p23:{ name:"とらや 赤坂店", nameJP:"虎屋 赤坂店", category:"购物", status:"pool",
-         jpAddress:"東京都港区赤坂4-9-22", lat:35.67540, lng:139.73259, xhs:"", note:"500年羊羹老铺 · 离虎ノ門ヒルズ车程约10分 · 高级伴手礼", visited:false }
+         jpAddress:"東京都港区赤坂4-9-22", lat:35.67540, lng:139.73259, xhs:"", note:"500年羊羹老铺 · 离虎ノ門ヒルズ车程约10分 · 高级伴手礼", visited:false },
+    p24:{ name:"grenier 梅田店", nameJP:"グルニエ 梅田", category:"蛋糕店", status:"pool",
+         jpAddress:"大阪府大阪市北区角田町8 阪急グランドビル1F", lat:34.70354, lng:135.49919, xhs:"", note:"布蕾千层必试 · 常温区极强(椰子莎布蕾) · 每天10-20点 · 大阪站旁,课程周随时顺路", visited:false },
+    p25:{ name:"Chocolaterie HISASHI", nameJP:"ショコラトリー ヒサシ", category:"蛋糕店", status:"pool",
+         jpAddress:"京都府京都市東山区夷町166-16", lat:35.00952, lng:135.78382, xhs:"", note:"久保尚史 · 高级巧克力/松露糖渍橙皮 · 周三-日11-18(周一二休) · 7/17课程日打车约8分", visited:false },
+    p26:{ name:"Un Son Doux Pâtisserie", nameJP:"アンソンドゥ", category:"蛋糕店", status:"pool",
+         jpAddress:"京都府京都市中京区布袋屋町495-1", lat:35.01462, lng:135.76571, xhs:"", note:"前辈力荐青梅派 · 杏仁可颂 · 周二-六8-18(周日一休) · 离grains de vanille步行5分,7/17顺路必去", visited:false },
+    p27:{ name:"N'importe quoi", nameJP:"ナンポルトクワ", category:"蛋糕店", status:"pool",
+         jpAddress:"京都府京都市中京区菊屋町527-1", lat:35.00531, lng:135.76322, xhs:"", note:"Au Grenier d'Or(西原金蔵)后继店 · 苹果派/杏仁费南雪 · 周三-六11-16(注意早关门) · 7/17可串", visited:false },
+    p28:{ name:"Mel Coffee Roasters", nameJP:"メルコーヒーロースターズ", category:"咖啡", status:"pool",
+         jpAddress:"大阪府大阪市西区新町1-20-4", lat:34.67680, lng:135.49585, xhs:"", note:"号称亚洲第二 · 手冲/浅烘拿铁 · 豆子值得带 · 周一休 平日10-18 · 离Caption步行约20分", visited:false },
+    p29:{ name:"LiLo Coffee Roasters", nameJP:"リロコーヒーロースターズ", category:"咖啡", status:"pool",
+         jpAddress:"大阪府大阪市中央区西心斎橋1-10-28 1階", lat:34.67407, lng:135.49803, xhs:"", note:"4.8分/2400+评 · 20+种豆现选手冲 · 营业到23点!7/17晚入住Namba后最佳去处 · 仅现金", visited:false },
+    p30:{ name:"PATHFINDER XNOBU(LUCUA 4F)", nameJP:"パスファインダー エックスノブ", category:"咖啡", status:"pool",
+         jpAddress:"大阪府大阪市北区梅田3-1-3 LUCUA1100 4階", lat:34.70300, lng:135.49529, xhs:"", note:"世界拉花冠军 · Rainbow Latte · 每天10:30-20:30 · 大阪站Lucua内,下课顺路", visited:false },
+    p31:{ name:"Streamer Coffee 心斎橋", nameJP:"ストリーマーコーヒー 心斎橋", category:"咖啡", status:"pool",
+         jpAddress:"大阪府大阪市中央区西心斎橋1-10-19", lat:34.67365, lng:135.49799, xhs:"", note:"泽田洋史(亚洲首位世界拉花冠军) · latte+贝果brunch · 9点开门 · 7/18赴东京前早餐好选择", visited:false }
   },
   shopping: {},
   expenses: {},
@@ -1055,7 +1071,7 @@ function dl(blob,name){
 }
 
 /* ================= PLACES ================= */
-const CATS=["全部","蛋糕店","餐厅","采购","景点","购物"];
+const CATS=["全部","蛋糕店","咖啡","餐厅","采购","景点","购物"];
 function renderPlaces(){
   const ps=Object.entries(S.places||{}).map(([id,p])=>({...p,id}));
   let list=placeFilter==="全部"?ps:ps.filter(p=>p.category===placeFilter);
