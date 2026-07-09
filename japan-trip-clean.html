@@ -909,7 +909,7 @@ function dl(blob,name){
 }
 
 /* ================= PLACES ================= */
-const CATS=["全部","蛋糕店","餐厅","采购","景点","购物"];
+const CATS=["全部","蛋糕店","咖啡","餐厅","采购","景点","购物"];
 function renderPlaces(){
   const ps=Object.entries(S.places||{}).map(([id,p])=>({...p,id}));
   let list=placeFilter==="全部"?ps:ps.filter(p=>p.category===placeFilter);
