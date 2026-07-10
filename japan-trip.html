@@ -283,7 +283,7 @@ function goLocal(msg){
 /* ================= SEED (真实行程 v2 · 2026-07-06 更新) ================= */
 const SEED = {
   trip: { title:"日本行 2026", start:"2026-07-06", end:"2026-07-23", city:"Osaka",
-          lat:34.6937, lng:135.5023, seedVersion:12,
+          lat:34.6937, lng:135.5023, seedVersion:13,
           traveler:"Ya Qian (Stacy) Liang",
           purpose:"烘焙专业研修课程(K&H 日本大师烘焙团 7/11–7/18,大阪/京都/神户六家名店进店研修)、供应商拜访(宇治 三星園上林三入)及烘焙市场考察、器具采购" },
   hotels: {
@@ -315,7 +315,7 @@ const SEED = {
     e05:{ date:"2026-07-08", time:"16:00", type:"food", title:"Yakitori Ichimatsu 一松", note:"已订2名 · MLB7R10X · 比内地鶏コース ¥14,500/人 · 米其林一星", reserved:true, jpAddress:"大阪府大阪市北区堂島1-5-1 エスパス北新地23 1F" },
     e06:{ date:"2026-07-09", time:"10:12", type:"transport", title:"こうのとり 🚄 大阪 → 城崎温泉", note:"大阪站 10:12 发 → 约12:50 到城崎 · 全车指定席需提前购票 · 备选 12:11发≈14:50到 · 到站请招月庭接驳(0796-32-3535)" },
     e07:{ date:"2026-07-09", time:"15:00", type:"hotel", title:"入住 西村屋招月庭", note:"桂月特別室 · 总料理长会席+但马牛 · 晚餐部屋食 · 155484", jpAddress:"兵庫県豊岡市城崎町湯島1016-2" },
-    e08:{ date:"2026-07-10", time:"11:33", type:"transport", title:"こうのとり 🚄 城崎 → 三田 → 有马", note:"城崎温泉 11:33发 → 约13:45 三田下车(勿坐到新大阪!)→ 换神戸電鉄(有馬口转一次)→ 有馬温泉 约14:45 · JR票只买到三田,神铁刷Suica · 备选:9:33发,或はまかぜ7:13经神户玩半天" },
+    e08:{ date:"2026-07-10", time:"11:33", type:"transport", title:"こうのとり 🚄 城崎 → 三田 → 有马", note:"城崎温泉 11:33发 → 约13:45 三田下车(勿坐到新大阪!)→ 计划变更:先去 es koyama(见14:00条目)→ 打车直达有马 · JR票只买到三田" },
     e09:{ date:"2026-07-10", time:"15:30", type:"hotel", title:"入住 高山荘華野", note:"予約 6355 · 温泉付客室 · 特选怀石(个室料亭)", jpAddress:"兵庫県神戸市北区有馬町400-1" },
     e10:{ date:"2026-07-11", time:"", type:"transport", title:"有马 → 大阪", note:"华野 11:00 前退房" },
     e11:{ date:"2026-07-11", time:"15:00", type:"hotel", title:"入住 InterContinental Osaka", note:"Amex FHR · 9087199113475 · 住到 7/17", jpAddress:"大阪府大阪市北区大深町3-60" },
@@ -339,7 +339,9 @@ const SEED = {
     e29:{ date:"2026-07-12", time:"19:15", type:"food", title:"291010(和牛烧肉)", note:"已订2名 · 予約 57ZDDQXSNY · 电话 06-6136-3346", reserved:true, jpAddress:"大阪府大阪市北区黒崎町1-2 1F", lat:34.70650, lng:135.50949 },
     e30:{ date:"2026-07-14", time:"19:45", type:"food", title:"Yusaburo(神户牛排 · 待确认)", note:"已订2名 · 確認 WDAK2Y · 很可能是神户加納町的与三郎,芦屋下课顺路 · 请确认", reserved:true, jpAddress:"兵庫県神戸市中央区加納町3-12-7", lat:34.69811, lng:135.19260 },
     e31:{ date:"2026-07-19", time:"20:00", type:"food", title:"PANEVIA(意式 · 驹场)", note:"已订2名 · 確認 WMTEFS", reserved:true, jpAddress:"東京都目黒区駒場1-16-9 片桐ビル", lat:35.65559, lng:139.68831 },
-    e32:{ date:"2026-07-22", time:"18:30", type:"food", title:"Sushi Masa(店铺待确认)", note:"已订 18:30 · 东京同名3家:西麻布すし匠まさ/恵比寿/銀座 · 把确认单发给Claude锁定地址", reserved:true, jpAddress:"" }
+    e32:{ date:"2026-07-22", time:"18:30", type:"food", title:"Sushi Masa(店铺待确认)", note:"已订 18:30 · 东京同名3家:西麻布すし匠まさ/恵比寿/銀座 · 把确认单发给Claude锁定地址", reserved:true, jpAddress:"" },
+    e34:{ date:"2026-07-10", time:"14:00", type:"activity", title:"es koyama 甜点村(小山进)⭐", jpAddress:"兵庫県三田市ゆりのき台5-32-1", lat:34.91779, lng:135.18292,
+          note:"三田站南口打车约15分 · 今日营业至17:00 · 小山ロール先排队再逛 · 重点:常温烧菓子区+Rozilla巧克力馆(夏天巧克力慎买) · 15:10左右打车直达有马温泉(约25-30分,不用回三田站) · 華野 078-904-0744" }
   },
   places: {
     p1:{ name:"三星園上林三入 本店", nameJP:"三星園上林三入本店", category:"采购", status:"planned",
