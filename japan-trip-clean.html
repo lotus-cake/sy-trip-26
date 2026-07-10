@@ -237,13 +237,14 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <div id="modalRoot"></div>
 <input type="file" id="receiptInput" accept="image/*" class="hidden">
 <input type="file" id="noteInput" accept="image/*" class="hidden">
+<input type="file" id="trPhoto" accept="image/*" class="hidden">
 <input type="file" id="cardPhotoInput" accept="image/*" class="hidden">
 
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
 <script>
 /* ================= CONFIG ================= */
-const BUILD = "2026-07-10 · b5";
+const BUILD = "2026-07-10 · b6";
 const FB_URL = "https://lotus-inventory-default-rtdb.firebaseio.com";
 const NODE = "trip-japan-2026";
 const DEFAULT_RATE = 0.0093;
@@ -457,6 +458,7 @@ function renderToday(){
             : `<div class="card" style="padding:18px;text-align:center;color:var(--faint);">今天没有预订餐厅</div>`;
   h+=`</div>`;
 
+  h+=`<button class="btn ghost full" style="margin-bottom:14px;" onclick="trSheet()">🗣 会话翻译 · 📷 菜单标签翻译</button>`;
   h+=`<h2 class="sec">今日安排 <small>${evs.length} 项</small></h2>`;
   h+= evs.length ? evs.map(tlItem).join("") : `<div class="tl-empty">今天还没有安排</div>`;
   h+=`<button class="btn ghost full" onclick="openEventForm(null,'${showDate}')">＋ 添加安排</button>`;
@@ -816,6 +818,64 @@ function catOptions(sel){
   const base=CATS_EXP.includes(sel)?CATS_EXP:(sel?[sel,...CATS_EXP]:["",...CATS_EXP]);
   return base.map(c=>`<option value="${esc(c)}" ${c===sel?"selected":""}>${c||"—"}</option>`).join("");
 }
+
+/* ---- translate ---- */
+const TR_PHRASES=[
+ ["可以拍照吗?","写真を撮ってもいいですか?"],
+ ["有什么推荐?","おすすめは何ですか?"],
+ ["请给我一个这个","これを一つください"],
+ ["打包带走","持ち帰りでお願いします"],
+ ["能刷卡吗?","クレジットカードは使えますか?"],
+ ["我有预约,姓梁","予約しています。リャンです"],
+ ["这个能放几天?","これは何日持ちますか?"],
+ ["请帮我叫出租车","タクシーを呼んでいただけますか?"]
+];
+function trSheet(){
+  const d=window._trDir||"cj";
+  sheet(`<h3>🗣 翻译</h3>
+  <div class="seg" style="margin-bottom:10px;">
+    <button class="${d==="cj"?"on":""}" onclick="window._trDir='cj';trSheet()">中 → 日</button>
+    <button class="${d==="jc"?"on":""}" onclick="window._trDir='jc';trSheet()">日 → 中</button>
+  </div>
+  <div class="f"><textarea id="tr_in" rows="3" placeholder="${d==="cj"?"输入中文,或点键盘上的 🎤 直接说话":"输入/粘贴日文"}" style="width:100%; padding:10px; border:1px solid var(--line); border-radius:10px; font-size:15px; background:var(--card); font-family:inherit;"></textarea></div>
+  <button class="btn indigo full" onclick="trDo()">翻译</button>
+  <div id="tr_out" style="margin-top:10px;"></div>
+  <div class="muted" style="margin:14px 0 6px;">常用句(点击大字显示并朗读)</div>
+  <div style="display:flex; flex-wrap:wrap; gap:6px;">${TR_PHRASES.map((p,i)=>`<button class="chip" onclick="trPhrase(${i})">${p[0]}</button>`).join("")}</div>
+  <button class="btn ghost full" style="margin-top:14px;" onclick="document.getElementById('trPhoto').click()">📷 拍菜单 / 成分标签翻译</button>
+  <div id="tr_photo_out" style="margin-top:8px;"></div>`);
+}
+function trShowJP(jp,cn){
+  $("#tr_out").innerHTML=`<div style="background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px;">
+    <div style="font-family:var(--disp); font-size:22px; line-height:1.5;">${esc(jp)}</div>
+    ${cn?`<div class="muted" style="margin-top:4px;">${esc(cn)}</div>`:""}
+    <div class="btns" style="margin-top:10px;">
+      <button class="btn indigo" onclick="speakJP('${q(jp)}')">🔊 朗读</button>
+      <button class="btn ghost" onclick="navigator.clipboard&&navigator.clipboard.writeText('${q(jp)}');toast('已复制')">复制</button>
+    </div></div>`;
+}
+function trPhrase(i){ const [cn,jp]=TR_PHRASES[i]; trShowJP(jp,cn); speakJP(jp); }
+async function trDo(){
+  const key=localStorage.getItem("jt_apikey");
+  if(!key){ toast("请先在设置里填入 Claude API key"); return; }
+  const txt=$("#tr_in").value.trim(); if(!txt){ toast("先输入内容"); return; }
+  const d=window._trDir||"cj";
+  $("#tr_out").innerHTML=`<div class="muted">翻译中…</div>`;
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{ method:"POST",
+      headers:{ "Content-Type":"application/json", "x-api-key":key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" },
+      body:JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:400,
+        messages:[{ role:"user", content: (d==="cj"
+          ?"把下面的中文翻译成自然、礼貌的日语口语(です・ます体),适合旅行者当面使用。只返回日语译文:\n"
+          :"把下面的日文翻译成简体中文,只返回译文:\n")+txt }] }) });
+    const j=await r.json();
+    const out=(j.content&&j.content[0]&&j.content[0].text||"").trim();
+    if(!out){ $("#tr_out").innerHTML=`<div class="muted">翻译失败,稍后再试</div>`; return; }
+    if(d==="cj"){ trShowJP(out,""); speakJP(out); }
+    else $("#tr_out").innerHTML=`<div style="background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; font-size:15px; line-height:1.7;">${esc(out)}</div>`;
+  }catch(e){ $("#tr_out").innerHTML=`<div class="muted">网络错误:${esc(String(e))}</div>`; }
+}
+
 /* ---- receipt OCR ---- */
 $("#receiptInput").addEventListener("change", async ev=>{
   const f=ev.target.files[0]; ev.target.value="";
@@ -980,6 +1040,26 @@ function addNotePhoto(id){
   window._notePid=id; $("#noteInput").click();
 }
 function pickCardPhoto(path){ window._cardPath=path; $("#cardPhotoInput").click(); }
+$("#trPhoto").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value="";
+  if(!f) return;
+  const key=localStorage.getItem("jt_apikey");
+  if(!key){ toast("请先在设置里填入 Claude API key"); return; }
+  $("#tr_photo_out").innerHTML=`<div class="muted">识别翻译中…</div>`;
+  try{
+    const b64=await compressImage(f,1100,0.72);
+    const r=await fetch("https://api.anthropic.com/v1/messages",{ method:"POST",
+      headers:{ "Content-Type":"application/json", "x-api-key":key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" },
+      body:JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:900,
+        messages:[{ role:"user", content:[
+          { type:"image", source:{ type:"base64", media_type:"image/jpeg", data:b64.split(",")[1] } },
+          { type:"text", text:"这是在日本拍的菜单/商品标签/说明。请用简体中文:1)翻译主要内容;2)如是食品,标出关键原料与常见过敏原;3)一句点单或购买建议。简洁分点。" } ] }] }) });
+    const j=await r.json();
+    const out=(j.content&&j.content[0]&&j.content[0].text||"").trim();
+    $("#tr_photo_out").innerHTML=out?`<div style="background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; font-size:14px; line-height:1.7; white-space:pre-line;">${esc(out)}</div>`:`<div class="muted">识别失败</div>`;
+  }catch(e){ $("#tr_photo_out").innerHTML=`<div class="muted">网络错误</div>`; }
+});
+
 $("#cardPhotoInput").addEventListener("change", async ev=>{
   const f=ev.target.files[0]; ev.target.value="";
   if(!f||!window._cardPath) return;
