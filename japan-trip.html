@@ -244,7 +244,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
 <script>
 /* ================= CONFIG ================= */
-const BUILD = "2026-07-10 · b6";
+const BUILD = "2026-07-11 · b7";
 const FB_URL = "https://lotus-inventory-default-rtdb.firebaseio.com";
 const NODE = "trip-japan-2026";
 const DEFAULT_RATE = 0.0093;
@@ -284,7 +284,7 @@ function goLocal(msg){
 /* ================= SEED (真实行程 v2 · 2026-07-06 更新) ================= */
 const SEED = {
   trip: { title:"日本行 2026", start:"2026-07-06", end:"2026-07-23", city:"Osaka",
-          lat:34.6937, lng:135.5023, seedVersion:13,
+          lat:34.6937, lng:135.5023, seedVersion:14,
           traveler:"Ya Qian (Stacy) Liang",
           purpose:"烘焙专业研修课程(K&H 日本大师烘焙团 7/11–7/18,大阪/京都/神户六家名店进店研修)、供应商拜访(宇治 三星園上林三入)及烘焙市场考察、器具采购" },
   hotels: {
@@ -342,7 +342,15 @@ const SEED = {
     e31:{ date:"2026-07-19", time:"20:00", type:"food", title:"PANEVIA(意式 · 驹场)", note:"已订2名 · 確認 WMTEFS", reserved:true, jpAddress:"東京都目黒区駒場1-16-9 片桐ビル", lat:35.65559, lng:139.68831 },
     e32:{ date:"2026-07-22", time:"18:30", type:"food", title:"Sushi Masa(店铺待确认)", note:"已订 18:30 · 东京同名3家:西麻布すし匠まさ/恵比寿/銀座 · 把确认单发给Claude锁定地址", reserved:true, jpAddress:"" },
     e34:{ date:"2026-07-10", time:"14:00", type:"activity", title:"es koyama 甜点村(小山进)⭐", jpAddress:"兵庫県三田市ゆりのき台5-32-1", lat:34.91779, lng:135.18292,
-          note:"三田站南口打车约15分 · 今日营业至17:00 · 小山ロール先排队再逛 · 重点:常温烧菓子区+Rozilla巧克力馆(夏天巧克力慎买) · 15:10左右打车直达有马温泉(约25-30分,不用回三田站) · 華野 078-904-0744" }
+          note:"三田站南口打车约15分 · 今日营业至17:00 · 小山ロール先排队再逛 · 重点:常温烧菓子区+Rozilla巧克力馆(夏天巧克力慎买) · 15:10左右打车直达有马温泉(约25-30分,不用回三田站) · 華野 078-904-0744" },
+    e35:{ date:"2026-07-11", time:"10:30", type:"activity", title:"L'AVENUE 神户(开门冲 Mode)", jpAddress:"兵庫県神戸市中央区山本通3-7-3 ユートピア・トーア1F", lat:34.69593, lng:135.18687,
+          note:"10:30开门即到,招牌 Mode 售罄极快 · +布朗尼(隐藏宝藏) · 店内无座,对面1分钟有自家巧克力店可歇脚" },
+    e36:{ date:"2026-07-11", time:"12:00", type:"activity", title:"芦屋双店:PLEIN + POCHE DU REVE", jpAddress:"兵庫県芦屋市茶屋之町3-3 1F(PLEIN)", lat:34.73142, lng:135.30724,
+          note:"三宮→JR/阪神芦屋约15分 · 先攻PLEIN(一次只进两组,下午售罄;无花果塔/刺猬曲奇,2F有4个内用位) · 再步行8分到POCHE DU REVE(芦屋金光町9-7,今天周六有鲜食蛋糕;和三盆圈圈莎布蕾伴手礼) · 顺便芦屋午餐" },
+    e37:{ date:"2026-07-11", time:"15:00", type:"activity", title:"Pâtisserie Rechercher(村田Chef)", jpAddress:"大阪府大阪市西区南堀江3-9-28", lat:34.67206, lng:135.48907,
+          note:"先回梅田IC放行李 · 西梅田→四つ橋線+步行8分 · 达克瓦兹/布列塔尼/巴斯克芝士 · 开到19:00 · 明天课程就在这家,先用嘴预习" },
+    e38:{ date:"2026-07-11", time:"16:30", type:"activity", title:"grenier 梅田(收尾)", jpAddress:"大阪府大阪市北区角田町8 阪急グランドビル1F", lat:34.70354, lng:135.49919,
+          note:"布蕾千层+椰子莎布蕾 · 开到20:00最机动 · 买完就在酒店旁 · 17:00-17:15出发去京都(JR新快速30分+打车15分)赶18:30 Torisaki Jikou" }
   },
   places: {
     p1:{ name:"三星園上林三入 本店", nameJP:"三星園上林三入本店", category:"采购", status:"planned",
