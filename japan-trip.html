@@ -244,7 +244,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
 <script>
 /* ================= CONFIG ================= */
-const BUILD = "2026-07-11 · b7";
+const BUILD = "2026-07-11 · b8";
 const FB_URL = "https://lotus-inventory-default-rtdb.firebaseio.com";
 const NODE = "trip-japan-2026";
 const DEFAULT_RATE = 0.0093;
@@ -284,7 +284,7 @@ function goLocal(msg){
 /* ================= SEED (真实行程 v2 · 2026-07-06 更新) ================= */
 const SEED = {
   trip: { title:"日本行 2026", start:"2026-07-06", end:"2026-07-23", city:"Osaka",
-          lat:34.6937, lng:135.5023, seedVersion:14,
+          lat:34.6937, lng:135.5023, seedVersion:15,
           traveler:"Ya Qian (Stacy) Liang",
           purpose:"烘焙专业研修课程(K&H 日本大师烘焙团 7/11–7/18,大阪/京都/神户六家名店进店研修)、供应商拜访(宇治 三星園上林三入)及烘焙市场考察、器具采购" },
   hotels: {
@@ -321,7 +321,7 @@ const SEED = {
     e10:{ date:"2026-07-11", time:"", type:"transport", title:"有马 → 大阪", note:"华野 11:00 前退房" },
     e11:{ date:"2026-07-11", time:"15:00", type:"hotel", title:"入住 InterContinental Osaka", note:"Amex FHR · 9087199113475 · 住到 7/17", jpAddress:"大阪府大阪市北区大深町3-60" },
     e12:{ date:"2026-07-11", time:"", type:"work", biz:"business", title:"课程 Day 1 · 大阪酒店集合", note:"K&H 日本大师烘焙团 · 集合时间/地点待确认", jpAddress:"" },
-    e13:{ date:"2026-07-11", time:"18:30", type:"food", title:"Torisaki Jikou 鳥先じこう(京都)", note:"已订2名 · MWB8AGR5 · ¥15,000/人+10%服务费 · 注意:店在京都壬生,大阪往返各约1小时", reserved:true, jpAddress:"京都府京都市中京区壬生番場町29-1" },
+    e13:{ date:"2026-07-11", time:"18:30", type:"food", title:"Torisaki Jikou 鳥先じこう(京都)", note:"⚠️ 与今晚19:30神户Kanesaka冲突!若已取消此订位,点编辑删除或告诉Claude · 已订2名 · MWB8AGR5 · ¥15,000/人+10%服务费 · 注意:店在京都壬生,大阪往返各约1小时", reserved:true, jpAddress:"京都府京都市中京区壬生番場町29-1" },
     e14:{ date:"2026-07-12", time:"", type:"work", biz:"business", title:"课程 Day 2 · ACIDRACINES(橋本太)", note:"巧克力慕斯/抹茶慕斯/血橙慕斯/蒂格雷/巧克力酥条等 · 上课时间待补", jpAddress:"大阪府大阪市中央区内平野町1-4-6" },
     e15:{ date:"2026-07-13", time:"", type:"work", biz:"business", title:"课程 Day 3 · Pâtisserie Rechercher(村田義武)", note:"上课时间待补", jpAddress:"大阪府大阪市西区南堀江3-9-28" },
     e16:{ date:"2026-07-13", time:"19:00", type:"food", title:"天ぷら 川原崎", note:"已订2名 · I-LNOFVSAI · Omakase套餐 · 吧台", reserved:true, jpAddress:"大阪府大阪市北区西天満3-1-5 英和ビル1F" },
@@ -350,7 +350,9 @@ const SEED = {
     e37:{ date:"2026-07-11", time:"15:00", type:"activity", title:"Pâtisserie Rechercher(村田Chef)", jpAddress:"大阪府大阪市西区南堀江3-9-28", lat:34.67206, lng:135.48907,
           note:"先回梅田IC放行李 · 西梅田→四つ橋線+步行8分 · 达克瓦兹/布列塔尼/巴斯克芝士 · 开到19:00 · 明天课程就在这家,先用嘴预习" },
     e38:{ date:"2026-07-11", time:"16:30", type:"activity", title:"grenier 梅田(收尾)", jpAddress:"大阪府大阪市北区角田町8 阪急グランドビル1F", lat:34.70354, lng:135.49919,
-          note:"布蕾千层+椰子莎布蕾 · 开到20:00最机动 · 买完就在酒店旁 · 17:00-17:15出发去京都(JR新快速30分+打车15分)赶18:30 Torisaki Jikou" }
+          note:"布蕾千层+椰子莎布蕾 · 开到20:00最机动 · 晚餐改在神户:18:40前梅田→JR三ノ宮约20分+步行/短车到Oriental Hotel" },
+    e39:{ date:"2026-07-11", time:"19:30", type:"food", title:"SUSHI KANESAKA 神户(鮨かねさか)", reserved:true, jpAddress:"兵庫県神戸市中央区京町25 オリエンタルホテル17F", lat:34.68766, lng:135.19279,
+          note:"已订今晚19:30 · 银座かねさか一门 · Oriental Hotel 17楼西侧 · 电话 080-3523-2098" }
   },
   places: {
     p1:{ name:"三星園上林三入 本店", nameJP:"三星園上林三入本店", category:"采购", status:"planned",
