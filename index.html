@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="日韩行">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+<meta name="theme-color" content="#F6F4EF">
+<title>日韩行 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F4EF; --card:#FFFFFF; --ink:#1F2228; --sub:#6B6F78; --faint:#A3A6AD;
+  --line:#E6E3DB; --line2:#D6D2C6; --soft:#EFEDE7;
+  --indigo:#2E4A6B; --indigo-bg:#E9EFF6; --indigo-dk:#1E3450;
+  --blue:#2F6FD6; --blue-bg:#E6EFFC;
+  --teal:#2F6B57; --teal-bg:#E3F0E8; --teal-dk:#1E4A3C;
+  --purple:#5A4B8A; --purple-bg:#ECE8F6;
+  --persim:#B65C38; --persim-bg:#F8EAE2; --persim-dk:#8A4225;
+  --amber:#B8860B; --amber-bg:#F6EDD6; --amber-dk:#6B4E0E;
+  --danger:#C0392B; --danger-bg:#FBE7E4;
+  --disp:'Shippori Mincho',serif;
+  --body:'Zen Kaku Gothic New',-apple-system,'Hiragino Sans','PingFang SC',sans-serif;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0; padding:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.55;}
+#app{max-width:520px; margin:0 auto; min-height:100vh; padding-bottom:calc(84px + env(safe-area-inset-bottom));}
+.hidden{display:none !important;}
+svg.i{width:1em; height:1em; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; vertical-align:-0.14em; flex:0 0 auto;}
+button{font-family:var(--body);}
+
+header.top{display:flex; align-items:center; justify-content:space-between; padding:12px 16px 6px;}
+header.top .brand{font-family:var(--disp); font-size:16px; font-weight:600; letter-spacing:.06em; display:flex; align-items:center; gap:8px;}
+.seal{width:24px; height:24px; background:#B03A2E; color:#FBF6EF; border-radius:5px; display:inline-flex; align-items:center; justify-content:center; font-family:var(--disp); font-size:13px; font-weight:600; transform:rotate(-4deg);}
+.conn{display:inline-flex; align-items:center; gap:5px; font-size:11px; color:var(--sub); padding:3px 9px; border-radius:999px; background:var(--soft);}
+.conn .cdot{width:7px; height:7px; border-radius:50%; background:#C9A227;}
+.conn.on .cdot{background:#2F8A5B;}
+.conn.warn{background:var(--amber-bg); color:var(--amber-dk);}
+.conn.off{background:var(--danger-bg); color:var(--danger);} .conn.off .cdot{background:var(--danger);}
+header.top .gear{background:none; border:none; color:var(--sub); font-size:20px; padding:6px; cursor:pointer;}
+.page{padding:4px 16px 24px;}
+
+/* chips */
+.chip{display:inline-flex; align-items:center; gap:4px; font-size:12px; padding:3px 10px; border-radius:999px; background:var(--soft); color:var(--ink); white-space:nowrap; font-weight:500; line-height:1.5;}
+.chip.blue{background:var(--blue-bg); color:var(--blue);} .chip.green{background:var(--teal-bg); color:var(--teal-dk);}
+.chip.amber{background:var(--amber-bg); color:var(--amber-dk);} .chip.red{background:var(--danger-bg); color:var(--danger);}
+.chip.persim{background:var(--persim-bg); color:var(--persim-dk);} .chip.lg{font-size:13px; padding:5px 13px;}
+
+/* today */
+.td-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin:8px 2px 14px;}
+.eyebrow{font-size:12.5px; color:var(--sub);}
+.bigdate{font-size:27px; font-weight:700; line-height:1.3; margin-top:2px;}
+.route{font-size:13.5px; color:var(--sub); margin-top:2px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+.panel{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:16px; margin-bottom:14px;}
+.ph{display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:13.5px; color:var(--sub); margin-bottom:8px;}
+.p-title{font-size:21px; font-weight:700; line-height:1.35;}
+.p-sub{font-size:14px; color:var(--sub); margin-top:4px;}
+.p-meta{font-size:13px; color:var(--sub); margin-top:3px;}
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;}
+.cols .cl{font-size:12.5px; color:var(--sub);} .cols .cv{font-size:21px; font-weight:700; margin-top:4px; font-variant-numeric:tabular-nums;} .cols .cp{font-size:13px; color:var(--sub); margin-top:4px;}
+.countdown{margin-top:12px; font-size:13.5px; font-weight:500; color:var(--indigo); display:flex; gap:6px; align-items:center; flex-wrap:wrap;}
+.countdown.soon{color:var(--persim-dk);}
+.pre-leg{margin-top:8px; font-size:13.5px; color:var(--sub); line-height:1.6;}
+.hr{height:1px; background:var(--line); margin:14px 0;}
+.night{display:flex; align-items:center; gap:10px; font-size:15px; cursor:pointer;}
+.night .i{font-size:20px; color:var(--sub);}
+.night small{display:block; font-size:12.5px; color:var(--sub);}
+.qa{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+.qa button{background:var(--card); border:1px solid var(--line2); border-radius:12px; padding:12px 6px 10px; font-size:13.5px; font-weight:500; color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;}
+.qa button .i{font-size:19px;}
+.sec-h{display:flex; justify-content:space-between; align-items:center; gap:8px; margin:18px 2px 8px;}
+.sec-h h2{font-size:18px; font-weight:700; margin:0;}
+.sec-h .lnk{font-size:13px; color:var(--indigo); cursor:pointer; background:none; border:none; padding:4px 0;}
+.rowlist{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:2px 14px; margin-bottom:14px;}
+.rowlist .row{display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid var(--line); cursor:pointer;}
+.rowlist .row:first-child{border-top:none;}
+.row .ri{font-size:21px; flex:0 0 auto; color:var(--faint);} .row .ri.red{color:var(--danger);} .row .ri.amber{color:var(--amber);} .row .ri.green{color:var(--teal);} .row .ri.blue{color:var(--blue);}
+.row .rm{flex:1; min-width:0;} .row .rt{font-size:15px; font-weight:500; line-height:1.4;} .row .rs{font-size:12.5px; color:var(--sub); margin-top:1px;}
+.row .rc{color:var(--faint); font-size:18px;}
+.row.done .rt{color:var(--faint); text-decoration:line-through;}
+.empty{color:var(--faint); text-align:center; padding:28px 0; font-size:14px;}
+.muted{color:var(--faint); font-size:12.5px;}
+
+/* day pills */
+.day-pills{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 10px; scrollbar-width:none;}
+.day-pills::-webkit-scrollbar{display:none;}
+.pill{position:relative; flex:0 0 auto; border:1px solid var(--line2); background:var(--card); color:var(--sub); border-radius:16px; padding:6px 12px; font-size:13px; cursor:pointer; text-align:center; line-height:1.25;}
+.pill b{display:block; font-size:13px; font-weight:500; color:inherit;}
+.pill small{font-size:10.5px; opacity:.8;}
+.pill.on{background:var(--ink); border-color:var(--ink); color:#fff;}
+.pill .pdot{position:absolute; top:4px; right:5px; width:6px; height:6px; border-radius:50%; background:var(--amber);}
+.pill .pdot.red{background:var(--danger);}
+.pill .tdot{display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--danger); margin-left:3px; vertical-align:2px;}
+.day-h{display:flex; justify-content:space-between; align-items:center; gap:8px; margin:6px 2px 4px;}
+.day-h .dt{font-size:15px; font-weight:700;}
+.day-h2{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--sub); margin:0 2px 12px; cursor:pointer;}
+
+/* timeline */
+.tl-row{display:grid; grid-template-columns:48px 1fr; gap:10px; margin-bottom:10px;}
+.tl-t{font-size:13px; color:var(--sub); font-variant-numeric:tabular-nums; padding-top:13px;}
+.tl-t small{display:block; font-size:11px; color:var(--faint);}
+.tl-row.past .ev, .tl-row.past .tr{opacity:.55;}
+.now-line{display:flex; align-items:center; gap:8px; margin:2px 0 10px 4px; color:var(--danger); font-size:11.5px; font-weight:700;}
+.now-line:after{content:""; flex:1; height:1.5px; background:var(--danger); opacity:.55;}
+.ev{background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; border-left-width:4px;}
+.ev.k-flight,.ev.k-train{border-left-color:var(--indigo);} .ev.k-hotel{border-left-color:var(--teal);} .ev.k-food{border-left-color:var(--persim);}
+.ev.k-work{border-left-color:var(--purple);} .ev.k-activity{border-left-color:var(--amber);}
+.ev-top{padding:12px 14px 2px; cursor:pointer;}
+.ev-title{font-size:16.5px; font-weight:700; line-height:1.35; display:flex; justify-content:space-between; gap:8px; align-items:flex-start;}
+.ev-sub{font-size:14px; color:var(--sub); margin-top:3px;}
+.ev-meta{font-size:12.5px; color:var(--sub); margin-top:3px;}
+.ev-route{display:flex; align-items:center; gap:10px; margin-top:8px; font-variant-numeric:tabular-nums;}
+.ev-route .st b{font-size:16px; font-weight:700;} .ev-route .st small{font-size:11.5px; color:var(--sub); display:block;}
+.ev-route .arrow{color:var(--faint);}
+.ev-acts{display:flex; border-top:1px solid var(--line); margin-top:10px;}
+.ev-acts button{flex:1; background:none; border:none; border-left:1px solid var(--line); padding:9px 4px 8px; font-size:12.5px; color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer;}
+.ev-acts button:first-child{border-left:none;}
+.ev-acts button .i{font-size:17px;}
+.ev-acts button.cta{color:var(--amber-dk); font-weight:700; background:var(--amber-bg);}
+.ev-more{display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line); padding:9px 14px; font-size:13px; color:var(--sub); cursor:pointer;}
+.ev-detail{padding:2px 14px 14px; font-size:13.5px; line-height:1.65;}
+.ev-detail .note{white-space:pre-line; margin-top:6px;}
+.kv{display:flex; gap:8px; margin-top:7px; align-items:flex-start;} .kv .k{flex:0 0 58px; color:var(--sub); font-size:12.5px; padding-top:1px;} .kv .v{flex:1; min-width:0; word-break:break-word;}
+.mini{background:var(--paper); border:1px solid var(--line2); border-radius:8px; padding:3px 9px; font-size:12px; color:var(--ink); cursor:pointer; margin:2px 4px 0 0; display:inline-flex; align-items:center; gap:4px;}
+.dbtns{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
+.pbtn{border:1px solid var(--line2); background:var(--paper); border-radius:9px; padding:7px 11px; font-size:12.5px; color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; gap:5px;}
+.pbtn.hot{border-color:var(--indigo); color:var(--indigo); font-weight:500;}
+.pbtn.warn{border-color:var(--amber); color:var(--amber-dk); background:var(--amber-bg); font-weight:500;}
+.tr{padding:8px 2px 2px 12px; border-left:2px dashed var(--line2);}
+.tr b{font-size:15px; font-weight:700;} .tr .sub{font-size:13px; color:var(--sub); margin-top:1px;}
+.tr .links{display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:6px;}
+.tr .lnk{display:inline-flex; align-items:center; gap:5px; font-size:13px; color:var(--ink); cursor:pointer;}
+.tr .lnk .i{color:var(--sub);}
+.buf{margin:-4px 0 10px 58px;}
+.buf span{display:inline-flex; align-items:center; gap:5px; font-size:12px; padding:3px 10px; border-radius:8px;}
+.buf .ok{color:var(--sub); background:var(--soft);} .buf .warn{color:var(--amber-dk); background:var(--amber-bg);} .buf .bad{color:#fff; background:var(--danger);}
+.arrm{padding:11px 12px; font-size:13.5px; color:var(--indigo-dk); background:var(--indigo-bg); border-radius:12px; cursor:pointer;}
+.stars{display:inline-flex; gap:1px;} .stars button{background:none; border:none; font-size:21px; color:var(--line2); padding:0 1px; cursor:pointer; line-height:1;} .stars button.on{color:#D9A520;}
+.docs-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px;}
+.docs-grid .doc{position:relative;} .docs-grid img{width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px; border:1px solid var(--line);}
+.docs-grid .doc .del{position:absolute; top:2px; right:2px; background:rgba(0,0,0,.55); color:#fff; border-radius:50%; width:24px; height:24px; padding:0; font-size:12px;}
+.thumbs{display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;} .thumbs img{width:56px; height:56px; object-fit:cover; border-radius:7px; border:1px solid var(--line); cursor:pointer;}
+.bigconf{font-size:30px; font-weight:700; letter-spacing:.04em; text-align:center; padding:16px 8px; background:var(--paper); border-radius:14px; margin:8px 0 12px; word-break:break-all;}
+
+/* map */
+.stop{display:flex; gap:12px; padding:12px 0; border-top:1px solid var(--line); align-items:flex-start;}
+.stop:first-child{border-top:none;}
+.stop .num{width:26px; height:26px; border-radius:50%; background:var(--ink); color:#fff; font-size:12.5px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:0 0 auto; margin-top:2px;}
+.stop .num.h{background:var(--teal);}
+.stop .sm{flex:1; min-width:0;} .stop .sn{font-size:15px; font-weight:500;} .stop .ss{font-size:12.5px; color:var(--sub); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.leg{margin:-2px 0 0 38px; padding:2px 0 10px;}
+.chips{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 12px; scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.fchip{flex:0 0 auto; border:1px solid var(--line2); background:var(--card); color:var(--sub); border-radius:16px; padding:5px 13px; font-size:13px; cursor:pointer;}
+.fchip.on{background:var(--ink); border-color:var(--ink); color:#fff;}
+.place{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:13px 15px; margin-bottom:10px;}
+.place .row1{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+.place .nm{font-size:15.5px; font-weight:500; line-height:1.35;}
+.place .cat{font-size:11.5px; color:var(--sub); margin-top:1px;}
+.place .dist{font-size:12.5px; color:var(--indigo); font-weight:500; white-space:nowrap;}
+.place .p-actions{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;}
+textarea.note{width:100%; border:1px solid var(--line2); border-radius:10px; padding:9px 11px; font-family:var(--body); font-size:14px; min-height:64px; background:#FDFCFA; color:var(--ink); resize:vertical;}
+
+/* money */
+.stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px;}
+.stat.wide{grid-column:1 / -1;}
+.stat .lb{font-size:12px; color:var(--sub); display:flex; align-items:center; gap:6px;}
+.stat .big{font-size:21px; font-weight:700; margin-top:2px; font-variant-numeric:tabular-nums;}
+.stat .sm{font-size:12px; color:var(--sub); margin-top:2px; line-height:1.5;}
+.dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
+.dot.b{background:var(--teal);} .dot.p{background:var(--persim);} .dot.a{background:var(--indigo);}
+.flow{display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin-top:10px; cursor:pointer;}
+.flow .fs{display:flex; gap:4px; margin-top:6px;} .flow .fs span{flex:1; height:5px; border-radius:3px; background:var(--soft);} .flow .fs span.ok{background:var(--teal);} .flow .fs span.todo{background:var(--amber);}
+.quick{display:flex; gap:8px; margin:12px 0 6px;}
+.quick input,.quick select{flex:1; min-width:0; border:1px solid var(--line2); border-radius:10px; padding:10px 10px; font-size:16px; font-family:var(--body); background:var(--card); color:var(--ink);}
+.btn{border:none; border-radius:10px; padding:10px 14px; font-size:14px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px;}
+.btn.b{background:var(--teal); color:#fff;} .btn.p{background:var(--persim); color:#fff;}
+.btn.ghost{background:var(--card); border:1px solid var(--line2); color:var(--ink);}
+.btn.full{width:100%; padding:12px;} .btn.indigo{background:var(--indigo); color:#fff;} .btn.dark{background:var(--ink); color:#fff;}
+.btn:disabled{opacity:.5;}
+.exp-item{display:flex; align-items:center; gap:10px; padding:10px 2px; border-bottom:1px solid var(--line);}
+.exp-item .thumb{width:40px; height:40px; border-radius:8px; object-fit:cover; border:1px solid var(--line); flex:0 0 auto;}
+.exp-item .thumb-ph{width:40px; height:40px; border-radius:8px; background:var(--card); border:1px dashed var(--line2); display:flex; align-items:center; justify-content:center; color:var(--faint); font-size:12px; flex:0 0 auto;}
+.exp-item .mid{flex:1; min-width:0; cursor:pointer;}
+.exp-item .m1{font-size:14px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.exp-item .m2{font-size:12px; color:var(--sub); display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-top:2px;}
+.exp-item .amt{text-align:right; font-variant-numeric:tabular-nums; cursor:pointer;}
+.exp-item .amt .y{font-weight:500; font-size:14.5px;} .exp-item .amt .c{font-size:11.5px; color:var(--sub);}
+.tag{font-size:10.5px; padding:1px 7px; border-radius:8px; font-weight:500; white-space:nowrap;}
+.tag.b{background:var(--teal-bg); color:var(--teal-dk);} .tag.p{background:var(--persim-bg); color:var(--persim-dk);}
+.tag.w{background:var(--amber-bg); color:var(--amber-dk);} .tag.r{background:var(--danger-bg); color:var(--danger);} .tag.g{background:var(--soft); color:var(--sub);}
+.rec-row{display:flex; gap:6px; margin:0 0 10px 50px;} .rec-row input{flex:1; min-width:0; border:1px solid var(--line2); border-radius:9px; padding:8px 10px; font-size:15px;}
+.cat-card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:6px 13px 4px; margin-top:12px;}
+.cat-card .hd{display:flex; justify-content:space-between; font-size:12px; color:var(--sub); padding:6px 0 2px;}
+.cat-row{display:flex; align-items:center; gap:9px; padding:7px 0; font-size:13.5px; cursor:pointer; border-top:1px solid var(--line);}
+.cat-row .cn{flex:0 0 92px; white-space:nowrap;} .cat-row .bar{flex:1; height:6px; background:var(--paper); border-radius:3px; overflow:hidden;} .cat-row .bar i{display:block; height:100%; border-radius:3px;}
+.cat-row .ca{flex:0 0 auto; min-width:84px; text-align:right; font-variant-numeric:tabular-nums;} .cat-row .ca small{display:block; font-size:10.5px; color:var(--faint);}
+.cat-row.on .cn{font-weight:700; color:var(--indigo);} .cat-row.dim{opacity:.42;}
+.grp-hd{display:flex; justify-content:space-between; align-items:baseline; margin:16px 2px 2px;} .grp-hd .gt{font-size:13.5px; font-weight:700;}
+.seg{display:flex; gap:8px;}
+.seg button{flex:1; border:1px solid var(--line2); background:var(--card); border-radius:10px; padding:9px; font-size:14px; color:var(--sub); cursor:pointer;}
+.seg button.on{background:var(--ink); border-color:var(--ink); color:#fff; font-weight:500;}
+.seg button.on.b{background:var(--teal); border-color:var(--teal);} .seg button.on.p{background:var(--persim); border-color:var(--persim);} .seg button.on.m{background:var(--indigo); border-color:var(--indigo);}
+.seg.mini button{padding:7px; font-size:13px;}
+.step{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin-bottom:12px;}
+.step .sh{display:flex; align-items:center; gap:10px; font-weight:700; font-size:15px;}
+.step .sn{width:24px; height:24px; border-radius:50%; background:var(--amber-bg); color:var(--amber-dk); font-size:13px; display:flex; align-items:center; justify-content:center;}
+.step .sn.ok{background:var(--teal); color:#fff;}
+.step .sd{font-size:12.5px; color:var(--sub); margin:2px 0 4px 34px;}
+
+/* tools */
+.tools{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.tool{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; text-align:left; cursor:pointer; color:var(--ink); position:relative;}
+.tool .i{font-size:22px; color:var(--indigo);} .tool b{display:block; font-size:15px; margin-top:8px;} .tool small{display:block; font-size:12px; color:var(--sub); margin-top:2px;}
+.tool .cnt{position:absolute; top:12px; right:12px;}
+.back{display:inline-flex; align-items:center; gap:4px; background:none; border:none; color:var(--indigo); font-size:14px; padding:6px 0; cursor:pointer;}
+.g-card{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:14px 16px 10px; margin-bottom:12px;}
+.g-card h3{font-size:15.5px; margin:0 0 9px; font-weight:700;}
+.g-card ul{margin:0; padding-left:18px;} .g-card li{font-size:13.5px; line-height:1.6; margin-bottom:7px;}
+.check{display:flex; gap:10px; padding:11px 0; border-top:1px solid var(--line); cursor:pointer;}
+.check:first-child{border-top:none;}
+.check .lv{width:9px; height:9px; border-radius:50%; margin-top:6px; flex:0 0 auto;}
+.lv.high{background:var(--danger);} .lv.mid{background:var(--amber);} .lv.low{background:var(--faint);}
+.check .ct{font-weight:500; font-size:14px;} .check .cd{font-size:12.5px; color:var(--sub);}
+.task-add{display:flex; gap:6px; margin-bottom:10px;}
+.task-add input{flex:1; min-width:0; border:1px solid var(--line2); border-radius:10px; padding:10px 12px; font-size:15px; background:var(--card);}
+.due{font-size:11px; padding:1px 7px; border-radius:8px; background:var(--soft); color:var(--sub); white-space:nowrap;}
+.due.over{background:var(--danger-bg); color:var(--danger);} .due.today{background:var(--amber-bg); color:var(--amber-dk);}
+.ck{width:22px; height:22px; border-radius:7px; border:1.5px solid var(--line2); flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; cursor:pointer;}
+.ck.on{background:var(--teal); border-color:var(--teal);}
+.star{background:none; border:none; font-size:18px; color:var(--line2); cursor:pointer; padding:2px;} .star.on{color:#D9A520;}
+
+/* tab bar */
+nav.tabs{position:fixed; bottom:0; left:0; right:0; max-width:520px; margin:0 auto; background:rgba(255,255,255,.96); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-top:1px solid var(--line); display:flex; padding-bottom:env(safe-area-inset-bottom); z-index:50;}
+nav.tabs button{flex:1; background:none; border:none; padding:9px 0 7px; font-size:11px; color:var(--faint); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px; position:relative;}
+nav.tabs button .i{font-size:21px;}
+nav.tabs button.on{color:var(--ink); font-weight:700;}
+nav.tabs .badge{position:absolute; top:5px; left:calc(50% + 6px); min-width:16px; height:16px; border-radius:8px; background:var(--danger); color:#fff; font-size:10px; line-height:16px; padding:0 4px; font-weight:700;}
+
+/* sheet */
+.overlay{position:fixed; inset:0; background:rgba(30,30,30,.45); z-index:100; display:flex; align-items:flex-end; justify-content:center;}
+.sheet{background:var(--card); width:100%; max-width:520px; border-radius:18px 18px 0 0; padding:18px 18px calc(22px + env(safe-area-inset-bottom)); max-height:90vh; overflow-y:auto;}
+.sheet h3{font-size:18px; margin:0 0 14px; font-weight:700;}
+.f{margin-bottom:12px;}
+.f label{display:block; font-size:12.5px; color:var(--sub); margin-bottom:4px;}
+.f input,.f select,.f textarea{width:100%; border:1px solid var(--line2); border-radius:10px; padding:10px 12px; font-size:15px; font-family:var(--body); background:#FDFCFA; color:var(--ink);}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none; border-color:var(--indigo);}
+.f-row{display:flex; gap:10px;} .f-row .f{flex:1; min-width:0;}
+.fs-h{font-size:12px; font-weight:700; color:var(--sub); letter-spacing:.06em; margin:16px 0 8px; padding-top:12px; border-top:1px solid var(--line);}
+details.more{margin:6px 0 10px;} details.more summary{font-size:13px; color:var(--indigo); cursor:pointer; padding:6px 0;}
+.sheet .btns{display:flex; gap:10px; margin-top:16px;} .sheet .btns .btn{flex:1; padding:12px;}
+.geo-row{display:flex; gap:8px; margin-bottom:8px;}
+.geo-row input{flex:1; min-width:0; border:1px solid var(--line2); border-radius:10px; padding:10px 12px; font-size:15px; background:#FDFCFA;}
+.geo-res{margin:0 0 10px; max-height:190px; overflow-y:auto;}
+.geo-item{padding:9px 11px; border:1px solid var(--line); border-radius:10px; margin-bottom:6px; font-size:13px; cursor:pointer; background:#FDFCFA;}
+.geo-item b{display:block; font-size:13.5px; font-weight:500;} .geo-item span{color:var(--sub); font-size:12px;}
+.geo-ok{font-size:12.5px; color:var(--teal); margin:-2px 0 8px;}
+.receipt-preview{width:100%; max-height:200px; object-fit:contain; border-radius:10px; border:1px solid var(--line); background:var(--paper);}
+.hint{background:var(--amber-bg); color:var(--amber-dk); border-radius:10px; padding:9px 12px; font-size:12.5px; margin:0 0 12px;}
+.hint.blue{background:var(--blue-bg); color:var(--indigo-dk);}
+
+/* taxi card */
+.taxi{position:fixed; inset:0; background:#FFFFFF; z-index:200; display:flex; flex-direction:column; padding:20px; align-items:center; justify-content:center; text-align:center;}
+.taxi .lbl{font-size:14px; color:var(--sub); letter-spacing:.2em; margin-bottom:6px;}
+.taxi .jp-name{font-family:var(--disp); font-size:clamp(24px,7vw,34px); font-weight:600; margin-bottom:18px; line-height:1.4;}
+.taxi .jp-addr{font-family:var(--disp); font-size:clamp(24px,7vw,36px); font-weight:600; line-height:1.6; word-break:break-all; max-width:92vw;}
+.taxi .stamp{margin-top:26px; width:58px; height:58px; border:2.5px solid var(--danger); border-radius:50%; color:var(--danger); display:flex; align-items:center; justify-content:center; font-family:var(--disp); font-size:15px; font-weight:600; transform:rotate(-8deg);}
+.taxi .taxi-btns{display:flex; gap:12px; margin-top:30px;}
+.taxi .taxi-btns .btn{padding:13px 26px; font-size:15px; border-radius:12px;}
+.toast{position:fixed; bottom:calc(96px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; font-size:13.5px; padding:10px 18px; border-radius:22px; z-index:300; max-width:86vw; text-align:center;}
+img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain; background:rgba(20,20,20,.94); z-index:250;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="brand"><span class="seal">旅</span><span id="brandTitle">差旅行程</span></div>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <span class="conn" id="connBadge"><span class="cdot"></span><span class="t">连接中</span></span>
+      <button class="gear" onclick="openSettings()" aria-label="设置">⚙︎</button>
+    </div>
+  </header>
+  <div id="view" class="page"><div class="empty">加载中…</div></div>
+</div>
+<nav class="tabs" id="tabbar"></nav>
+<div id="modalRoot"></div>
+<input type="file" id="receiptInput" accept="image/*" class="hidden">
+<input type="file" id="receiptAttach" accept="image/*" class="hidden">
+<input type="file" id="docInput" accept="image/*" class="hidden">
+<input type="file" id="noteInput" accept="image/*" class="hidden">
+<input type="file" id="trPhoto" accept="image/*" class="hidden">
+<input type="file" id="importImg" accept="image/*" multiple class="hidden">
+<input type="file" id="restoreInput" accept="application/json,.json" class="hidden">
+
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
+<script>
+/* ================= 每次出差 · 只改这一块 ================= */
+const BUILD = "jpkr-2026 · v3 · 2026-10-21";
+const SHELL = false;                     // 空壳版(无数据版)设为 true:不会把空数据写回云端
+const FB_URL = "https://trip-7e9d5-default-rtdb.asia-southeast1.firebasedatabase.app";  // 差旅专用 Firebase 项目「Trip」(与 lotus inventory 分开)
+const NODE = "trip-jpkr-2026";      // ← 这趟的 Firebase 节点名,如 trip-jpkr-2026
+const TZ = "Asia/Tokyo";                 // ← 行程主时区(事件没写 tz 时用这个)
+const MODEL = "claude-sonnet-5-5";       // 收据识别 / 翻译 / 导入预订 / 体检 用的 Claude 模型
+const CURRENCIES = {
+  JPY: { symbol:"¥",   locale:"ja-JP", label:"日元", dec:0 },
+  KRW: { symbol:"₩",   locale:"ko-KR", label:"韩元", dec:0 },
+  CAD: { symbol:"C$",  locale:"en-CA", label:"加币", dec:2 },
+  USD: { symbol:"US$", locale:"en-US", label:"美元", dec:2 }
+};
+const DEFAULT_RATES = { JPY:0.0093, KRW:0.00095, CAD:1, USD:1.38 };
+const TZ_LABEL = { "America/Vancouver":"温哥华", "Asia/Tokyo":"东京", "Asia/Seoul":"首尔" };
+const LANGS = {
+  ja: { label:"日语", speech:"ja-JP", cc:"81", taxiPhrase:"ここまでお願いします",
+        phrases:[["可以拍照吗?","写真を撮ってもいいですか?"],["有什么推荐?","おすすめは何ですか?"],["请给我一个这个","これを一つください"],
+                 ["打包带走","持ち帰りでお願いします"],["能刷卡吗?","クレジットカードは使えますか?"],["我有预约","予約しています"],
+                 ["这个能放几天?","これは何日持ちますか?"],["请帮我叫出租车","タクシーを呼んでいただけますか?"]] },
+  ko: { label:"韩语", speech:"ko-KR", cc:"82", taxiPhrase:"여기로 가 주세요",
+        phrases:[["可以拍照吗?","사진 찍어도 될까요?"],["有什么推荐?","추천해 주실 만한 거 있나요?"],["请给我一个这个","이거 하나 주세요"],
+                 ["打包带走","포장해 주세요"],["能刷卡吗?","카드 결제 되나요?"],["我有预约","예약했습니다"],
+                 ["这个能放几天?","이거 며칠 정도 보관할 수 있나요?"],["请帮我叫出租车","택시 좀 불러주시겠어요?"]] }
+};
+
+/* @@SEED-START */
+/* ================= SEED · 日韩行 2026(10/22–11/9)· v3 ================= */
+const SEED = {
+  trip: { title:"日韩行 2026", start:"2026-10-22", end:"2026-11-09",
+          city:"东京 · 花巻 · 秋田 · 角馆 · 青森 · 札幌 · 首尔", home:"温哥华", homeTz:"America/Vancouver",
+          lat:35.6912, lng:139.6920, seedVersion:3,
+          traveler:"Ya Qian Liang (Stacy)", purpose:"",
+          bizStart:"2026-10-22", bizEnd:"2026-10-29",
+          currencies:["JPY","KRW","CAD","USD"], langs:["ja","ko"], defaultCurrency:"JPY",
+          bookGroups:{ ekinet:"えきねっと订车票", seiryukan:"联系清流館:接驳车" } },
+
+  hotels: {
+    h1:{ name:"Hyatt Regency Tokyo", nameLocal:"ハイアット リージェンシー 東京", city:"东京", checkIn:"2026-10-23", checkOut:"2026-10-27", inTime:"14:00", outTime:"11:00",
+         phone:"03-3348-1234", localAddress:"東京都新宿区西新宿2-7-2", lat:35.6912, lng:139.6920, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"business" },
+    h2:{ name:"Park Hyatt Tokyo", nameLocal:"パーク ハイアット 東京", city:"东京", checkIn:"2026-10-27", checkOut:"2026-10-29", inTime:"15:00", outTime:"12:00",
+         phone:"03-5322-1234", localAddress:"東京都新宿区西新宿3-7-1-2", lat:35.6856, lng:139.6907, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"business" },
+    h3:{ name:"Hotel Toranomon Hills", nameLocal:"ホテル虎ノ門ヒルズ", city:"东京", checkIn:"2026-10-29", checkOut:"2026-10-30", inTime:"15:00", outTime:"12:00",
+         localAddress:"東京都港区虎ノ門2-6-4", lat:35.6668, lng:139.7484, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"business",
+         note:"出差最后一晚。退房账单日期是 10/30,但属于出差住宿 → 记公司(在这里点「记住宿费」会自动选公司)" },
+    h4:{ name:"山の神温泉 別墅 清流館", nameLocal:"山の神温泉 別墅 清流館", city:"花巻", checkIn:"2026-10-30", checkOut:"2026-10-31", inTime:"16:00", outTime:"11:00",
+         conf:"T8A9234FF1D80", phone:"0198-38-5526", cancelBy:"2026-10-26", room:"1F 和洋室 65㎡ · 半露天源泉风呂 · 美食升级方案", prepaid:"已预付 C$816.03",
+         localAddress:"岩手県花巻市下シ沢字中野66", lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
+         note:"大堂 18:00–21:30 免费葡萄酒\n接驳车预约:0198-29-4126(须提前 4 天)" },
+    h5:{ name:"ANA Crowne Plaza Akita", nameLocal:"ANAクラウンプラザホテル秋田", city:"秋田", checkIn:"2026-10-31", checkOut:"2026-11-01", inTime:"15:00", outTime:"11:00",
+         phone:"018-832-1111", room:"俱乐部房含早餐", prepaid:"Advance Saver · 不可退改",
+         localAddress:"秋田県秋田市中通2-6-1", lat:39.7176, lng:140.1226, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
+         note:"6F 酒廊:下午茶 15:00–17:00 · cocktail 17:30–19:30(秋田地酒)· 早餐 6:30–10:30" },
+    h6:{ name:"角館山荘 侘桜", nameLocal:"角館山荘 侘桜", city:"角馆", checkIn:"2026-11-01", checkOut:"2026-11-02", inTime:"15:00–19:00", outTime:"11:00",
+         conf:"No.000000009238", phone:"0187-47-3511", room:"和洋室",
+         localAddress:"秋田県仙北市西木町門屋字笹山2-8", lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
+         note:"套餐含武家屋敷通 ¥6,000 购物额度\n18:00 后到要先打电话" },
+    h7:{ name:"ReLabo Medical Spa & Stay", nameLocal:"ReLabo(リラボ)", city:"青森", checkIn:"2026-11-02", checkOut:"2026-11-03", inTime:"15:00", outTime:"11:00",
+         conf:"X-ETM3KMDEW50", phone:"017-762-0151", room:"茧房 20㎡", prepaid:"已预付 ¥34,580",
+         localAddress:"青森県青森市柳川1-1-5", lat:40.8286, lng:140.7343, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
+         note:"JR 青森站直通 · 天然温泉 + 津轻海峡景观休息室" },
+    h8:{ name:"Hyatt Centric Sapporo", nameLocal:"ハイアット セントリック 札幌", city:"札幌", checkIn:"2026-11-03", checkOut:"2026-11-06", inTime:"15:00", outTime:"11:00",
+         localAddress:"北海道札幌市中央区北1条西5丁目1-4", lat:43.0627, lng:141.3497, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal" },
+    h9:{ name:"Andaz Seoul Gangnam", nameLocal:"안다즈 서울 강남", city:"首尔", checkIn:"2026-11-06", checkOut:"2026-11-09", inTime:"15:00", outTime:"11:00",
+         localAddress:"서울특별시 강남구 논현로 854", lat:37.5250, lng:127.0290, lang:"ko", currency:"KRW", tz:"Asia/Seoul", biz:"personal" }
+  },
+
+  events: {
+    /* 10/22 出发 */
+    e00:{ kind:"transit", date:"2026-10-22", time:"09:30", tz:"America/Vancouver", mode:"taxi", durMin:20, durMax:40, title:"前往温哥华机场 YVR", toLabel:"机场",
+          sub:"建议时间 · 国际线提前 2 小时到", biz:"business", city:"温哥华" },
+    e01:{ kind:"flight", date:"2026-10-22", time:"12:35", tz:"America/Vancouver", endDate:"2026-10-23", endTime:"14:55", endTz:"Asia/Tokyo",
+          title:"AC3", carrier:"Air Canada", from:"YVR", to:"NRT", fromCity:"温哥华", toCity:"东京", intl:true,
+          fromPlace:"Vancouver International Airport (YVR)", toPlace:"成田国際空港 第1ターミナル",
+          conf:"B2KBRE", seat:"商务舱候补中", status:"booked", biz:"business",
+          note:"落地前打开 Visit Japan Web 的入境 + 海关二维码\nAir Canada 在成田 T1 南翼" },
+    /* 10/23 抵达东京 */
+    e02:{ kind:"transit", date:"2026-10-23", time:"16:10", tz:"Asia/Tokyo", mode:"train", durMin:80, durMax:100, title:"成田 → 新宿", toLabel:"Hyatt Regency",
+          sub:"N'EX 或利木津巴士", note:"N'EX 到新宿站约 80 分钟,再打车 5 分钟\n利木津巴士直达酒店门口(85–120 分钟,看路况)", biz:"business" },
+    e03:{ kind:"hotel", hotelId:"h1", date:"2026-10-23", time:"18:00", tz:"Asia/Tokyo", title:"入住 Hyatt Regency Tokyo", city:"东京", biz:"business", sub:"4 晚 · 10/27 11:00 退房" },
+    /* 10/24 Torisho */
+    e04:{ kind:"transit", date:"2026-10-24", time:"16:45", tz:"Asia/Tokyo", mode:"taxi", durMin:20, durMax:30, title:"前往南麻布", toLabel:"南麻布",
+          sub:"周六傍晚", note:"上车给司机看打车卡,说东侧入口", biz:"business" },
+    e05:{ kind:"food", date:"2026-10-24", time:"17:30", tz:"Asia/Tokyo", title:"Torisho Ishii Hina", nameLocal:"Torisho Ishii Hina", city:"东京",
+          sub:"Chef's Tasting · ¥15,000/位(含税)另收服务费", party:"2 位 · 吧台", conf:"QIITOE9G", phone:"03-6722-0034", status:"booked", biz:"business",
+          localAddress:"東京都港区南麻布1-27-7 B1F", moreLabel:"详细地址、停车与入店说明",
+          note:"入口在东侧(麻布十番站一侧),养老院「グランダ南麻布」正后方\n车停到 2 楼那层就打电话,店里会出来接" },
+    /* 10/26 黒牛 */
+    e06:{ kind:"transit", date:"2026-10-26", time:"17:50", tz:"Asia/Tokyo", mode:"taxi", durMin:10, durMax:15, title:"前往代々木", toLabel:"黒牛", biz:"business" },
+    e07:{ kind:"food", date:"2026-10-26", time:"18:30", endTime:"20:30", tz:"Asia/Tokyo", title:"焼肉 黒牛 KOKUGYU", nameLocal:"焼肉 黒牛", city:"东京",
+          sub:"料理長コース · ¥16,000/位(含税,酒水另计)", party:"2 位", conf:"#36058", cancelBy:"2026-10-25", status:"booked", biz:"business",
+          localAddress:"東京都渋谷区代々木3-1-11 パシフィックスクエア代々木ビルB1", note:"改期 / 取消须前一天打电话" },
+    /* 10/27、10/29 换酒店 */
+    e08:{ kind:"hotel", hotelId:"h2", date:"2026-10-27", time:"11:00", tz:"Asia/Tokyo", title:"Hyatt Regency 退房 → Park Hyatt Tokyo", city:"东京", biz:"business",
+          sub:"Park Hyatt 15:00 入住 · 2 晚", note:"两家都在西新宿,打车约 5 分钟;可先去 Park Hyatt 寄存行李" },
+    e09:{ kind:"hotel", hotelId:"h3", date:"2026-10-29", time:"12:00", tz:"Asia/Tokyo", title:"Park Hyatt 退房 → Hotel Toranomon Hills", city:"东京", biz:"business",
+          sub:"15:00 入住 · 出差最后一晚" },
+    /* 10/30 私人行程开始:东京 → 花巻 */
+    e10:{ kind:"transit", date:"2026-10-30", time:"10:40", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:25, title:"虎之门退房 → 东京站", toLabel:"东京站", biz:"personal",
+          note:"虎之门的退房账单日期是 10/30,但属于 10/29 出差住宿 → 记公司" },
+    e11:{ kind:"train", date:"2026-10-30", time:"11:36", endTime:"14:38", tz:"Asia/Tokyo", title:"やまびこ59号", carrier:"JR 东北新干线",
+          from:"東京", to:"新花巻", fromCity:"东京", toCity:"花巻", fromPlace:"東京駅", toPlace:"新花巻駅",
+          status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal",
+          note:"备选 やまびこ61号 12:36 → 15:38(只能赶 16:10 那班接驳车)" },
+    e12:{ kind:"transit", fixed:true, date:"2026-10-30", time:"15:10", tz:"Asia/Tokyo", mode:"shuttle", durMin:50, durMax:50, title:"清流館接驳车", toLabel:"清流館",
+          sub:"新花巻站西口巴士站 · 约 50 分钟 · ¥100/人", fromPlace:"新花巻駅 西口", phone:"0198-29-4126",
+          status:"todo", bookGroup:"seiryukan", bookBy:"2026-10-26", biz:"personal", lang:"ja",
+          note:"只有 15:10 / 16:10 / 17:10 三班,须提前 4 天预约\n接驳预约 0198-29-4126 · 旅馆总机 0198-38-5526" },
+    e13:{ kind:"hotel", hotelId:"h4", date:"2026-10-30", time:"16:00", tz:"Asia/Tokyo", title:"入住 山の神温泉 別墅 清流館", city:"花巻", biz:"personal" },
+    /* 10/31 花巻 → 秋田 */
+    e14:{ kind:"transit", fixed:true, date:"2026-10-31", time:"11:00", tz:"Asia/Tokyo", mode:"shuttle", durMin:50, durMax:50, title:"清流館接驳车 → 新花巻站", toLabel:"新花巻站",
+          sub:"退房后 · 发车时间待旅馆确认", fromPlace:"山の神温泉 別墅 清流館", phone:"0198-38-5526",
+          status:"todo", bookGroup:"seiryukan", bookBy:"2026-10-26", biz:"personal", lang:"ja", note:"和去程接驳一起打电话确认 · 车费退房时付" },
+    e15:{ kind:"train", date:"2026-10-31", time:"12:42", endTime:"12:58", tz:"Asia/Tokyo", title:"やまびこ", carrier:"JR 东北新干线",
+          from:"新花巻", to:"盛岡", fromCity:"花巻", toCity:"盛冈", fromPlace:"新花巻駅", toPlace:"盛岡駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal" },
+    e16:{ kind:"train", date:"2026-10-31", time:"13:35", endTime:"15:04", tz:"Asia/Tokyo", title:"こまち19号", carrier:"JR 秋田新干线",
+          from:"盛岡", to:"秋田", fromCity:"盛冈", toCity:"秋田", fromPlace:"盛岡駅", toPlace:"秋田駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal" },
+    e17:{ kind:"hotel", hotelId:"h5", date:"2026-10-31", time:"15:20", tz:"Asia/Tokyo", title:"入住 ANA Crowne Plaza Akita", city:"秋田", biz:"personal", sub:"秋田站步行约 10 分钟" },
+    e18:{ kind:"transit", date:"2026-10-31", time:"18:25", tz:"Asia/Tokyo", mode:"taxi", durMin:5, durMax:10, title:"前往 Sot l'y laisse", toLabel:"南通", note:"步行约 15 分钟也可以", biz:"personal" },
+    e19:{ kind:"food", date:"2026-10-31", time:"19:00", tz:"Asia/Tokyo", title:"比内地鶏串 Sot l'y laisse", nameLocal:"比内地鶏串 Sot l'y laisse", city:"秋田",
+          party:"2 位", conf:"9P4PRC", phone:"050-3145-1538", status:"booked", biz:"personal",
+          localAddress:"秋田県秋田市南通亀の町3-44 川原田ビル1F" },
+    /* 11/1 秋田 → 角馆 */
+    e20:{ kind:"train", date:"2026-11-01", time:"12:13", endTime:"12:56", tz:"Asia/Tokyo", title:"こまち20号", carrier:"JR 秋田新干线",
+          from:"秋田", to:"角館", fromCity:"秋田", toCity:"角馆", fromPlace:"秋田駅", toPlace:"角館駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal",
+          note:"ANA 11:00 退房,可在秋田站附近吃午饭\n备选 こまち24号 13:06 → 13:49" },
+    e21:{ kind:"activity", date:"2026-11-01", time:"13:00", tz:"Asia/Tokyo", title:"角馆武家屋敷通", nameLocal:"角館武家屋敷通り", city:"角馆",
+          localAddress:"秋田県仙北市角館町東勝楽丁", sub:"午饭 + 逛街 · 用侘桜的 ¥6,000 购物额度", biz:"personal" },
+    e22:{ kind:"transit", date:"2026-11-01", time:"15:00", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:25, title:"打车去侘桜", toLabel:"侘桜", biz:"personal" },
+    e23:{ kind:"hotel", hotelId:"h6", date:"2026-11-01", time:"15:30", tz:"Asia/Tokyo", title:"入住 角館山荘 侘桜", city:"角馆", biz:"personal" },
+    /* 11/2 角馆 → 青森 */
+    e24a:{ kind:"transit", date:"2026-11-02", time:"12:05", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:25, title:"侘桜退房 → 角館駅", toLabel:"角館駅", note:"可以问旅馆有没有送站", biz:"personal" },
+    e24:{ kind:"train", date:"2026-11-02", time:"12:56", endTime:"13:48", tz:"Asia/Tokyo", title:"こまち20号", carrier:"JR 秋田新干线",
+          from:"角館", to:"盛岡", fromCity:"角馆", toCity:"盛冈", fromPlace:"角館駅", toPlace:"盛岡駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal" },
+    e25:{ kind:"train", date:"2026-11-02", time:"14:15", endTime:"15:07", tz:"Asia/Tokyo", title:"はやぶさ21号", carrier:"JR 东北新干线",
+          from:"盛岡", to:"新青森", fromCity:"盛冈", toCity:"青森", fromPlace:"盛岡駅", toPlace:"新青森駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal",
+          note:"想早点到:こまち18号 11:57 + はやぶさ17号 13:05 → 13:57" },
+    e26:{ kind:"transit", date:"2026-11-02", time:"15:15", tz:"Asia/Tokyo", mode:"train", durMin:6, durMax:20, title:"新青森 → 青森", toLabel:"ReLabo",
+          sub:"奥羽本线一站 6 分钟(班次少)/ 打车约 15 分钟", biz:"personal" },
+    e27:{ kind:"hotel", hotelId:"h7", date:"2026-11-02", time:"15:40", tz:"Asia/Tokyo", title:"入住 ReLabo(青森)", city:"青森", biz:"personal" },
+    /* 11/3 青森 → 札幌(文化之日) */
+    e28:{ kind:"transit", date:"2026-11-03", time:"10:30", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:20, title:"ReLabo 退房 → 新青森站", toLabel:"新青森站",
+          note:"奥羽本线班次少,打车最稳", biz:"personal" },
+    e29:{ kind:"train", date:"2026-11-03", time:"11:18", endTime:"12:15", tz:"Asia/Tokyo", title:"はやぶさ5号", carrier:"JR 北海道新干线",
+          from:"新青森", to:"新函館北斗", fromCity:"青森", toCity:"函馆", fromPlace:"新青森駅", toPlace:"新函館北斗駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-21", biz:"personal",
+          note:"文化之日,最先订\n备选 はやぶさ11号 12:36 + 北斗13号 13:50 → 17:30" },
+    e30:{ kind:"train", date:"2026-11-03", time:"12:33", endTime:"16:03", tz:"Asia/Tokyo", title:"北斗11号", carrier:"JR 北海道特急",
+          from:"新函館北斗", to:"札幌", fromCity:"函馆", toCity:"札幌", fromPlace:"新函館北斗駅", toPlace:"札幌駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-21", biz:"personal",
+          note:"同站换乘 18 分钟,下车直接跟「在来線」指示走" },
+    e31:{ kind:"hotel", hotelId:"h8", date:"2026-11-03", time:"16:30", tz:"Asia/Tokyo", title:"入住 Hyatt Centric Sapporo", city:"札幌", biz:"personal", sub:"3 晚 · 札幌站步行约 10 分钟" },
+    e32:{ kind:"transit", date:"2026-11-03", time:"18:45", tz:"Asia/Tokyo", mode:"taxi", durMin:12, durMax:20, title:"前往円山", toLabel:"鮨 草平",
+          note:"或东西线到圆山公园站步行 5 分钟", biz:"personal" },
+    e33:{ kind:"food", date:"2026-11-03", time:"19:30", tz:"Asia/Tokyo", title:"鮨 草平 [円山]", nameLocal:"鮨 草平", city:"札幌",
+          sub:"Chef's Tasting · 第二部 19:30 全员同时开席", party:"2 位 · 吧台", conf:"OH5ER7GF", phone:"011-215-7757", cancelBy:"2026-10-24", status:"booked", biz:"personal",
+          localAddress:"北海道札幌市中央区南2条西28丁目1-10 エビスビル1F", note:"不能迟到\n取消:10 天前 20% · 5 天前 50% · 3 天前 100%" },
+    /* 11/6 札幌 → 首尔 */
+    e34:{ kind:"transit", date:"2026-11-06", time:"10:40", tz:"Asia/Tokyo", mode:"train", durMin:50, durMax:60, title:"退房 → 新千岁机场(国际线)", toLabel:"新千岁机场",
+          sub:"JR 快速エアポート 约 40 分钟 + 步行", biz:"personal" },
+    e35:{ kind:"flight", date:"2026-11-06", time:"14:15", tz:"Asia/Tokyo", endTime:"17:30", endTz:"Asia/Seoul",
+          title:"KE766", carrier:"Korean Air", from:"CTS", to:"ICN T2", fromCity:"札幌", toCity:"首尔", intl:true,
+          fromPlace:"新千歳空港 国際線ターミナル", toPlace:"인천국제공항 제2여객터미널", conf:"FI46VD", seat:"Prestige 07J · 托运 2 件",
+          status:"booked", biz:"personal", note:"入境韩国前确认 K-ETA" },
+    e36a:{ kind:"transit", date:"2026-11-06", time:"18:30", tz:"Asia/Seoul", mode:"bus", durMin:60, durMax:80, title:"仁川 T2 → 江南", toLabel:"Andaz",
+          sub:"机场大巴或出租车", lang:"ko", biz:"personal" },
+    e36:{ kind:"hotel", hotelId:"h9", date:"2026-11-06", time:"20:00", tz:"Asia/Seoul", title:"入住 Andaz Seoul Gangnam", city:"首尔", lang:"ko", biz:"personal", sub:"3 晚 · 11/9 11:00 退房" },
+    /* 11/7 VINHO */
+    e37:{ kind:"transit", date:"2026-11-07", time:"16:50", tz:"Asia/Seoul", mode:"taxi", durMin:10, durMax:15, title:"前往论岘洞", toLabel:"VINHO", lang:"ko", biz:"personal" },
+    e38:{ kind:"food", date:"2026-11-07", time:"17:30", tz:"Asia/Seoul", title:"VINHO 빈호", nameLocal:"빈호 VINHO", city:"首尔", lang:"ko",
+          sub:"米其林一星现代韩餐 · CatchTable 预约", party:"2 位", phone:"+82-10-9677-2302", status:"booked", biz:"personal",
+          localAddress:"서울특별시 강남구 학동로43길 38 논현웰스톤 162호" },
+    /* 11/9 回温哥华 */
+    e39:{ kind:"hotel", hotelId:"h9", date:"2026-11-09", time:"11:00", tz:"Asia/Seoul", title:"Andaz 退房", city:"首尔", lang:"ko", biz:"personal", sub:"可寄存行李到下午" },
+    e40:{ kind:"transit", date:"2026-11-09", time:"15:00", tz:"Asia/Seoul", mode:"bus", durMin:70, durMax:90, title:"前往仁川机场 T1", toLabel:"仁川 T1",
+          sub:"机场大巴或出租车", note:"⚠ 回程走 T1(来时是 T2)", lang:"ko", biz:"personal" },
+    e41:{ kind:"flight", date:"2026-11-09", time:"18:55", tz:"Asia/Seoul", endTime:"12:45", endTz:"America/Vancouver",
+          title:"AC64", carrier:"Air Canada", from:"ICN T1", to:"YVR", fromCity:"首尔", toCity:"温哥华", intl:true,
+          fromPlace:"인천국제공항 제1여객터미널", toPlace:"Vancouver International Airport (YVR)", conf:"B9F9JL", seat:"Premium Economy",
+          status:"booked", biz:"business", expType:"mixed", lang:"ko",
+          note:"按出差回程报销:公司承担 = 当时东京→温哥华同舱报价(比直接回程便宜约 C$2,000),保留报价截图\n同日 12:45 到温哥华" }
+  },
+
+  places: {},
+
+  tasks: {
+    t01:{ text:"填 Visit Japan Web(入境 + 海关)", note:"二维码截图存进 AC3 的「机票凭证」", due:"2026-10-22", prio:"high", phase:"pre", done:false, ts:1 },
+    t02:{ text:"确认护照是否需要韩国 K-ETA", note:"11/6 入境,需要的话至少提前 72 小时", due:"2026-10-22", prio:"high", phase:"pre", done:false, ts:2 },
+    t03:{ text:"检查护照、机票、信用卡、少量日元现金", due:"2026-10-22", prio:"high", phase:"pre", done:false, ts:3 },
+    t04:{ text:"下载一份备份", note:"工具 → 备份与恢复,存进「文件」App", due:"2026-10-22", prio:"mid", phase:"pre", done:false, ts:4 },
+    t05:{ text:"补录 AC3 / AC64 机票金额", note:"AC64 记「部分公司」,同时存东京→温哥华同舱报价截图", due:"2026-10-29", prio:"mid", done:false, ts:5 },
+    t06:{ text:"设置里填出差目的", note:"出差行程单、报销单要用", due:"2026-10-29", prio:"mid", done:false, ts:6 },
+    t07:{ text:"对信用卡账单,补齐「待对账」实付", due:"2026-11-20", prio:"mid", phase:"post", done:false, ts:7 },
+    t08:{ text:"花费 → 旅行结束结算 → 导出报销包", due:"2026-11-30", prio:"mid", phase:"post", done:false, ts:8 }
+  },
+
+  expenses: {
+    x01:{ date:"2026-10-30", merchant:"山の神温泉 別墅 清流館", category:"住宿", detail:"10/30 1 晚 · 预约号 T8A9234FF1D80 · 已预付",
+          type:"personal", pay:"card", currency:"CAD", amountLocal:816.03, rate:1, ts:1001 },
+    x02:{ date:"2026-11-02", merchant:"ReLabo(青森)", category:"住宿", detail:"11/2 1 晚 · 预约号 X-ETM3KMDEW50 · 已预付",
+          type:"personal", pay:"card", currency:"JPY", amountLocal:34580, ts:1002 },
+    x03:{ date:"2026-11-06", merchant:"大韩航空 KE766", category:"交通", detail:"札幌 CTS → 首尔 ICN · 票号 1802250552182 · 订单 FI46VD",
+          type:"personal", pay:"card", currency:"USD", amountLocal:508.10, ts:1003, eventId:"e35" }
+  },
+
+  guide: [
+    { t:"💼 公司 / 私人怎么分", items:[
+      "<b>10/22–10/29 是出差期</b>(东京),10/30 起是私人行程。但归属<b>不只看日期</b>:从行程卡片上「记一笔」,会跟着那一项的归属走。",
+      "Hotel Toranomon Hills 的退房账单日期是 10/30,但属于 10/29 出差住宿 → 记公司(在酒店详情里点「记住宿费」会自动选对)。",
+      "回程 AC64 记「部分公司」:公司承担 = 当时东京 → 温哥华同舱报价,其余私人。报价截图存进花费记录。",
+      "出差期的餐饮,写上商务目的和同席的人,结算时会检查。"
+    ]},
+    { t:"💳 三个金额", items:[
+      "<b>预估金额</b>:收据金额 × 当天汇率,记账时自动算。",
+      "<b>实际支付</b>:信用卡上真实扣的加币(含手续费)。看银行 App 推送填进去;当场不知道就先空着,「待对账」会提醒你。",
+      "<b>公司报销</b>:按规则确认后由公司承担的部分。结算时逐笔确认。",
+      "同一张收据拍两次、同一天同金额记两次,保存时会提示可能重复。"
+    ]},
+    { t:"🚄 交通要点", items:[
+      "新干线和北斗都在 えきねっと 订。<b>11/3 是文化之日,先订 はやぶさ5号 + 北斗11号</b>。订好后在清单里点「えきねっと订车票」→ 标记已订,行程会自动变成已订。",
+      "清流館接驳车只在 <b>15:10 / 16:10 / 17:10</b> 从新花巻站西口发车,约 50 分钟,须提前 4 天(10/26 前)预约。回程那班几点要一起问。",
+      "10/31:接驳车回到新花巻后坐 <b>やまびこ 12:42 → 盛冈 12:58</b>,换 <b>こまち19号 13:35 → 秋田 15:04</b>。",
+      "仁川机场:11/6 大韩航空到 <b>T2</b>,11/9 Air Canada 从 <b>T1</b> 走。"
+    ]},
+    { t:"🍽 预约餐厅提醒", items:[
+      "10/24 Torisho Ishii Hina:入口在东侧,车停到 2 楼那层就打 03-6722-0034。",
+      "10/26 黒牛:改期或取消须前一天打电话。",
+      "11/3 鮨 草平:全员同时开席,不能迟到;10 天内取消开始收费。",
+      "11/7 VINHO:CatchTable 预约,电话 +82-10-9677-2302。"
+    ]},
+    { t:"🛂 入境", items:[
+      "日本:出发前在 Visit Japan Web 填入境和海关申报,二维码截图存进 AC3 的机票凭证。",
+      "韩国:K-ETA 是否需要取决于你用的护照;需要的话至少在出发前 72 小时申请。"
+    ]}
+  ]
+};
+/* @@SEED-END */
+
+/* ================= SVG 图标 ================= */
+const IC = {
+  today:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  plan:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h4M7 17h7"/>',
+  map:'<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  money:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6 15h4"/>',
+  tools:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  plane:'<path d="M10.5 13.5 3 11l1.5-1.5 8 1L17 6a2 2 0 0 1 3 3l-4.5 4.5 1 8L15 23l-2.5-7.5L9 19v3l-1.5 1L6 19.5 2.5 18 3.5 16.5h3z"/>',
+  train:'<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l-2 2M15 21l2 2M8 17l-2 4M16 17l2 4"/><circle cx="9" cy="14" r=".6"/><circle cx="15" cy="14" r=".6"/>',
+  hotel:'<path d="M3 21V6M21 21v-7a3 3 0 0 0-3-3h-8v7M3 18h18M7 11.5a1.5 1.5 0 1 0 0-.01"/>',
+  bed:'<path d="M2 18V7M22 18v-5a3 3 0 0 0-3-3H10v8M2 15h20M6 12.5a1.5 1.5 0 1 0 0-.01"/>',
+  food:'<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 21V3c-2 0-3 3-3 7h3"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  nav:'<path d="M3 11 21 3l-8 18-2-8z"/>',
+  phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+  ticket:'<path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/>',
+  doc:'<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h7M9 17h7"/>',
+  trans:'<path d="M4 5h9M8.5 3v2M6 5c0 4 3 7 6 8M11 5c-1 4-4 7-7 8M13 21l4-10 4 10M14.5 17h5"/>',
+  taxi:'<path d="M5 17h14v-5l-2-5H7l-2 5z"/><path d="M5 12h14M9 4h6l1 3H8z"/><circle cx="8" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/>',
+  walk:'<circle cx="13" cy="4" r="1.6"/><path d="m10 21 2-6 3 3v3M8 11l3-4 3 1 2 4 2 1M12 7l-1 6"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  circle:'<circle cx="12" cy="12" r="9"/>',
+  alert:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17v.5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  chevR:'<path d="m9 6 6 6-6 6"/>',
+  chevD:'<path d="m6 9 6 6 6-6"/>',
+  back:'<path d="m15 6-6 6 6 6"/>',
+  cam:'<path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13.5" r="3.5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  list:'<path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/>',
+  shield:'<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  inbox:'<path d="M3 13 6 4h12l3 9v7H3z"/><path d="M3 13h5l1 3h6l1-3h5"/>',
+  book:'<path d="M4 4h6a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H4zM20 4h-6a3 3 0 0 0-3 3"/><path d="M20 4v15h-7"/>',
+  archive:'<rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v11h14V9M10 13h4"/>',
+  save:'<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+  star:'<path d="m12 3 2.8 5.8 6.2.9-4.5 4.4 1 6.3L12 17.5 6.5 20.4l1-6.3L3 9.7l6.2-.9z"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  sparkle:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  receipt:'<path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/>',
+  card:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19"/>',
+  sound:'<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>',
+  copy:'<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',
+  bus:'<rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16M8 21v-3M16 21v-3"/><circle cx="8" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/>',
+  wifi:'<path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0M12 19h.01"/>'
+};
+const ic = (n, cls) => `<svg class="i${cls?" "+cls:""}" viewBox="0 0 24 24">${IC[n]||IC.circle}</svg>`;
+
+/* ================= 基础工具 ================= */
+const $ = s => document.querySelector(s);
+const esc = t => (t==null?"":t).toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const q = t => esc((t==null?"":t).toString().replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/\n/g,"\\n"));
+const clone = v => v==null ? v : JSON.parse(JSON.stringify(v));
+function uid(){ return "k"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function toast(msg, ms=2400){ const t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(), ms); }
+function dl(blob,name){ const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
+function sheet(inner){ $("#modalRoot").innerHTML=`<div class="overlay" onclick="if(event.target===this)closeSheet()"><div class="sheet">${inner}</div></div>`; }
+function closeSheet(){ $("#modalRoot").innerHTML=""; }
+function viewPhoto(src){ const img=document.createElement("img"); img.className="rc-full"; img.src=src; img.onclick=()=>img.remove(); document.body.appendChild(img); }
+function strHash(s){ let h=0; for(let i=0;i<s.length;i+=Math.max(1,Math.floor(s.length/4000))) h=(h*31+s.charCodeAt(i))|0; return (h>>>0).toString(36)+"-"+s.length; }
+function compressImage(file, maxDim, quality){
+  return new Promise((res,rej)=>{ const img=new Image();
+    img.onload=()=>{ let {width:w,height:h}=img; if(Math.max(w,h)>maxDim){ const k=maxDim/Math.max(w,h); w=Math.round(w*k); h=Math.round(h*k); }
+      const c=document.createElement("canvas"); c.width=w; c.height=h; c.getContext("2d").drawImage(img,0,0,w,h); res(c.toDataURL("image/jpeg",quality)); };
+    img.onerror=rej; img.src=URL.createObjectURL(file); });
+}
+
+/* ================= 时间与时区 =================
+   每个事件都带自己的时区:tz(出发/开始)、endTz(到达/结束)。跨时区航班不会算错日期。
+   模拟某个时刻测试:网址加 ?now=2026-10-22T09:00&tz=America/Vancouver                      */
+function tzOffsetMin(tz, epoch){
+  const p=new Intl.DateTimeFormat("en-US",{timeZone:tz,hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}).formatToParts(new Date(epoch));
+  const g=t=>+p.find(x=>x.type===t).value;
+  return (Date.UTC(g("year"),g("month")-1,g("day"),g("hour")%24,g("minute"),g("second"))-Math.floor(epoch/1000)*1000)/60000;
+}
+function zEpoch(date,time,tz){
+  if(!date) return 0; tz=tz||TZ;
+  const [y,m,d]=date.split("-").map(Number); const [hh,mm]=(time||"00:00").split(":").map(Number);
+  const guess=Date.UTC(y,m-1,d,hh||0,mm||0); const off=tzOffsetMin(tz,guess); let ep=guess-off*60000;
+  const off2=tzOffsetMin(tz,ep); if(off2!==off) ep=guess-off2*60000; return ep;
+}
+function zParts(epoch,tz){
+  const s=new Intl.DateTimeFormat("sv-SE",{timeZone:tz||TZ,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date(epoch));
+  return { date:s.slice(0,10), time:s.slice(11,16) };
+}
+const URLP=new URLSearchParams(location.search);
+const SIM=(()=>{ const n=URLP.get("now"); if(!n) return null; const [d,t]=n.split("T"); return { ep:zEpoch(d,t||"09:00",URLP.get("tz")||TZ), at:Date.now() }; })();
+function NOW(){ return SIM ? SIM.ep+(Date.now()-SIM.at) : Date.now(); }
+function tzName(tz){ return TZ_LABEL[tz] || (tz||"").split("/").pop().replace(/_/g," "); }
+function dstr(d){ if(!d) return ""; const [y,m,dd]=d.split("-"); return `${+m}/${+dd}`; }
+function dlong(d){ const [y,m,dd]=d.split("-"); return `${+m}月${+dd}日`; }
+function weekday(d){ return ["日","一","二","三","四","五","六"][new Date(d+"T12:00:00Z").getUTCDay()]; }
+function addDays(d,n){ const x=new Date(d+"T12:00:00Z"); x.setUTCDate(x.getUTCDate()+n); return x.toISOString().slice(0,10); }
+function daysBetween(a,b){ return Math.round((new Date(b+"T12:00:00Z")-new Date(a+"T12:00:00Z"))/86400000); }
+function fmtDur(min){ min=Math.max(0,Math.round(min)); const d=Math.floor(min/1440), h=Math.floor(min%1440/60), m=min%60;
+  if(d) return `${d} 天 ${h} 小时`; if(h) return `${h} 小时 ${String(m).padStart(2,"0")} 分钟`; return `${m} 分钟`; }
+function hm(ep,tz){ return zParts(ep,tz).time; }
+function tripDays(){ if(!S||!S.trip) return []; const out=[]; let d=S.trip.start; while(d<=S.trip.end && out.length<120){ out.push(d); d=addDays(d,1); } return out; }
+function dayIndex(d){ return tripDays().indexOf(d); }
+
+/* ================= 状态 ================= */
+let EMPTY_MSG="", S=null, LOCAL=false, CONNECTED=false, FB_DENIED=false, SNAP_TS=0, FROM_CACHE=false;
+let OUTBOX=[];            // 待上传的本机修改 [{id,path,val,ts}]
+let tab=localStorage.getItem("jt_tab")||"today", selDay=null, toolView=null, openCard={}, liveRates={}, wx=null;
+let userPos=null, placeFilter="全部", openPlaceId=null, expFilter="all", expView="date", expCat="", settleStep=0, mapDay=null;
+
+/* ================= 本机缓存(IndexedDB) =================
+   - snap:最近一次完整数据(含本机未上传的修改)→ 没网也能打开、看机票
+   - outbox:还没确认写进云端的修改 → 刷新/关掉 App 也不会丢,有网后自动补传          */
+const IDB_NAME="tripcache-"+NODE;
+let _idb=null;
+function idb(){ if(_idb) return _idb; _idb=new Promise((res,rej)=>{ try{ const r=indexedDB.open(IDB_NAME,1);
+  r.onupgradeneeded=()=>r.result.createObjectStore("kv"); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }catch(e){ rej(e); } }); return _idb; }
+async function idbGet(k){ try{ const d=await idb(); return await new Promise((res,rej)=>{ const r=d.transaction("kv").objectStore("kv").get(k); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }catch(e){ return null; } }
+async function idbSet(k,v){ try{ const d=await idb(); await new Promise((res,rej)=>{ const t=d.transaction("kv","readwrite"); t.objectStore("kv").put(v,k); t.oncomplete=res; t.onerror=()=>rej(t.error); }); }catch(e){} }
+let _snapTimer=null;
+function persistSnap(){ clearTimeout(_snapTimer); _snapTimer=setTimeout(()=>{ if(S&&!LOCAL) idbSet("snap",{v:S,ts:SNAP_TS||Date.now()}); },250); }
+function persistOutbox(){ idbSet("outbox",OUTBOX); }
+
+function getPath(obj,path){ let cur=obj; for(const p of path.split("/")){ if(cur==null) return undefined; cur=cur[p]; } return cur; }
+function applyOp(op){ if(op.path==="") S=clone(op.val); else setPath(S,op.path,op.val); }
+function setPath(obj,path,val){
+  const ps=path.split("/"); let cur=obj;
+  for(let i=0;i<ps.length-1;i++){ if(cur[ps[i]]==null||typeof cur[ps[i]]!=="object") cur[ps[i]]={}; cur=cur[ps[i]]; }
+  const k=ps[ps.length-1];
+  if(val===null||val===undefined) { if(Array.isArray(cur)) cur[k]=null; else delete cur[k]; } else cur[k]=clone(val);
+}
+
+/* ================= Firebase ================= */
+let fb=null, db=null;
+try{ firebase.initializeApp({ databaseURL: FB_URL }); fb=firebase.database(); db=fb.ref(NODE); }catch(e){ db=null; }
+
+function setConn(){
+  const b=$("#connBadge"); if(!b) return;
+  const n=OUTBOX.length; let cls="conn", t;
+  if(LOCAL){ cls+=" off"; t="预览 · 不保存"; }
+  else if(FB_DENIED){ cls+=" off"; t="云端拒绝"+(n?` · ${n} 条待上传`:""); }
+  else if(CONNECTED){ if(n){ cls+=" warn"; t=`上传中 ${n}`; } else { cls+=" on"; t="云端同步"; } }
+  else { cls+=" warn"; const ts=SNAP_TS?new Date(SNAP_TS).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}):""; t=`离线${ts?" · 缓存 "+ts:""}${n?` · ${n} 条待上传`:""}`; }
+  b.className=cls; b.querySelector(".t").textContent=t;
+}
+function sendOp(op){
+  if(!db) return;
+  (op.path===""?db:db.child(op.path)).set(op.val===undefined?null:op.val).then(()=>{
+    OUTBOX=OUTBOX.filter(o=>o.id!==op.id); persistOutbox(); setConn();
+  }).catch(err=>{ FB_DENIED=true; setConn(); toast("云端写入被拒:"+(err&&err.code||err)+" · 修改已存本机",5000); });
+}
+/* 所有修改都走这里:先改本机、存缓存和待上传队列,再发云端 */
+function write(path,val){
+  if(LOCAL){ toast("预览模式:修改不会保存"); return false; }
+  if(!S) return false;
+  setPath(S,path,val);
+  const op={ id:uid(), path, val:val===undefined?null:clone(val), ts:Date.now() };
+  OUTBOX.push(op); persistOutbox(); persistSnap(); setConn(); render();
+  sendOp(op); return true;
+}
+function save(path,val){ return write(path,val); }
+function del(path){ return write(path,null); }
+function push(path,val){ const id=uid(); return write(path+"/"+id,val)?id:null; }
+function patch(path,obj){ for(const k in obj) write(path+"/"+k, obj[k]); }
+
+function adoptServer(v){
+  S=v; for(const op of OUTBOX) applyOp(op);   // 还没上传的修改叠在云端数据上,界面不会"回退"
+  SNAP_TS=Date.now(); FROM_CACHE=false; LOCAL=false;
+  if(S.trip&&S.trip.title) $("#brandTitle").textContent=S.trip.title;
+  persistSnap(); setConn(); render();
+}
+function migrate(v){
+  // 新版种子:保留用户的花费、清单勾选、本机新增条目、凭证、评分、手动改过的事件
+  const keepUser=(seedCol,userCol,fields)=>{ const out=clone(seedCol)||{}; const u=userCol||{};
+    for(const id in u){ if(id[0]==="k"||u[id].edited) out[id]=u[id]; else if(out[id]) fields.forEach(f=>{ if(u[id][f]!=null) out[id][f]=u[id][f]; }); }
+    return out; };
+  const keep=["docs","rating","review","photos","status","conf","done","doneTs"];
+  const m=clone(SEED);
+  m.events=keepUser(SEED.events,v.events,keep);
+  m.hotels=keepUser(SEED.hotels,v.hotels,keep);
+  m.tasks=keepUser(SEED.tasks,v.tasks,keep);
+  m.places={...clone(SEED.places||{}),...(v.places||{})};
+  m.expenses={...clone(SEED.expenses||{}),...(v.expenses||{})};
+  ["journal","log"].forEach(k=>{ if(v[k]) m[k]=v[k]; });
+  ["traveler","purpose","rateManual","bizStart","bizEnd"].forEach(k=>{ if(v.trip&&v.trip[k]) m.trip[k]=v.trip[k]; });
+  db.set(m).then(()=>toast("行程数据已更新到 v"+SEED.trip.seedVersion+" ✓"))
+    .catch(err=>{ FB_DENIED=true; setConn(); toast("云端写入失败:"+(err&&err.code||err)+" · 请检查 Firebase 规则",6000); });
+}
+function forceSync(){ if(SHELL){ toast("空壳版不能同步初始数据",4000); return; } if(!db||!CONNECTED){ toast("需要联网"); return; } db.once("value").then(s=>{ migrate(s.val()||{}); closeSheet(); }); }
+function resetAll(){ if(SHELL||!db){ toast("空壳版不能重置"); return; } db.set(null); OUTBOX=[]; persistOutbox(); toast("已重置"); closeSheet(); }
+
+async function boot(){
+  const [snap,ob]=await Promise.all([idbGet("snap"),idbGet("outbox")]);
+  OUTBOX=Array.isArray(ob)?ob:[];
+  if(snap&&snap.v&&!S){ S=snap.v; SNAP_TS=snap.ts||0; FROM_CACHE=true; for(const op of OUTBOX) applyOp(op);
+    if(S.trip&&S.trip.title) $("#brandTitle").textContent=S.trip.title; setConn(); render(); }
+  if(!db){ if(!S) goLocal(SHELL?"没有网络,本机也没有缓存。请先联网打开一次。":"Firebase 脚本未加载 · 本地预览"); return; }
+  for(const op of OUTBOX) sendOp(op);   // 上次没传完的修改,继续补传
+  fb.ref(".info/connected").on("value",s=>{ CONNECTED=!!s.val(); setConn(); });
+  db.on("value", snap=>{
+    const v=snap.val();
+    if(!v){ if(SHELL){ if(!S) goLocal("云端还没有这趟的数据 · 请先部署完整版"); return; } db.set(SEED); return; }
+    if(!SHELL && v.trip && (v.trip.seedVersion||0) < SEED.trip.seedVersion){ migrate(v); return; }
+    FB_DENIED=false; adoptServer(v);
+  }, err=>{ FB_DENIED=true; setConn(); if(!S) goLocal("云端拒绝访问(Firebase 规则未开放 "+NODE+")"); toast("Firebase:"+(err&&err.code||err),5000); });
+  setTimeout(()=>{ if(!S) goLocal(SHELL?"连不上云端,本机也没有缓存":"连不上云端 · 先用初始数据预览"); }, 6000);
+}
+function goLocal(msg){
+  if(S) return;
+  if(SHELL){ EMPTY_MSG=msg; LOCAL=true; setConn(); render(); return; }
+  LOCAL=true; S=clone(SEED); setConn(); render(); setTimeout(()=>toast(msg,3500),400);
+}
+
+/* ================= 备份与恢复 ================= */
+function fileStem(){ return ((S.trip&&S.trip.title)||"trip").replace(/[^A-Za-z0-9一-龥ぁ-んァ-ン]+/g,"-").replace(/^-+|-+$/g,"")||"trip"; }
+function backupDownload(){
+  if(!S){ toast("没有数据"); return; }
+  const d=zParts(NOW(),curTz()); const name=`${fileStem()}-备份-${d.date}-${d.time.replace(":","")}.json`;
+  dl(new Blob([JSON.stringify({app:"trip",node:NODE,build:BUILD,at:new Date().toISOString(),data:S})],{type:"application/json"}), name);
+  localStorage.setItem("jt_lastBackup", String(Date.now())); toast("已下载备份 · 建议存到「文件」App 或 iCloud");
+  render();
+}
+function backupRestore(){ $("#restoreInput").click(); }
+$("#restoreInput").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value=""; if(!f) return;
+  try{ const j=JSON.parse(await f.text()); const data=j.data||j;
+    if(!data.trip||!data.events){ toast("这不是行程备份文件"); return; }
+    if(!confirm(`用备份覆盖当前全部数据?\n备份时间:${j.at||"未知"}\n事件 ${Object.keys(data.events).length} 个 · 花费 ${Object.keys(data.expenses||{}).length} 笔`)) return;
+    if(!db||LOCAL){ S=data; render(); toast("预览模式:已在本页载入,不会上传"); return; }
+    S=clone(data);
+    const op={id:uid(),path:"",val:clone(data),ts:Date.now()}; OUTBOX=[op]; persistOutbox(); persistSnap();
+    db.set(data).then(()=>{ OUTBOX=[]; persistOutbox(); setConn(); toast("已从备份恢复 ✓"); }).catch(()=>toast("已存本机,有网后上传"));
+    render(); closeSheet();
+  }catch(e){ toast("读取失败:"+e.message); }
+});
+
+/* ================= 外部数据 ================= */
+function rate(cur){ cur=cur||defaultCur(); if(cur==="CAD") return 1;
+  const manual=S&&S.trip&&S.trip.rateManual&&S.trip.rateManual[cur]; return manual||liveRates[cur]||DEFAULT_RATES[cur]||0.01; }
+async function fetchRates(){
+  for(const cur of Object.keys(CURRENCIES).filter(c=>c!=="CAD")){
+    try{ const r=await fetch(`https://api.frankfurter.dev/v1/latest?base=${cur}&symbols=CAD`); const j=await r.json();
+      if(j&&j.rates&&j.rates.CAD){ liveRates[cur]=j.rates.CAD; localStorage.setItem("jt_rate_"+cur,j.rates.CAD); } else throw 0;
+    }catch(e){ const c=localStorage.getItem("jt_rate_"+cur); if(c) liveRates[cur]=parseFloat(c); }
+  }
+  render();
+}
+async function fetchWeather(){
+  try{ const h=S&&hotelOn(today()); const lat=(h&&h.lat)||(S&&S.trip.lat)||35.68, lng=(h&&h.lng)||(S&&S.trip.lng)||139.69;
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1`);
+    const j=await r.json(); wx={ now:Math.round(j.current.temperature_2m), code:j.current.weather_code, max:Math.round(j.daily.temperature_2m_max[0]), min:Math.round(j.daily.temperature_2m_min[0]), rain:j.daily.precipitation_probability_max[0] }; render();
+  }catch(e){}
+}
+function wxIcon(c){ if(c===0) return "☀"; if(c<=3) return "⛅"; if(c<=48) return "🌫"; if(c<=67||[80,81,82].includes(c)) return "🌧"; if(c<=77) return "🌨"; if(c>=95) return "⛈"; return "☁"; }
+async function askClaude(content, maxTokens, system){
+  const key=localStorage.getItem("jt_apikey"); if(!key) throw new Error("请先在设置里填入 Claude API key");
+  const body={ model:MODEL, max_tokens:maxTokens||600, messages:[{ role:"user", content }] }; if(system) body.system=system;
+  const r=await fetch("https://api.anthropic.com/v1/messages",{ method:"POST",
+    headers:{ "Content-Type":"application/json", "x-api-key":key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" }, body:JSON.stringify(body) });
+  const j=await r.json(); if(j&&j.error) throw new Error(j.error.message||j.error.type);
+  return (j.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("").trim();
+}
+function parseJSON(txt){ const m=txt.match(/[\[{][\s\S]*[\]}]/); if(!m) throw new Error("AI 没有返回结构化结果"); return JSON.parse(m[0]); }
+
+/* ================= 行程模型 ================= */
+const KIND = {
+  flight:  { label:"航班", icon:"plane", cls:"k-flight" },
+  train:   { label:"列车", icon:"train", cls:"k-train" },
+  transit: { label:"移动", icon:"taxi",  cls:"k-transit" },
+  hotel:   { label:"住宿", icon:"bed",   cls:"k-hotel" },
+  food:    { label:"餐饮", icon:"food",  cls:"k-food" },
+  activity:{ label:"游玩", icon:"pin",   cls:"k-activity" },
+  work:    { label:"工作", icon:"doc",   cls:"k-work" }
+};
+const MODE = { taxi:["打车","taxi","driving"], train:["电车","train","transit"], bus:["巴士","bus","transit"], shuttle:["接驳车","bus","driving"], walk:["步行","walk","walking"] };
+const STATUS = { booked:["已订","green"], todo:["待订","amber"], suggested:["建议","blue"], tbc:["待确认","amber"] };
+
+function evStart(e){ return zEpoch(e.date,e.time,e.tz||TZ); }
+function evEnd(e){
+  if(e.endTime) return zEpoch(e.endDate||e.date,e.endTime,e.endTz||e.tz||TZ);
+  if(e.kind==="transit") return evStart(e)+(+e.durMax||+e.durMin||0)*60000;
+  return evStart(e);
+}
+let _evCache=null;
+function evList(){
+  if(_evCache) return _evCache;
+  const out=Object.entries((S&&S.events)||{}).filter(([id,e])=>e&&e.date).map(([id,e])=>{ const x={...e,id}; x._s=evStart(x); x._e=evEnd(x); return x; })
+    .sort((a,b)=>a._s-b._s || (a.kind==="transit"?-1:0)-(b.kind==="transit"?-1:0));
+  _evCache=out; return out;
+}
+function invalidate(){ _evCache=null; _bufCache=null; }
+function evOn(date){ return evList().filter(e=>e.date===date); }
+function arrivalsOn(date){ return evList().filter(e=>(e.kind==="flight"||e.kind==="train")&&e.endDate&&e.endDate!==e.date&&e.endDate===date); }
+function isImportant(e){ return e.kind!=="transit" || !!e.fixed; }
+function ev(id){ const e=(S.events||{})[id]; if(!e) return null; const x={...e,id}; x._s=evStart(x); x._e=evEnd(x); return x; }
+
+function hotelsList(){ return Object.entries((S&&S.hotels)||{}).map(([id,h])=>({...h,id})).sort((a,b)=>(a.checkIn||"").localeCompare(b.checkIn||"")); }
+function hotelOn(date){ return hotelsList().find(h=>date>=h.checkIn && date<h.checkOut)||null; }
+function nextHotelAfter(date){ return hotelsList().find(h=>h.checkIn>date)||null; }
+function overnightFlight(date){ return evList().find(e=>e.kind==="flight"&&e.date===date&&e.endDate&&e.endDate>date)||null; }
+
+/* 当前所在时区:最近一个已开始事件的(到达)时区;行程开始前用家的时区 */
+function curTz(){
+  if(!S) return TZ; const now=NOW(); let tz=(S.trip&&S.trip.homeTz)||TZ;
+  for(const e of evList()){ if(e._s>now) break; tz = e._e<=now ? (e.endTz||e.tz||TZ) : (e.tz||TZ); }
+  if(S.trip&&S.trip.end&&zParts(now,tz).date>S.trip.end){ const last=evList().slice(-1)[0]; if(last&&last._e<=now) tz=last.endTz||last.tz||tz; }
+  return tz;
+}
+function today(){ return zParts(NOW(),curTz()).date; }
+function inTrip(d){ return S&&S.trip&&d>=S.trip.start&&d<=S.trip.end; }
+function inBiz(d){ const T=S&&S.trip; if(!T||!T.bizEnd) return true; return d>=(T.bizStart||T.start)&&d<=T.bizEnd; }
+function defaultType(date){ return inBiz(date)?"business":"personal"; }
+
+function cityOf(e,which){ if(which==="from") return e.fromCity||e.city; if(which==="to") return e.toCity||e.city; return e.city; }
+function dayCities(d){
+  const out=[]; const add=c=>{ if(c&&out[out.length-1]!==c) out.push(c); };
+  const last=hotelOn(addDays(d,-1)); const arr=arrivalsOn(d)[0];
+  if(arr) add(cityOf(arr,"to")); else if(last) add(last.city); else if(d===S.trip.start) add(S.trip.home);
+  evOn(d).forEach(e=>{ if(e.kind==="flight"||e.kind==="train"){ add(cityOf(e,"from")); add(cityOf(e,"to")); } else if(e.kind!=="transit") add(e.city); });
+  const h=hotelOn(d); if(h) add(h.city); else if(d===S.trip.end&&S.trip.home) add(S.trip.home);
+  return out;
+}
+function dayChips(d){
+  const T=S.trip, chips=[];
+  if(d===T.start) chips.push(["出发日","blue"]);
+  else if(d===T.end) chips.push(["回程日","blue"]);
+  else { const a=hotelOn(addDays(d,-1)), b=hotelOn(d); if(a&&b&&a.id!==b.id) chips.push(["移动日","amber"]); }
+  if(T.bizEnd&&inTrip(d)) chips.push(inBiz(d)?["出差期","green"]:["私人","persim"]);
+  return chips;
+}
+function hotelNightLabel(h,d){ const n=daysBetween(h.checkIn,h.checkOut), i=daysBetween(h.checkIn,d)+1; return n>1?`第 ${i}/${n} 晚`:"1 晚"; }
+
+function defaultCur(){ const h=S&&hotelOn(today()); if(h&&h.currency) return h.currency; return (S&&S.trip&&S.trip.defaultCurrency)||"JPY"; }
+function defaultLang(){ const h=S&&hotelOn(today()); if(h&&h.lang) return h.lang; return (S&&S.trip&&S.trip.langs&&S.trip.langs[0])||"ja"; }
+function langOf(o){ return (o&&o.lang)||defaultLang(); }
+
+/* ================= 地图 / 电话 ================= */
+function mapApp(){ return localStorage.getItem("jt_mapapp")||"google"; }
+function placeQ(o){ if(!o) return ""; if(typeof o==="string") return o; return [o.nameLocal||o.name||o.title, o.localAddress].filter(Boolean).join(" "); }
+function navUrl(o, app){
+  app=app||mapApp(); if(o&&o.mapUrl&&app==="google") return o.mapUrl;
+  const qs=encodeURIComponent(o&&o.localAddress ? o.localAddress+" "+(o.nameLocal||o.name||o.title||"") : placeQ(o));
+  if(app==="apple") return `https://maps.apple.com/?q=${qs}${o&&o.lat?`&ll=${o.lat},${o.lng}`:""}`;
+  if(app==="naver") return `https://map.naver.com/p/search/${encodeURIComponent(o.localAddress||placeQ(o))}`;
+  return `https://www.google.com/maps/search/?api=1&query=${qs}`;
+}
+function dirUrl(from,to,mode,app){
+  app=app||mapApp(); const f=encodeURIComponent(from&&typeof from==="object"&&from.localAddress?from.localAddress:placeQ(from)), t=encodeURIComponent(to&&typeof to==="object"&&to.localAddress?to.localAddress:placeQ(to));
+  const gm=(MODE[mode]||MODE.taxi)[2];
+  if(app==="apple") return `https://maps.apple.com/?${from?`saddr=${f}&`:""}daddr=${t}&dirflg=${gm==="transit"?"r":gm==="walking"?"w":"d"}`;
+  return `https://www.google.com/maps/dir/?api=1${from?`&origin=${f}`:""}&destination=${t}&travelmode=${gm}`;
+}
+function openUrl(u){ window.open(u,"_blank"); }
+function telHref(phone,lang){
+  if(!phone) return ""; let p=phone.replace(/[^\d+]/g,"");
+  if(p[0]!=="+"){ const cc=(LANGS[lang]&&LANGS[lang].cc)||"81"; p="+"+cc+p.replace(/^0/,""); }
+  return "tel:"+p;
+}
+function callPhone(phone,lang){ if(!phone){ toast("没有电话号码"); return; } location.href=telHref(phone,lang); }
+/* 每个事件“去哪里”:航班/列车 → 出发地;其他 → 自身 */
+function destOf(e){
+  if(!e) return null;
+  if(e.kind==="flight"||e.kind==="train") return { name:e.fromPlace||e.from, localAddress:e.fromAddress||e.fromPlace||"", lang:e.lang };
+  if(e.kind==="hotel"&&e.hotelId){ const h=(S.hotels||{})[e.hotelId]; if(h) return {...h, title:h.name}; }
+  if(e.kind==="transit"){ const n=nextImportantAfter(e); return n?destOf(n):null; }
+  return e.localAddress||e.lat||e.mapUrl ? e : null;
+}
+function nextImportantAfter(e){ const L=evList(); const i=L.findIndex(x=>x.id===e.id); for(let j=i+1;j<L.length;j++){ if(isImportant(L[j])) return L[j]; } return null; }
+function prevOf(e){ const L=evList(); const i=L.findIndex(x=>x.id===e.id); return i>0?L[i-1]:null; }
+function nextOf(e){ const L=evList(); const i=L.findIndex(x=>x.id===e.id); return i>=0&&i<L.length-1?L[i+1]:null; }
+
+/* ================= 换乘余量检查 =================
+   打车/步行:出发时间 + 最长车程 + 等车 5 分钟;接驳车:准点发车 + 车程;航班落地:国际 +60 / 国内 +20 分钟
+   需要提前:国际航班 120 · 国内航班 60 · 列车 10(列车换列车 8)· 接驳车 5 · 订位餐厅/工作 10              */
+let _bufCache=null;
+function bufferOf(b){
+  if(!_bufCache){ _bufCache={}; evList().forEach(x=>{ const r=calcBuffer(x); if(r) _bufCache[x.id]=r; }); }
+  return _bufCache[b.id]||null;
+}
+function calcBuffer(b){
+  if(!isImportant(b)&&b.kind!=="train") return null;
+  const a=prevOf(b); if(!a) return null;
+  let ready;
+  if(a.kind==="transit") ready = a._s + ((+a.durMax||+a.durMin||0) + (a.fixed?0:(a.wait!=null?+a.wait:5)))*60000;
+  else if(a.kind==="flight") ready = a._e + (a.intl?60:20)*60000;
+  else if(a.kind==="train") ready = a._e;
+  else return null;
+  if(b._s-ready > 6*3600000) return null;
+  let lead=0;
+  if(b.kind==="flight") lead=b.intl?120:60;
+  else if(b.kind==="train") lead=a.kind==="train"?8:10;
+  else if(b.kind==="transit"&&b.fixed) lead=5;
+  else if(b.kind==="food"&&b.status==="booked") lead=10;
+  else if(b.kind==="work") lead=10;
+  const slack=Math.round((b._s-ready)/60000-lead);
+  const critical=["flight","train","food","work"].includes(b.kind)||(b.kind==="transit"&&b.fixed);
+  const status= slack<0?"bad" : (critical&&slack<10)?"warn":"ok";
+  let suggest=null;
+  if(a.kind==="transit"&&!a.fixed&&status!=="ok"){ const dep=a._s-(10-slack)*60000; const p=zParts(dep,a.tz||TZ); const [hh,mm]=p.time.split(":").map(Number); const m5=Math.floor(mm/5)*5; suggest=`${String(hh).padStart(2,"0")}:${String(m5).padStart(2,"0")}`; }
+  const gap=a.kind==="train"&&b.kind==="train" ? Math.round((b._s-a._e)/60000) : null;
+  const why = b.kind==="flight"?(b.intl?"国际线建议起飞前 2 小时到":"国内线建议提前 1 小时到")
+            : b.kind==="train"?(a.kind==="train"?"同站换乘至少留 8 分钟":"进站、找站台至少留 10 分钟")
+            : b.kind==="transit"?"接驳车准点发车,不等人"
+            : b.kind==="food"?"打车要等车、可能堵车、还要找入口":"留出找路时间";
+  return { a, b, slack, status, suggest, lead, gap, why };
+}
+function bufHTML(r){
+  if(!r) return "";
+  const cls=r.status==="bad"?"bad":r.status==="warn"?"warn":"ok";
+  let t;
+  if(r.gap!=null) t=`换乘 ${r.gap} 分钟${r.status==="ok"?"":r.status==="warn"?" · 偏紧":" · 来不及"}`;
+  else if(r.status==="ok") t=`余量 ${r.slack} 分钟`;
+  else if(r.status==="warn") t=`余量只有 ${r.slack} 分钟 · ${r.why}${r.suggest?` · 建议 ${r.suggest} 出发`:""}`;
+  else t=`赶不上:差 ${-r.slack} 分钟 · ${r.why}${r.suggest?` · 建议 ${r.suggest} 出发`:""}`;
+  const fix=r.suggest?` <button class="mini" style="margin:4px 0 0 0;" onclick="applySuggest('${r.a.id}','${r.suggest}')">改成 ${r.suggest} 出发</button>`:"";
+  return `<div class="buf"><span class="${cls}">${ic(r.status==="ok"?"check":"alert")} ${esc(t)}</span>${fix}</div>`;
+}
+
+/* ================= 清单(手动待办 + 由“待订”事件自动生成的预订任务) ================= */
+function bookTasks(){
+  const groups={}; const out=[];
+  evList().filter(e=>e.status==="todo").forEach(e=>{
+    const g=e.bookGroup||("ev:"+e.id); (groups[g]=groups[g]||[]).push(e);
+  });
+  for(const g in groups){
+    const list=groups[g]; const gname=(S.trip.bookGroups||{})[g];
+    const due=list.map(e=>e.bookBy).filter(Boolean).sort()[0]||addDays(list[0].date,-3);
+    out.push({ id:"bg:"+g, virtual:true, group:g, events:list, due, prio:"high",
+      text: gname ? `${gname} · ${list.length} 段` : `预订:${list[0].title}`,
+      note: list.map(e=>`${dstr(e.date)} ${e.time} ${e.title}`).join(" / ") });
+  }
+  return out;
+}
+function tasksAll(){
+  const m=Object.entries((S&&S.tasks)||{}).map(([id,t])=>({...t,id}));
+  return m.concat(bookTasks());
+}
+function phaseOf(t){
+  if(t.phase) return t.phase; const T=S.trip;
+  if(!t.due) return today()<T.start?"pre":"trip";
+  if(t.due<T.start) return "pre"; if(t.due>T.end) return "post"; return "trip";
+}
+const PHASE={ pre:"出发前", trip:"旅行途中", post:"回程后" };
+const PRIO={ high:0, mid:1, low:2 };
+function dueChip(d){ if(!d) return ""; const t=today(); const n=daysBetween(t,d);
+  const cls=n<0?"over":n===0?"today":""; const lb=n<0?`已过 ${-n} 天`:n===0?"今天":n===1?"明天":`${dstr(d)} 前`;
+  return `<span class="due ${cls}">${lb}</span>`; }
+function sortTasks(a,b){ return (a.due||"9999").localeCompare(b.due||"9999") || (PRIO[a.prio||"mid"]-PRIO[b.prio||"mid"]) || ((a.ts||0)-(b.ts||0)); }
+
+/* ================= 花费模型 =================
+   预估金额 = 收据金额 × 汇率;实际支付 = 信用卡上真实扣款(含手续费);公司报销 = 按规则确认后由公司承担的部分 */
+const CATS_EXP=["餐饮","咖啡甜品","交通","住宿","器具设备","原料食材","伴手礼","购物","门票娱乐","其他"];
+const CAT_ICO={餐饮:"🍽",咖啡甜品:"☕",交通:"🚄",住宿:"🏨",器具设备:"🔧",原料食材:"🧈",伴手礼:"🎁",购物:"🛍",门票娱乐:"🎫",其他:"📎",未分类:"❔"};
+function catOf(e){ return e.category||"未分类"; }
+function catLabel(c){ return (CAT_ICO[c]||"·")+" "+c; }
+function fmtLocal(n,cur){ cur=cur||defaultCur(); const c=CURRENCIES[cur]||{symbol:cur+" ",locale:"en-US",dec:2}; const d=c.dec||0;
+  return c.symbol+(+n||0).toLocaleString(c.locale,{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function c$(n){ return "C$"+(+n||0).toLocaleString("en-CA",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function isExact(e){ return +e.paidCAD>0 || (e.currency||defaultCur())==="CAD"; }
+function needsPaid(e){ return e.pay==="card" && !isExact(e); }
+function estCAD(e){ const cur=e.currency||defaultCur(); return cur==="CAD"?(+e.amountLocal||0):(+e.amountLocal||0)*(e.rate||rate(cur)); }
+function cadOf(e){ return +e.paidCAD>0 ? +e.paidCAD : estCAD(e); }
+function cadTxt(e){ return (isExact(e)?"":"≈")+c$(cadOf(e)); }
+function companyCAD(e){ if(e.type==="business") return cadOf(e); if(e.type==="mixed") return Math.min(+e.bizCAD||0, cadOf(e)); return 0; }
+function personalCAD(e){ return cadOf(e)-companyCAD(e); }
+function isCo(e){ return e.type==="business"||e.type==="mixed"; }
+function basisOf(e){ return +e.paidCAD>0?"卡上实付":(e.currency==="CAD"?"加币原价":(e.pay==="card"?"汇率估算(待对账)":"汇率估算")); }
+/* 出差期外但有依据:关联了公司行程,或是公司住宿的退房日账单 */
+function bizJustified(e){
+  if(inBiz(e.date)) return true;
+  const ev0=e.eventId&&S.events&&S.events[e.eventId]; if(ev0&&ev0.biz==="business") return true;
+  if(e.category==="住宿"){ const h=hotelsList().find(h=>h.checkOut===e.date&&h.biz==="business"); if(h) return true; }
+  return false;
+}
+function issuesOf(e){
+  const out=[];
+  if(needsPaid(e)) out.push({k:"paid",t:"待对账",c:"w"});
+  if(isCo(e)&&!e.receipt&&!e.noReceipt) out.push({k:"receipt",t:"缺票据",c:"r"});
+  if(isCo(e)&&/餐饮|咖啡/.test(e.category||"")&&(!e.purpose||!e.attendees)) out.push({k:"purpose",t:"缺用途/同席",c:"w"});
+  if(e.type==="mixed"&&!(+e.bizCAD>0)) out.push({k:"bizcad",t:"缺公司金额",c:"w"});
+  if(isCo(e)&&!bizJustified(e)&&!e.confirmed) out.push({k:"period",t:"出差期外",c:"w"});
+  return out;
+}
+function expList(){ return Object.entries((S&&S.expenses)||{}).map(([id,e])=>({...e,id})).sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.ts||0)-(a.ts||0)); }
+function catGroups(list,val){ val=val||cadOf; const m={}; list.forEach(e=>{ const c=catOf(e); (m[c]=m[c]||[]).push(e); });
+  return Object.entries(m).map(([cat,l])=>({cat,list:l,cad:l.reduce((s,e)=>s+val(e),0),exact:l.every(isExact)})).sort((a,b)=>b.cad-a.cad); }
+/* 记账归属建议:关联了行程 → 跟行程;住宿 → 跟那段住宿(退房日的账单算前一晚);否则按出差期 */
+function suggestType(date,category,eventId){
+  if(eventId&&S.events&&S.events[eventId]&&S.events[eventId].biz) return S.events[eventId].biz;
+  if(category==="住宿"){ const h=hotelsList().find(h=>h.checkOut===date)||hotelOn(date); if(h&&h.biz) return h.biz; }
+  return defaultType(date);
+}
+function expensesOfEvent(id){ return expList().filter(x=>x.eventId===id); }
+function applySuggest(id,time){ const e=S.events[id]; if(!e) return; const old=e.time; patch("events/"+id,{time,edited:Date.now()}); logChange(e.date,`${e.title}:${old} → ${time}(按余量建议)`); toast(`已改成 ${time} 出发 ✓`); }
+function logChange(date,text){ if(!S||LOCAL) return; const id=uid(); write("log/"+id,{date:date||today(),text,ts:Date.now()}); }
+
+/* ================= 外壳 ================= */
+const TABS=[["today","今日","today"],["plan","行程","plan"],["map","地图","map"],["money","花费","money"],["tools","工具","tools"]];
+function tabBadges(){
+  if(!S) return {};
+  const ex=expList(); const money=ex.filter(e=>needsPaid(e)||issuesOf(e).some(i=>i.k==="receipt")).length;
+  const d=today(); const tools=tasksAll().filter(t=>!t.done&&t.due&&t.due<=d).length + evList().filter(e=>{ const b=bufferOf(e); return b&&b.status==="bad"&&e._s>NOW(); }).length;
+  return { money, tools };
+}
+function renderTabs(){
+  const bd=tabBadges();
+  $("#tabbar").innerHTML=TABS.map(([k,l,i])=>`<button class="${tab===k?"on":""}" onclick="goTab('${k}')">${ic(i)}<span>${l}</span>${bd[k]?`<span class="badge">${bd[k]}</span>`:""}</button>`).join("");
+}
+function goTab(t,keepTool){ tab=t; if(!keepTool) toolView=null; localStorage.setItem("jt_tab",t); render(); window.scrollTo(0,0); }
+function render(){
+  invalidate(); renderTabs();
+  if(!S){ $("#view").innerHTML=EMPTY_MSG?`<div class="empty" style="padding-top:60px;">${ic("wifi")}<br><br>${esc(EMPTY_MSG)}</div>`:`<div class="empty">连接中…</div>`; return; }
+  const y=window.scrollY;
+  try{
+    if(tab==="today") renderToday(); else if(tab==="plan") renderPlan(); else if(tab==="map") renderMap();
+    else if(tab==="money") renderMoney(); else renderTools();
+  }catch(err){ $("#view").innerHTML=`<div class="hint">页面出错:${esc(err.message)}</div>`; console.error(err); }
+  window.scrollTo(0,y);
+}
+
+/* ================= 今日 ================= */
+function nextImportant(){
+  const now=NOW();
+  return evList().find(e=>isImportant(e) && Math.max(e._e, e._s+(e.kind==="food"||e.kind==="activity"||e.kind==="work"?60:15)*60000) > now) || null;
+}
+function evTitle(e){
+  if((e.kind==="flight"||e.kind==="train")&&(e.fromCity||e.toCity)) return `${e.title} · ${e.fromCity||e.from||""} → ${e.toCity||e.to||""}`;
+  return e.title;
+}
+function statusChip(e){ const s=STATUS[e.status]; return s?`<span class="chip ${s[1]}">${s[0]}</span>`:""; }
+function qaBtn(icon,label,fn){ return `<button onclick="${fn}">${ic(icon)}<span>${label}</span></button>`; }
+function qaFor(e){
+  const id=e.id;
+  if(e.kind==="flight") return [qaBtn("ticket","机票凭证",`openDocs('${id}')`),qaBtn("nav","机场导航",`goNav('${id}')`),qaBtn("trans","翻译工具","trSheet()")];
+  if(e.kind==="train") return [qaBtn("ticket","车票凭证",`openDocs('${id}')`),qaBtn("nav","车站导航",`goNav('${id}')`),qaBtn("trans","翻译工具","trSheet()")];
+  if(e.kind==="food") return [qaBtn("doc","预约信息",`openBooking('${id}')`),qaBtn("nav","导航",`goNav('${id}')`),qaBtn("phone","电话",`callEv('${id}')`)];
+  if(e.kind==="hotel") return [qaBtn("doc","预约信息",`openHotel('${e.hotelId}')`),qaBtn("nav","导航",`goNav('${id}')`),qaBtn("taxi","打车卡",`taxiEv('${id}')`)];
+  if(e.kind==="transit") return [qaBtn("doc","预约信息",`openBooking('${id}')`),qaBtn("nav","上车点导航",`goNav('${id}')`),qaBtn("phone","电话",`callEv('${id}')`)];
+  return [qaBtn("nav","导航",`goNav('${id}')`),qaBtn("taxi","打车卡",`taxiEv('${id}')`),qaBtn("doc","详情",`openBooking('${id}')`)];
+}
+function relDay(d){ const t=today(); const n=daysBetween(t,d); return n===0?"今天":n===1?"明天":n===2?"后天":`${dstr(d)} 周${weekday(d)}`; }
+function panelNext(e){
+  const now=NOW(); const dual=e.kind==="flight"||e.kind==="train";
+  const sub=[e.carrier, e.conf?("订单 "+e.conf):"", dual?e.sub:""].filter(Boolean).join(" · ");
+  let h=`<div class="panel" id="nextPanel">
+    <div class="ph"><span>下一项重要行程${e.date!==today()?` · ${relDay(e.date)}`:""}</span>${statusChip(e)}</div>
+    <div class="p-title">${esc(evTitle(e))}</div>
+    ${sub?`<div class="p-sub">${esc(sub)}</div>`:""}`;
+  if(dual){
+    const tz1=e.tz||TZ, tz2=e.endTz||tz1, cross=tz1!==tz2;
+    h+=`<div class="cols">
+      <div><div class="cl">${cross?tzName(tz1)+"当地时间":"出发"}</div><div class="cv">${dstr(e.date)} ${esc(e.time)}</div><div class="cp">${esc(e.from||"")} 出发</div></div>
+      <div><div class="cl">${cross?tzName(tz2)+"当地时间":"到达"}</div><div class="cv">${dstr(e.endDate||e.date)} ${esc(e.endTime||"")}</div><div class="cp">${esc(e.to||"")} 抵达</div></div>
+    </div>`;
+  }else{
+    const where=e.kind==="hotel"&&e.hotelId&&S.hotels[e.hotelId]?S.hotels[e.hotelId]:e;
+    h+=`<div class="p-meta">${ic("clock")} ${dstr(e.date)} ${esc(e.time)}${e.endTime?"–"+esc(e.endTime):""}${e.party?" · "+esc(e.party):""}${e.kind!=="hotel"&&e.sub?" · "+esc(e.sub):""}</div>
+      ${where.nameLocal||where.localAddress?`<div class="p-meta">${ic("pin")} ${esc(where.nameLocal||"")} ${esc((where.localAddress||"").slice(0,40))}</div>`:""}`;
+  }
+  // 倒计时 + 什么时候出发
+  if(e._s>now) h+=`<div class="countdown ${e._s-now<3*3600000?"soon":""}">${ic("clock")} 还有 ${fmtDur((e._s-now)/60000)}</div>`;
+  else if(e._e>now) h+=`<div class="countdown soon">${ic("clock")} ${e.kind==="flight"?"飞行中 · 预计 "+esc(e.endTime)+" 抵达":"进行中"}</div>`;
+  const pl=prevOf(e);
+  if(pl&&pl.kind==="transit"&&!pl.fixed&&pl._s>now-45*60000){
+    const md=(MODE[pl.mode]||MODE.taxi)[0]; const dur=pl.durMax?`${pl.durMin||pl.durMax}–${pl.durMax} 分钟`:"";
+    h+=`<div class="pre-leg">${ic((MODE[pl.mode]||MODE.taxi)[1])} 建议 <b>${esc(pl.time)}</b> 出发${pl.toLabel?"去"+esc(pl.toLabel):""} · ${md} ${dur}${pl._s>now?` · 还有 ${fmtDur((pl._s-now)/60000)}`:" · <b>该出发了</b>"}</div>`;
+  }
+  const bf=bufferOf(e); if(bf&&bf.status!=="ok") h+=`<div style="margin-top:8px;">${bufHTML(bf).replace('class="buf"','class="buf" style="margin:0"')}</div>`;
+  // 今晚住哪
+  const d=today();
+  if(inTrip(d)){
+    const ht=hotelOn(d); let night="";
+    if(ht) night=`<div class="night" onclick="openHotel('${ht.id}')">${ic("bed")}<div style="flex:1">今晚住宿:${esc(ht.name)}<small>${hotelNightLabel(ht,d)}${ht.conf?" · 预约号 "+esc(ht.conf):""}</small></div>${ic("chevR")}</div>`;
+    else if(overnightFlight(d)){ const nh=nextHotelAfter(d); night=`<div class="night">${ic("plane")}<div style="flex:1">今晚住宿:飞机上${nh?`<small>${dstr(nh.checkIn)} 入住 ${esc(nh.name)}</small>`:""}</div></div>`; }
+    else if(d===S.trip.end) night=`<div class="night">${ic("today")}<div style="flex:1">今晚:回到${esc(S.trip.home||"家")}</div></div>`;
+    if(night) h+=`<div class="hr"></div>`+night;
+  }
+  h+=`<div class="qa">${qaFor(e).join("")}</div></div>`;
+  return h;
+}
+function todoTitle(d){ const T=S.trip; if(d<=T.start) return "出发前需要完成"; if(d>T.end) return "回程后需要完成"; return "今天需要完成"; }
+function todayTasks(d){
+  const T=S.trip; const lim=addDays(d,2), lim2=addDays(d,5);
+  return tasksAll().filter(t=>!t.done && ( (t.due&&t.due<=lim) || (t.prio==="high"&&t.due&&t.due<=lim2) || (d<=T.start&&phaseOf(t)==="pre") || (d>T.end&&phaseOf(t)==="post") ))
+    .sort(sortTasks).slice(0,7);
+}
+function taskRow(t){
+  const click = t.virtual ? `openBookFlow('${q(t.group)}')` : `toggleTask('${t.id}')`;
+  return `<div class="row ${t.done?"done":""}" onclick="${click}">
+    <span class="ri ${t.virtual?"amber":t.prio==="high"?"red":""}">${ic(t.done?"check":t.virtual?"ticket":"circle")}</span>
+    <div class="rm"><div class="rt">${esc(t.text)}</div>${t.note||t.due?`<div class="rs">${dueChip(t.due)} ${esc((t.note||"").slice(0,60))}</div>`:""}</div>
+    ${t.virtual?`<span class="rc">${ic("chevR")}</span>`:""}</div>`;
+}
+function toggleTask(id){ const t=(S.tasks||{})[id]; if(!t) return; patch("tasks/"+id,{done:!t.done, doneTs:!t.done?Date.now():null}); if(!t.done) toast("已完成 ✓"); }
+function renderToday(){
+  const now=NOW(), tz=curTz(), d=today(), T=S.trip, di=dayIndex(d);
+  const route = d<T.start ? `出发前 · 还有 ${daysBetween(d,T.start)} 天` : d>T.end ? "行程已结束" : `Day ${di+1} · ${dayCities(d).join(" → ")}`;
+  let h=`<div class="td-head"><div>
+      <div class="eyebrow">今天 · 星期${weekday(d)} · ${esc(tzName(tz))} ${hm(now,tz)}${wx?` · ${wxIcon(wx.code)} ${wx.now}°`:""}</div>
+      <div class="bigdate">${dlong(d)}</div>
+      <div class="route">${esc(route)}</div>
+    </div><div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">${inTrip(d)?dayChips(d).map(c=>`<span class="chip lg ${c[1]}">${c[0]}</span>`).join(""):""}</div></div>`;
+  if(FROM_CACHE&&!CONNECTED&&!LOCAL) h+=`<div class="hint blue">${ic("wifi")} 没有网络 · 正在用本机缓存(${SNAP_TS?new Date(SNAP_TS).toLocaleString("zh-CN",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}):""})。凭证、预约号都能看,改动会在联网后自动上传。</div>`;
+  const nx=nextImportant();
+  if(nx) h+=panelNext(nx);
+  else if(d>T.end) h+=`<div class="panel"><div class="p-title">行程结束了,辛苦了</div><div class="p-sub">接下来:核对信用卡 → 补齐票据 → 确认公司归属 → 导出报销包</div><div class="qa" style="grid-template-columns:1fr 1fr;">${qaBtn("money","去结算","goSettle()")}${qaBtn("archive","行程档案","goTool('archive')")}</div></div>`;
+  // 待办
+  const tl=todayTasks(d);
+  const pend=expList().filter(needsPaid).length;
+  h+=`<div class="sec-h"><h2>${todoTitle(d)}</h2><button class="lnk" onclick="goTool('tasks')">全部清单 ›</button></div>`;
+  if(tl.length||pend){
+    h+=`<div class="rowlist">${tl.map(taskRow).join("")}
+      ${pend&&d>=T.start?`<div class="row" onclick="expFilter='paid';goTab('money')"><span class="ri amber">${ic("card")}</span><div class="rm"><div class="rt">${pend} 笔刷卡还没补实付金额</div><div class="rs">看银行 App 推送,填卡上扣的加币</div></div><span class="rc">${ic("chevR")}</span></div>`:""}</div>`;
+  } else h+=`<div class="rowlist"><div class="empty" style="padding:18px 0;">都完成了 ✓</div></div>`;
+  // 今天(或第一天)的安排
+  const showD = inTrip(d)?d:(d<T.start?T.start:null);
+  if(showD){
+    const evs=evOn(showD).filter(isImportant);
+    h+=`<div class="sec-h"><h2>${showD===d?"今天的安排":"第一天的安排"}</h2><button class="lnk" onclick="selDay='${showD}';goTab('plan')">完整行程 ›</button></div>`;
+    h+=`<div class="rowlist">${evs.length?evs.map(e=>`<div class="row" onclick="selDay='${e.date}';openCard['${e.id}']=true;goTab('plan')">
+        <span class="ri ${e._e<now&&e._s<now?"":"blue"}">${ic(KIND[e.kind].icon)}</span>
+        <div class="rm"><div class="rt">${esc(e.time)} ${esc(evTitle(e))}</div><div class="rs">${esc([e.sub,e.party].filter(Boolean).join(" · ")||KIND[e.kind].label)}</div></div>
+        ${statusChip(e)}</div>`).join(""):`<div class="empty" style="padding:18px 0;">今天没有固定安排</div>`}</div>`;
+  }
+  const lb=+localStorage.getItem("jt_lastBackup")||0;
+  if(!LOCAL&&(!lb||Date.now()-lb>3*86400000)) h+=`<div class="flow" onclick="backupDownload()"><div><b style="font-size:14px;">${ic("save")} 下载一份备份</b><div class="muted">${lb?"上次备份 "+new Date(lb).toLocaleDateString():"还没有备份过"} · 存进「文件」App,万一云端出问题能恢复</div></div>${ic("chevR")}</div>`;
+  $("#view").innerHTML=h;
+}
+
+/* ================= 行程 ================= */
+function moreLabel(e){ if(e.moreLabel) return e.moreLabel; return {food:"详细地址、入店说明与更多",hotel:"地址、入住说明与更多",flight:"航站楼、行李与更多",train:"站台、换乘与更多",transit:"上车点与更多"}[e.kind]||"详情与更多"; }
+function evActs(e){
+  const id=e.id, B=(icon,label,fn,cls)=>`<button class="${cls||""}" onclick="event.stopPropagation();${fn}">${ic(icon)}<span>${label}</span></button>`;
+  const a=[];
+  if(e.status==="todo"||e.status==="tbc") a.push(B("check",e.status==="todo"?"标记已订":"标记已确认",`openBookFlow('${q(e.bookGroup||"ev:"+id)}')`,"cta"));
+  if(e.kind==="flight"||e.kind==="train"){ a.push(B("ticket",e.kind==="flight"?"机票凭证":"车票凭证",`openDocs('${id}')`)); a.push(B("nav",e.kind==="flight"?"机场导航":"车站导航",`goNav('${id}')`)); }
+  else if(e.kind==="food"){ a.push(B("nav","导航",`goNav('${id}')`)); if(e.phone) a.push(B("phone","电话",`callEv('${id}')`)); a.push(B("doc","预约信息",`openBooking('${id}')`)); }
+  else if(e.kind==="hotel"){ a.push(B("nav","导航",`goNav('${id}')`)); a.push(B("phone","电话",`callEv('${id}')`)); a.push(B("doc","预约信息",`openHotel('${e.hotelId}')`)); }
+  else if(e.kind==="transit"){ a.push(B("nav","上车点",`goNav('${id}')`)); if(e.phone||hotelPhoneFor(e)) a.push(B("phone","电话",`callEv('${id}')`)); a.push(B("doc","预约信息",`openBooking('${id}')`)); }
+  else { a.push(B("nav","导航",`goNav('${id}')`)); a.push(B("taxi","打车卡",`taxiEv('${id}')`)); }
+  return a.slice(0,4).join("");
+}
+function routeHTML(e){
+  const nd=e.endDate&&e.endDate!==e.date; const mins=Math.round((e._e-e._s)/60000);
+  return `<div class="ev-route"><div class="st"><b>${esc(e.time)}</b><small>${esc(e.from||"")}</small></div><span class="arrow">${ic("chevR")}</span>
+    <div class="st"><b>${esc(e.endTime||"")}${nd?`<small style="display:inline;color:var(--persim)"> ${dstr(e.endDate)}</small>`:""}</b><small>${esc(e.to||"")}${e.endTz&&e.endTz!==e.tz?" · "+tzName(e.endTz)+"时间":""}</small></div>
+    ${mins>0?`<span class="muted" style="margin-left:auto">${fmtDur(mins)}</span>`:""}</div>`;
+}
+function evCard(e){
+  const K=KIND[e.kind]||KIND.activity, open=!!openCard[e.id], past=e._e<NOW()&&e._s<NOW();
+  const hotel=e.kind==="hotel"&&e.hotelId?(S.hotels||{})[e.hotelId]:null;
+  const keyinfo=[e.conf&&e.kind!=="flight"&&e.kind!=="train"?"预约号 "+e.conf:"", e.party, hotel&&hotel.conf?"预约号 "+hotel.conf:""].filter(Boolean).join(" · ");
+  const exs=expensesOfEvent(e.id);
+  return `<div class="ev ${K.cls}${e.fixed?" k-train":""}" id="ev_${e.id}">
+    <div class="ev-top" onclick="toggleCard('${e.id}')">
+      <div class="ev-title"><span>${esc(evTitle(e))}</span>${statusChip(e)}</div>
+      ${e.kind==="flight"||e.kind==="train"?routeHTML(e):""}
+      ${e.sub?`<div class="ev-sub">${esc(e.sub)}</div>`:""}
+      ${keyinfo||e.conf?`<div class="ev-meta">${esc(e.kind==="flight"||e.kind==="train"?("订单 "+(e.conf||"—")+(e.seat?" · "+e.seat:"")):keyinfo)}${exs.length?` · 已记 ${exs.map(x=>fmtLocal(x.amountLocal,x.currency)).join(" + ")}`:""}</div>`:exs.length?`<div class="ev-meta">已记 ${exs.map(x=>fmtLocal(x.amountLocal,x.currency)).join(" + ")}</div>`:""}
+    </div>
+    <div class="ev-acts">${evActs(e)}</div>
+    <div class="ev-more" onclick="toggleCard('${e.id}')"><span>${esc(moreLabel(e))}</span>${ic(open?"chevD":"chevR")}</div>
+    ${open?evDetail(e):""}
+  </div>`;
+}
+function toggleCard(id){ openCard[id]=!openCard[id]; render(); }
+function addrBlock(o,lang){
+  if(!o||!(o.localAddress||o.nameLocal)) return "";
+  return `<div class="kv"><span class="k">地址</span><span class="v">${o.nameLocal?esc(o.nameLocal)+"<br>":""}${esc(o.localAddress||"")}
+    <div><button class="mini" onclick="openTaxi('${q(o.nameLocal||o.name||o.title)}','${q(o.localAddress||"")}','${langOf(o)}')">${ic("taxi")} 打车卡</button>
+    <button class="mini" onclick="speakLocal('${q(o.localAddress||o.nameLocal)}','${langOf(o)}')">${ic("sound")} 朗读</button>
+    <button class="mini" onclick="copyText('${q(o.localAddress||"")}')">${ic("copy")} 复制</button>
+    ${langOf(o)==="ko"?`<button class="mini" onclick="openUrl('${q(navUrl(o,"naver"))}')">Naver 地图</button>`:""}</div></span></div>`;
+}
+function kv(k,v,raw){ return v?`<div class="kv"><span class="k">${k}</span><span class="v">${raw?v:esc(v)}</span></div>`:""; }
+function evDetail(e){
+  const exs=expensesOfEvent(e.id); const docs=Object.entries(e.docs||{});
+  const showRate=e._s<NOW()&&(e.kind==="food"||e.kind==="activity"||e.kind==="work");
+  return `<div class="ev-detail">
+    ${e.kind==="flight"||e.kind==="train"?kv("出发",`${e.fromPlace||e.from||""}${e.tz&&e.endTz&&e.tz!==e.endTz?" · "+tzName(e.tz)+"时间 "+e.time:""}`)+kv("到达",`${e.toPlace||e.to||""}${e.tz&&e.endTz&&e.tz!==e.endTz?" · "+tzName(e.endTz)+"时间 "+dstr(e.endDate||e.date)+" "+e.endTime:""}`):""}
+    ${e.kind==="transit"?kv("方式",`${(MODE[e.mode]||MODE.taxi)[0]}${e.durMax?` · 预计 ${e.durMin||e.durMax}–${e.durMax} 分钟`:""}${e.fixed?" · 准点发车":""}`):""}
+    ${addrBlock(e.kind==="transit"?null:e)}
+    ${kv("预约号",e.conf)}${kv("人数",e.party)}
+    ${e.phone?kv("电话",`<a href="${telHref(e.phone,langOf(e))}">${esc(e.phone)}</a>`,true):""}
+    ${kv("订票期限",e.bookBy&&e.status!=="booked"?dstr(e.bookBy)+" 前":"")}
+    ${kv("免费取消",e.cancelBy?dstr(e.cancelBy)+" 前":"")}
+    ${kv("归属",e.biz==="business"?"公司出差":e.biz==="personal"?"私人":"")}
+    ${e.note?`<div class="note">${esc(e.note)}</div>`:""}
+    ${docs.length?`<div class="thumbs">${docs.map(([k,src])=>`<img src="${src}" onclick="viewPhoto(this.src)">`).join("")}</div>`:""}
+    ${exs.length?`<div class="kv"><span class="k">已记账</span><span class="v">${exs.map(x=>`<span class="mini" onclick="openExpenseForm('${x.id}')">${esc(fmtLocal(x.amountLocal,x.currency))} · ${x.type==="business"?"公司":x.type==="mixed"?"部分公司":"私人"}</span>`).join("")}</span></div>`:""}
+    ${showRate?rateHTML("events/"+e.id,e):""}
+    <div class="dbtns">
+      <button class="pbtn hot" onclick="newExpenseFromEvent('${e.id}')">${ic("receipt")} 记一笔</button>
+      <button class="pbtn" onclick="addDoc('events/${e.id}')">${ic("doc")} 加凭证</button>
+      <button class="pbtn" onclick="openEventForm('${e.id}')">${ic("edit")} 编辑</button>
+    </div>
+  </div>`;
+}
+function rateHTML(path,o){
+  const r=+o.rating||0;
+  return `<div class="kv"><span class="k">我的评价</span><span class="v"><span class="stars">${[1,2,3,4,5].map(i=>`<button class="${i<=r?"on":""}" onclick="save('${path}/rating',${i===r?0:i})">★</button>`).join("")}</span>
+    <input class="f" style="width:100%;margin-top:6px;border:1px solid var(--line2);border-radius:8px;padding:7px 9px;font-size:14px;" placeholder="一句话:下次还来吗?点了什么?" value="${esc(o.review||"")}" onchange="save('${path}/review',this.value.trim())"></span></div>`;
+}
+function copyText(t){ try{ navigator.clipboard.writeText(t); toast("已复制"); }catch(e){ toast("复制失败"); } }
+function trRow(e){
+  const md=MODE[e.mode]||MODE.taxi; const d=destOf(e);
+  return `<div class="tr" id="ev_${e.id}">
+    <b>${ic(md[1])} ${esc(e.title)}</b>
+    <div class="sub">${md[0]}${e.durMax?` · 预计 ${e.durMin||e.durMax}–${e.durMax} 分钟`:""}${e.sub?" · "+esc(e.sub):""}</div>
+    ${e.note?`<div class="sub" style="white-space:pre-line">${esc(e.note)}</div>`:""}
+    <div class="links">
+      ${d?`<span class="lnk" onclick="goNav('${e.id}')">${ic("nav")} 路线</span>`:""}
+      ${d&&d.localAddress&&e.mode!=="walk"&&e.mode!=="train"?`<span class="lnk" onclick="taxiEv('${e.id}')">${ic("taxi")} 打车卡</span>`:""}
+      <span class="lnk" onclick="openEventForm('${e.id}')">${ic("edit")} 改</span>
+    </div></div>`;
+}
+function renderPlan(){
+  const days=tripDays(); const t=today(); const now=NOW();
+  if(!selDay||!days.includes(selDay)) selDay=days.includes(t)?t:days[0];
+  let h=`<div class="day-pills" id="dayPills">`+days.map((d,i)=>{
+    const evs=evOn(d); const todo=evs.some(e=>e.status==="todo"); const bad=evs.some(e=>{ const b=bufferOf(e); return b&&b.status!=="ok"; });
+    return `<button class="pill ${d===selDay?"on":""}" onclick="selDay='${d}';render()"><b>${dstr(d)}${d===t?'<span class="tdot"></span>':""}</b><small>周${weekday(d)}</small>${bad?'<span class="pdot red"></span>':todo?'<span class="pdot"></span>':""}</button>`;
+  }).join("")+`</div>`;
+  const d=selDay, di=dayIndex(d);
+  h+=`<div class="day-h"><div class="dt">${dstr(d)} 周${weekday(d)} · Day ${di+1}</div><div style="display:flex;gap:6px;">${dayChips(d).map(c=>`<span class="chip ${c[1]}">${c[0]}</span>`).join("")}</div></div>`;
+  const ht=hotelOn(d), of=overnightFlight(d);
+  h+=`<div class="day-h2" ${ht?`onclick="openHotel('${ht.id}')"`:""}>${esc(dayCities(d).join(" → "))} · ${ht?`${ic("bed")} ${esc(ht.name)} ${hotelNightLabel(ht,d)} ${ic("chevR")}`:of?`${ic("plane")} 今晚在飞机上`:d===S.trip.end?"回家":"今晚住宿未定"}</div>`;
+  const items=[...arrivalsOn(d).map(a=>({arr:true,e:a,t:a._e})), ...evOn(d).map(e=>({e,t:e._s}))].sort((a,b)=>a.t-b.t);
+  let nowDone=d!==t;
+  if(!items.length) h+=`<div class="empty">这天还没有安排</div>`;
+  items.forEach(it=>{
+    const e=it.e;
+    if(!nowDone&&it.t>now){ h+=`<div class="now-line">现在 ${hm(now,curTz())}</div>`; nowDone=true; }
+    if(it.arr){ h+=`<div class="tl-row past-no"><div class="tl-t">${esc(e.endTime)}</div><div class="arrm" onclick="selDay='${e.date}';openCard['${e.id}']=true;render()">${ic(KIND[e.kind].icon)} ${esc(e.title)} 抵达 ${esc(e.toPlace||e.to||"")} · ${dstr(e.date)} ${esc(e.time)} 从${esc(e.fromCity||e.from||"")}出发</div></div>`; return; }
+    const past=e._e<now&&e._s<now;
+    h+=bufHTML(bufferOf(e));
+    const tzTag=e.tz&&e.tz!==TZ?`<small>${esc(tzName(e.tz))}</small>`:"";
+    if(e.kind==="transit"&&!e.fixed) h+=`<div class="tl-row ${past?"past":""}"><div class="tl-t">${esc(e.time)}${tzTag}</div>${trRow(e)}</div>`;
+    else h+=`<div class="tl-row ${past?"past":""}"><div class="tl-t">${esc(e.time)}${tzTag}</div>${evCard(e)}</div>`;
+  });
+  if(!nowDone&&d===t) h+=`<div class="now-line">现在 ${hm(now,curTz())}</div>`;
+  h+=`<div class="dbtns" style="justify-content:center;margin-top:18px;">
+    <button class="pbtn hot" onclick="openEventForm(null,'${d}')">${ic("plus")} 添加安排</button>
+    <button class="pbtn" onclick="exportItinerary()">${ic("doc")} 出差行程单</button></div>`;
+  $("#view").innerHTML=h;
+  const p=$("#dayPills .pill.on"); if(p) p.scrollIntoView({inline:"center",block:"nearest"});
+}
+
+/* ================= 动作 ================= */
+function hotelPhoneFor(e){ const h=hotelOn(e.date)||hotelOn(addDays(e.date,-1)); if(e.hotelId&&S.hotels[e.hotelId]) return S.hotels[e.hotelId].phone; return e.kind==="transit"&&e.fixed&&h?h.phone:null; }
+function goNav(id){
+  const e=ev(id); if(!e) return;
+  if(e.kind==="transit"){
+    if(e.fixed){ openUrl(navUrl({name:e.fromPlace||e.title,localAddress:e.fromAddress||e.fromPlace||"",lang:e.lang})); return; }
+    const d=destOf(e); if(!d){ toast("下一站没有地址"); return; }
+    openUrl(dirUrl(null,d,e.mode)); return;
+  }
+  const d=destOf(e); if(!d||!(d.localAddress||d.name||d.lat)){ toast("这一项还没有地址"); return; }
+  openUrl(navUrl(d));
+}
+function taxiEv(id){ const e=ev(id); const d=e&&destOf(e); if(!d||!d.localAddress){ toast("这一项还没有当地地址"); return; } openTaxi(d.nameLocal||d.name||d.title,d.localAddress,langOf(d)); }
+function callEv(id){ const e=ev(id); if(!e) return; const p=e.phone||hotelPhoneFor(e); callPhone(p,langOf(e)); }
+function openTaxi(name,addr,lang){
+  if(!addr){ toast("没有当地地址"); return; } lang=lang||defaultLang(); const phrase=(LANGS[lang]&&LANGS[lang].taxiPhrase)||"";
+  const el=document.createElement("div"); el.className="taxi"; el.id="taxiCard";
+  el.innerHTML=`<div class="lbl">${esc(phrase)}</div><div class="jp-name">${esc(name)}</div><div class="jp-addr">${esc(addr)}</div><div class="stamp">${lang==="ko"?"목적지":"行先"}</div>
+    <div class="taxi-btns"><button class="btn indigo" onclick="speakLocal('${q(addr)}','${lang}')">${ic("sound")} 朗读</button><button class="btn ghost" onclick="document.getElementById('taxiCard').remove()">关闭</button></div>`;
+  document.body.appendChild(el);
+}
+function speakLocal(text,lang){
+  if(!("speechSynthesis" in window)){ toast("此设备不支持朗读"); return; } lang=lang||defaultLang(); const code=(LANGS[lang]&&LANGS[lang].speech)||"ja-JP";
+  speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang=code; u.rate=0.85;
+  const v=speechSynthesis.getVoices().find(v=>v.lang.startsWith(code.slice(0,2))); if(v) u.voice=v; speechSynthesis.speak(u);
+}
+function docsGrid(path,docs){
+  const list=Object.entries(docs||{});
+  return `<div class="docs-grid">${list.map(([k,src])=>`<div class="doc"><img src="${src}" onclick="viewPhoto(this.src)"><button class="del" onclick="if(confirm('删除这张凭证?')){del('${path}/docs/${k}');reopen()}">✕</button></div>`).join("")}</div>`;
+}
+let _reopen=null; function reopen(){ if(_reopen) setTimeout(_reopen,30); }
+/* 机票/车票凭证:没网也能打开(数据和截图都在本机缓存里) */
+function openDocs(id){
+  const e=ev(id); if(!e) return; _reopen=()=>openDocs(id);
+  sheet(`<h3>${ic(KIND[e.kind].icon)} ${esc(evTitle(e))}</h3>
+    <div class="muted" style="margin:-8px 0 4px;">${dstr(e.date)} ${esc(e.time)} ${esc(e.from||"")} → ${dstr(e.endDate||e.date)} ${esc(e.endTime||"")} ${esc(e.to||"")}</div>
+    <div class="bigconf">${esc(e.conf||"—")}</div>
+    ${kv("航司/车次",[e.carrier,e.title].filter(Boolean).join(" "))}${kv("座位/舱位",e.seat||e.sub)}${kv("出发",e.fromPlace)}${kv("到达",e.toPlace)}
+    ${e.note?`<div class="note" style="white-space:pre-line;font-size:13.5px;margin:8px 0 12px;">${esc(e.note)}</div>`:""}
+    <div class="fs-h">凭证截图(存在本机,没网也能看)</div>
+    ${Object.keys(e.docs||{}).length?docsGrid("events/"+id,e.docs):`<div class="muted" style="margin-bottom:10px;">还没有截图 · 把登机牌/电子票/二维码截图存进来,到时候不用翻邮件</div>`}
+    <div class="btns"><button class="btn ghost" onclick="addDoc('events/${id}')">${ic("cam")} 加截图</button><button class="btn dark" onclick="closeSheet()">关闭</button></div>`);
+}
+/* 预约信息:到门口直接给店员看 */
+function openBooking(id){
+  const e=ev(id); if(!e) return; _reopen=()=>openBooking(id);
+  sheet(`<h3>${ic(KIND[e.kind].icon)} ${esc(e.title)}</h3>
+    <div class="muted" style="margin:-8px 0 4px;">${dstr(e.date)}(周${weekday(e.date)})${esc(e.time)}${e.endTime?"–"+esc(e.endTime):""} ${statusChip(e)}</div>
+    ${e.conf?`<div class="bigconf">${esc(e.conf)}</div>`:`<div class="hint">还没有预约号${e.status==="todo"?" · 这一项待订":""}</div>`}
+    ${kv("名义",S.trip.traveler)}${kv("人数",e.party)}${kv("内容",e.sub)}
+    ${e.phone?kv("电话",`<a href="${telHref(e.phone,langOf(e))}">${esc(e.phone)}</a>`,true):""}
+    ${addrBlock(e)}
+    ${kv("免费取消",e.cancelBy?dstr(e.cancelBy)+" 前":"")}
+    ${e.note?`<div class="note" style="white-space:pre-line;font-size:13.5px;margin:10px 0;">${esc(e.note)}</div>`:""}
+    ${Object.keys(e.docs||{}).length?`<div class="fs-h">确认邮件 / 截图</div>`+docsGrid("events/"+id,e.docs):""}
+    <div class="btns">${e.phone?`<button class="btn ghost" onclick="callEv('${id}')">${ic("phone")} 打电话</button>`:""}<button class="btn ghost" onclick="addDoc('events/${id}')">${ic("cam")} 加截图</button><button class="btn dark" onclick="closeSheet()">关闭</button></div>`);
+}
+function openHotel(hid){
+  const h=(S.hotels||{})[hid]; if(!h) return; _reopen=()=>openHotel(hid); const n=daysBetween(h.checkIn,h.checkOut);
+  const showRate=h.checkIn<=today();
+  sheet(`<h3>${ic("bed")} ${esc(h.name)}</h3>
+    <div class="muted" style="margin:-8px 0 4px;">${dstr(h.checkIn)} 入住 ${esc(h.inTime||"")} → ${dstr(h.checkOut)} 退房 ${esc(h.outTime||"")} · ${n} 晚 ${h.biz==="business"?'<span class="tag b">公司</span>':h.biz==="personal"?'<span class="tag p">私人</span>':""}</div>
+    ${h.conf?`<div class="bigconf">${esc(h.conf)}</div>`:""}
+    ${kv("名义",S.trip.traveler)}${kv("房型",h.room)}${kv("付款",h.prepaid)}
+    ${h.phone?kv("电话",`<a href="${telHref(h.phone,h.lang)}">${esc(h.phone)}</a>`,true):""}
+    ${addrBlock(h)}
+    ${kv("免费取消",h.cancelBy?dstr(h.cancelBy)+" 前":"")}
+    ${h.note?`<div class="note" style="white-space:pre-line;font-size:13.5px;margin:10px 0;">${esc(h.note)}</div>`:""}
+    ${Object.keys(h.docs||{}).length?`<div class="fs-h">确认邮件 / 截图</div>`+docsGrid("hotels/"+hid,h.docs):""}
+    ${showRate?rateHTML("hotels/"+hid,h):""}
+    <div class="dbtns">
+      <button class="pbtn hot" onclick="openUrl('${q(navUrl(h))}')">${ic("nav")} 导航</button>
+      ${h.phone?`<button class="pbtn" onclick="callPhone('${q(h.phone)}','${h.lang||"ja"}')">${ic("phone")} 电话</button>`:""}
+      <button class="pbtn" onclick="addDoc('hotels/${hid}')">${ic("cam")} 加截图</button>
+      <button class="pbtn" onclick="newExpense({merchant:'${q(h.name)}',category:'住宿',date:'${h.checkOut}',type:'${h.biz||""}',detail:'${dstr(h.checkIn)}–${dstr(h.checkOut)} ${n} 晚'})">${ic("receipt")} 记住宿费</button>
+      <button class="pbtn" onclick="openHotelForm('${hid}')">${ic("edit")} 编辑</button>
+    </div>
+    <div class="btns"><button class="btn dark" onclick="closeSheet()">关闭</button></div>`);
+}
+function addDoc(path){ window._docPath=path; $("#docInput").click(); }
+$("#docInput").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value=""; if(!f||!window._docPath) return;
+  toast("保存中…",1200); const b64=await compressImage(f,1600,0.7);
+  push(window._docPath+"/docs", b64); toast("凭证已保存 · 没网也能看 ✓"); reopen();
+});
+
+/* ---- 标记已订:清单里的“待订”任务 → 直接变成已订行程,不会有两份数据 ---- */
+function openBookFlow(g){
+  const list = g.startsWith("ev:") ? [ev(g.slice(3))].filter(Boolean) : evList().filter(e=>e.bookGroup===g&&(e.status==="todo"||e.status==="tbc"));
+  if(!list.length){ toast("这一组都已订好 ✓"); return; }
+  const gname=(S.trip.bookGroups||{})[g]||list[0].title;
+  sheet(`<h3>${ic("check")} 标记已订 · ${esc(gname)}</h3>
+    <div class="hint blue">订好后填预约号(可空),这些行程会变成「已订」,清单里的待办自动完成。</div>
+    ${list.map(e=>`<div class="step" style="padding:10px 12px;">
+      <label style="display:flex;gap:10px;align-items:flex-start;">
+        <input type="checkbox" id="bk_${e.id}" checked style="width:20px;height:20px;margin-top:2px;">
+        <div style="flex:1"><b style="font-size:14.5px;">${dstr(e.date)} ${esc(e.time)} ${esc(e.title)}</b>
+        <div class="muted">${esc([e.from&&e.to?e.from+" → "+e.to:"",e.sub,e.bookBy?"订票期限 "+dstr(e.bookBy):""].filter(Boolean).join(" · "))}</div></div></label>
+      <div class="f" style="margin:8px 0 0 30px;"><input id="bkc_${e.id}" value="${esc(e.conf||"")}" placeholder="${e.kind==="train"?"座位 / 预约号,如 7号车 3A":"预约号 / 确认内容"}"></div>
+    </div>`).join("")}
+    <div class="btns"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn b" onclick="saveBooked(${esc(JSON.stringify(list.map(e=>e.id)))})">保存为已订</button></div>`);
+}
+function saveBooked(ids){
+  let n=0;
+  ids.forEach(id=>{ const cb=$("#bk_"+id); if(!cb||!cb.checked) return; const c=$("#bkc_"+id).value.trim(); const e=S.events[id];
+    patch("events/"+id,{status:"booked",conf:c||e.conf||null,edited:Date.now()}); n++; logChange(e.date,`${e.title}:已订${c?"("+c+")":""}`); });
+  closeSheet(); toast(`${n} 项已转为已订行程 ✓`);
+}
+
+/* ---- 编辑行程 ---- */
+const TZ_LIST=()=>[...new Set([TZ,(S.trip&&S.trip.homeTz)||"America/Vancouver",...Object.keys(TZ_LABEL),...evList().map(e=>e.tz).filter(Boolean)])];
+function tzSel(id,v){ return `<select id="${id}">${TZ_LIST().map(t=>`<option value="${t}" ${t===(v||TZ)?"selected":""}>${esc(tzName(t))} · ${t}</option>`).join("")}</select>`; }
+function fld(label,id,v,attrs){ return `<div class="f"><label>${label}</label><input id="${id}" value="${esc(v==null?"":v)}" ${attrs||""}></div>`; }
+function openEventForm(id,dateDefault){
+  const e=id?{...S.events[id]}:{date:dateDefault||selDay||today(),time:"12:00",kind:"activity",status:"booked",tz:(hotelOn(dateDefault||today())||{}).tz||TZ,biz:defaultType(dateDefault||today())};
+  const k=e.kind||"activity";
+  sheet(`<h3>${id?"编辑安排":"添加安排"}</h3>
+    <div class="f-row"><div class="f"><label>类型</label><select id="ef_kind">${Object.entries(KIND).map(([kk,v])=>`<option value="${kk}" ${kk===k?"selected":""}>${v.label}</option>`).join("")}</select></div>
+      <div class="f"><label>状态</label><select id="ef_status">${Object.entries(STATUS).map(([kk,v])=>`<option value="${kk}" ${kk===(e.status||"booked")?"selected":""}>${v[0]}</option>`).join("")}<option value="" ${!e.status?"selected":""}>—</option></select></div></div>
+    ${fld("标题","ef_title",e.title)}
+    <div class="f-row"><div class="f"><label>日期</label><input id="ef_date" type="date" value="${esc(e.date)}"></div><div class="f"><label>时间</label><input id="ef_time" type="time" value="${esc(e.time||"")}"></div></div>
+    <div class="f"><label>时区(这个时间是哪里的当地时间)</label>${tzSel("ef_tz",e.tz)}</div>
+    ${fld("一句关键信息(显示在卡片上)","ef_sub",e.sub,'placeholder="如:Chef\'s Tasting · ¥15,000/位"')}
+    <div class="f"><label>归属</label><select id="ef_biz"><option value="business" ${e.biz==="business"?"selected":""}>公司出差</option><option value="personal" ${e.biz==="personal"?"selected":""}>私人</option></select></div>
+    <details class="more" ${k==="flight"||k==="train"?"open":""}><summary>航班 / 列车:到达时间与站点</summary>
+      <div class="f-row">${fld("出发(代码/站名)","ef_from",e.from)}${fld("到达","ef_to",e.to)}</div>
+      <div class="f-row">${fld("出发城市","ef_fromCity",e.fromCity)}${fld("到达城市","ef_toCity",e.toCity)}</div>
+      <div class="f-row"><div class="f"><label>到达日期</label><input id="ef_endDate" type="date" value="${esc(e.endDate||"")}"></div><div class="f"><label>到达时间</label><input id="ef_endTime" type="time" value="${esc(e.endTime||"")}"></div></div>
+      <div class="f"><label>到达时区</label>${tzSel("ef_endTz",e.endTz||e.tz)}</div>
+      ${fld("出发地(导航用,如 成田空港第1ターミナル)","ef_fromPlace",e.fromPlace)}${fld("到达地","ef_toPlace",e.toPlace)}
+      <div class="f-row">${fld("航司/线路","ef_carrier",e.carrier)}${fld("座位/舱位","ef_seat",e.seat)}</div>
+      <label style="font-size:13px;display:flex;gap:8px;align-items:center;margin-bottom:10px;"><input type="checkbox" id="ef_intl" ${e.intl?"checked":""}> 国际航班(提前 2 小时到机场)</label>
+    </details>
+    <details class="more" ${k==="transit"?"open":""}><summary>移动方式与车程</summary>
+      <div class="f-row"><div class="f"><label>方式</label><select id="ef_mode">${Object.entries(MODE).map(([kk,v])=>`<option value="${kk}" ${kk===(e.mode||"taxi")?"selected":""}>${v[0]}</option>`).join("")}</select></div>
+        ${fld("最短(分钟)","ef_durMin",e.durMin,'type="number"')}${fld("最长(分钟)","ef_durMax",e.durMax,'type="number"')}</div>
+      ${fld("目的地简称(今日页显示「去哪」)","ef_toLabel",e.toLabel)}
+      <label style="font-size:13px;display:flex;gap:8px;align-items:center;margin-bottom:10px;"><input type="checkbox" id="ef_fixed" ${e.fixed?"checked":""}> 准点发车(接驳车/巴士,按重要行程提醒)</label>
+    </details>
+    <details class="more" ${["food","activity","work","hotel"].includes(k)&&!e.localAddress?"open":""}><summary>地点与地址</summary>
+      ${geoRowHTML("ef")}
+      ${fld("当地名称","ef_nameLocal",e.nameLocal)}${fld("当地地址(打车卡/导航用)","ef_addr",e.localAddress)}
+      <div class="f-row">${fld("城市","ef_city",e.city)}<div class="f"><label>语言</label><select id="ef_lang">${Object.keys(LANGS).map(l=>`<option value="${l}" ${l===(e.lang||"ja")?"selected":""}>${LANGS[l].label}</option>`).join("")}</select></div></div>
+      <div class="f-row">${fld("纬度","ef_lat",e.lat,'type="number" step="any"')}${fld("经度","ef_lng",e.lng,'type="number" step="any"')}</div>
+      <input type="hidden" id="ef_map" value="${esc(e.mapUrl||"")}">
+    </details>
+    <details class="more" ${e.status==="todo"?"open":""}><summary>预订信息</summary>
+      <div class="f-row">${fld("预约号","ef_conf",e.conf)}${fld("人数","ef_party",e.party)}</div>
+      ${fld("电话","ef_phone",e.phone)}
+      <div class="f-row"><div class="f"><label>订票期限</label><input id="ef_bookBy" type="date" value="${esc(e.bookBy||"")}"></div><div class="f"><label>免费取消期限</label><input id="ef_cancelBy" type="date" value="${esc(e.cancelBy||"")}"></div></div>
+      <div class="f"><label>预订分组(同一组在清单里合并成一个待办)</label><select id="ef_group"><option value="">—</option>${Object.entries(S.trip.bookGroups||{}).map(([g,n])=>`<option value="${g}" ${g===e.bookGroup?"selected":""}>${esc(n)}</option>`).join("")}</select></div>
+    </details>
+    <div class="f"><label>备注(展开后才显示)</label><textarea id="ef_note" rows="3">${esc(e.note||"")}</textarea></div>
+    <div class="btns">${id?`<button class="btn ghost" style="color:var(--danger)" onclick="if(confirm('删除这项安排?')){del('events/${id}');closeSheet()}">删除</button>`:""}<button class="btn indigo" onclick="saveEvent('${id||""}')">保存</button></div>`);
+}
+function saveEvent(id){
+  const v=k=>{ const el=$("#ef_"+k); return el?el.value.trim():""; };
+  const num=k=>{ const x=parseFloat(v(k)); return isNaN(x)?null:x; };
+  const old=id?S.events[id]:{};
+  const e={...old, kind:v("kind"), status:v("status")||null, title:v("title"), date:v("date"), time:v("time"), tz:v("tz"), sub:v("sub")||null, biz:v("biz"),
+    from:v("from")||null, to:v("to")||null, fromCity:v("fromCity")||null, toCity:v("toCity")||null, endDate:v("endDate")||null, endTime:v("endTime")||null, endTz:v("endTz")||null,
+    fromPlace:v("fromPlace")||null, toPlace:v("toPlace")||null, carrier:v("carrier")||null, seat:v("seat")||null, intl:$("#ef_intl").checked||null,
+    mode:v("mode"), durMin:num("durMin"), durMax:num("durMax"), toLabel:v("toLabel")||null, fixed:$("#ef_fixed").checked||null,
+    nameLocal:v("nameLocal")||null, localAddress:v("addr")||null, city:v("city")||null, lang:v("lang"), lat:num("lat"), lng:num("lng"), mapUrl:v("map")||null,
+    conf:v("conf")||null, party:v("party")||null, phone:v("phone")||null, bookBy:v("bookBy")||null, cancelBy:v("cancelBy")||null, bookGroup:v("group")||null,
+    note:v("note")||null, edited:Date.now() };
+  if(e.kind!=="transit"){ e.mode=null; } if(!(e.kind==="flight"||e.kind==="train")){ e.endTz=e.endTime?e.endTz:null; }
+  if(!e.title||!e.date){ toast("标题和日期不能为空"); return; }
+  Object.keys(e).forEach(k=>{ if(e[k]===null||e[k]===""||e[k]===undefined) delete e[k]; });
+  const nid=id||uid();
+  if(id&&(old.time!==e.time||old.date!==e.date)) logChange(e.date,`${e.title}:${old.date!==e.date?dstr(old.date)+" → "+dstr(e.date)+" ":""}${old.time} → ${e.time}`);
+  else if(!id) logChange(e.date,`新增:${e.time} ${e.title}`);
+  save("events/"+nid,e); closeSheet(); selDay=e.date; toast("已保存");
+}
+function openHotelForm(hid){
+  const h=hid?{...S.hotels[hid]}:{checkIn:selDay||today(),checkOut:addDays(selDay||today(),1),inTime:"15:00",outTime:"11:00",lang:"ja",currency:defaultCur(),tz:TZ};
+  sheet(`<h3>${hid?"编辑住宿":"添加住宿"}</h3>
+    ${fld("酒店名","hf_name",h.name)}${fld("当地名称","hf_nameLocal",h.nameLocal)}
+    <div class="f-row"><div class="f"><label>入住</label><input id="hf_in" type="date" value="${esc(h.checkIn)}"></div><div class="f"><label>退房</label><input id="hf_out" type="date" value="${esc(h.checkOut)}"></div></div>
+    <div class="f-row">${fld("入住时间","hf_inTime",h.inTime)}${fld("退房时间","hf_outTime",h.outTime)}</div>
+    <div class="f-row">${fld("预约号","hf_conf",h.conf)}${fld("电话","hf_phone",h.phone)}</div>
+    ${fld("房型 / 套餐","hf_room",h.room)}${fld("付款(如:已预付 C$816.03)","hf_prepaid",h.prepaid)}
+    ${geoRowHTML("hf")}
+    ${fld("当地地址","hf_addr",h.localAddress)}
+    <div class="f-row">${fld("城市","hf_city",h.city)}<div class="f"><label>归属</label><select id="hf_biz"><option value="business" ${h.biz==="business"?"selected":""}>公司</option><option value="personal" ${h.biz!=="business"?"selected":""}>私人</option></select></div></div>
+    <div class="f-row"><div class="f"><label>货币</label><select id="hf_cur">${Object.keys(CURRENCIES).map(c=>`<option ${c===h.currency?"selected":""}>${c}</option>`).join("")}</select></div><div class="f"><label>语言</label><select id="hf_lang">${Object.keys(LANGS).map(l=>`<option value="${l}" ${l===h.lang?"selected":""}>${LANGS[l].label}</option>`).join("")}</select></div></div>
+    <div class="f"><label>免费取消期限</label><input id="hf_cancelBy" type="date" value="${esc(h.cancelBy||"")}"></div>
+    <div class="f-row">${fld("纬度","hf_lat",h.lat,'type="number" step="any"')}${fld("经度","hf_lng",h.lng,'type="number" step="any"')}</div>
+    <input type="hidden" id="hf_map" value="${esc(h.mapUrl||"")}">
+    <div class="f"><label>备注</label><textarea id="hf_note" rows="3">${esc(h.note||"")}</textarea></div>
+    <div class="btns">${hid?`<button class="btn ghost" style="color:var(--danger)" onclick="if(confirm('删除这段住宿?')){del('hotels/${hid}');closeSheet()}">删除</button>`:""}<button class="btn indigo" onclick="saveHotel('${hid||""}')">保存</button></div>`);
+}
+function saveHotel(hid){
+  const v=k=>{ const el=$("#hf_"+k); return el?el.value.trim():""; }; const num=k=>{ const x=parseFloat(v(k)); return isNaN(x)?null:x; };
+  const h={...(hid?S.hotels[hid]:{}), name:v("name"), nameLocal:v("nameLocal")||null, checkIn:v("in"), checkOut:v("out"), inTime:v("inTime")||null, outTime:v("outTime")||null,
+    conf:v("conf")||null, phone:v("phone")||null, room:v("room")||null, prepaid:v("prepaid")||null, localAddress:v("addr")||null, city:v("city")||null, biz:v("biz"),
+    currency:v("cur"), lang:v("lang"), cancelBy:v("cancelBy")||null, lat:num("lat"), lng:num("lng"), mapUrl:v("map")||null, note:v("note")||null, edited:Date.now() };
+  if(!h.name||!h.checkIn||!h.checkOut){ toast("酒店名和日期不能为空"); return; }
+  Object.keys(h).forEach(k=>{ if(h[k]===null||h[k]==="") delete h[k]; });
+  save("hotels/"+(hid||uid()),h); closeSheet(); toast("已保存");
+}
+
+/* ---- 地点搜索(OpenStreetMap,免费无 key)---- */
+function geoRowHTML(prefix){
+  return `<div class="f"><label>搜索地点(自动填地址和坐标)</label>
+    <div class="geo-row"><input id="${prefix}_geoq" placeholder="店名/地名 + 城市" onkeydown="if(event.key==='Enter'){event.preventDefault();geoSearch('${prefix}')}"><button type="button" class="btn indigo" onclick="geoSearch('${prefix}')">搜索</button></div>
+    <div class="geo-row"><input id="${prefix}_gm" placeholder="或粘贴 Google Maps 分享链接"><button type="button" class="btn ghost" onclick="parseGmaps('${prefix}')">解析</button></div>
+    <div id="${prefix}_geores" class="geo-res"></div><div id="${prefix}_geook"></div></div>`;
+}
+function parseGmaps(prefix){
+  const raw=$("#"+prefix+"_gm").value.trim(); const um=raw.match(/https?:\/\/\S+/); if(!um){ toast("没有检测到链接"); return; }
+  const url=um[0]; let lat=null,lng=null; const cm=url.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)||url.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/)||url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if(cm){ lat=parseFloat(cm[1]); lng=parseFloat(cm[2]); }
+  const m=$("#"+prefix+"_map"); if(m) m.value=url;
+  if(lat!=null){ const a=$("#"+prefix+"_lat"),b=$("#"+prefix+"_lng"); if(a) a.value=lat.toFixed(6); if(b) b.value=lng.toFixed(6); }
+  $("#"+prefix+"_geook").innerHTML=`<div class="geo-ok">✓ 链接已保存,Google 导航将直达该图钉</div>`;
+}
+const COUNTRY_NAMES=["日本","대한민국","한국","中国"];
+function cleanLocalAddr(it){ return it.display_name.split(",").map(s=>s.trim()).filter(s=>s&&!COUNTRY_NAMES.includes(s)&&!/^\d{3}-?\d{4}$/.test(s)&&!/^\d{5}$/.test(s)).reverse().join(""); }
+async function geoSearch(prefix){
+  const qv=$("#"+prefix+"_geoq").value.trim(); if(!qv) return; const box=$("#"+prefix+"_geores"); box.innerHTML=`<div class="muted">搜索中…</div>`;
+  try{ const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=${defaultLang()}&q=${encodeURIComponent(qv)}`); const list=await r.json();
+    if(!list.length){ box.innerHTML=`<div class="muted">没有找到,试试加上城市名</div>`; return; } window._geoList=list;
+    box.innerHTML=list.map((it,i)=>`<div class="geo-item" onclick="geoPick('${prefix}',${i})"><b>${esc((it.name||it.display_name.split(",")[0]).trim())}</b><span>${esc(cleanLocalAddr(it))}</span></div>`).join("");
+  }catch(e){ box.innerHTML=`<div class="muted">搜索失败,请检查网络</div>`; }
+}
+function geoPick(prefix,i){
+  const it=window._geoList[i]; const a=$("#"+prefix+"_addr"); if(a) a.value=cleanLocalAddr(it);
+  const la=$("#"+prefix+"_lat"),ln=$("#"+prefix+"_lng"); if(la) la.value=(+it.lat).toFixed(6); if(ln) ln.value=(+it.lon).toFixed(6);
+  const nl=$("#"+prefix+"_nameLocal"); if(nl&&!nl.value.trim()) nl.value=(it.name||"").trim();
+  $("#"+prefix+"_geores").innerHTML=""; $("#"+prefix+"_geook").innerHTML=`<div class="geo-ok">✓ 已定位:${esc((it.name||"").slice(0,30))}</div>`;
+}
+
+/* ================= 花费 ================= */
+function sumBy(list,f){ return list.reduce((s,e)=>s+f(e),0); }
+function settleState(){
+  const ex=expList(), co=ex.filter(isCo);
+  return [
+    { t:"核对信用卡", ok: !ex.some(needsPaid), n: ex.filter(needsPaid).length },
+    { t:"补齐票据", ok: !co.some(e=>issuesOf(e).some(i=>["receipt","purpose","bizcad"].includes(i.k))), n: co.filter(e=>issuesOf(e).some(i=>["receipt","purpose","bizcad"].includes(i.k))).length },
+    { t:"确认公司归属", ok: co.length>0 && co.every(e=>e.confirmed), n: co.filter(e=>!e.confirmed).length },
+    { t:"导出报销包", ok: !!(S.trip&&S.trip.exportedAt), n: 0 }
+  ];
+}
+function renderMoney(){
+  if(expView==="settle"){ renderSettle(); return; }
+  const ex=expList(), co=ex.filter(isCo);
+  const coTot=sumBy(co,companyCAD), coConf=sumBy(co.filter(e=>e.confirmed),companyCAD), per=sumBy(ex,personalCAD);
+  const exact=ex.filter(e=>+e.paidCAD>0), fee=sumBy(exact,e=>e.paidCAD-estCAD(e)), pend=ex.filter(needsPaid);
+  const issues=ex.filter(e=>issuesOf(e).some(i=>i.k!=="paid"));
+  const st=settleState();
+  let h=`<div class="stat-grid">
+    <div class="stat"><div class="lb"><span class="dot b"></span>公司报销</div><div class="big">${c$(coTot)}</div><div class="sm">${co.length} 笔 · 已确认 ${c$(coConf)}</div></div>
+    <div class="stat"><div class="lb"><span class="dot p"></span>私人</div><div class="big">${c$(per)}</div><div class="sm">${ex.filter(e=>personalCAD(e)>0).length} 笔</div></div>
+    <div class="stat wide"><div class="lb"><span class="dot a"></span>预估 vs 实际支付</div>
+      <div class="sm" style="font-size:13px;color:var(--ink);margin-top:4px;">预估合计 <b>${c$(sumBy(ex,estCAD))}</b> · 入账合计 <b>${c$(sumBy(ex,cadOf))}</b></div>
+      <div class="sm">${exact.length} 笔按卡上实付入账${exact.length?`(比汇率估算${fee>=0?"多":"少"} ${c$(Math.abs(fee))},含银行手续费)`:""}${pend.length?` · <b style="color:var(--amber-dk)">${pend.length} 笔待对账</b>`:""}</div></div>
+  </div>
+  <div class="flow" onclick="goSettle()"><div style="flex:1"><b style="font-size:14px;">旅行结束结算</b><div class="muted">${st.map(s=>s.t).join(" → ")}</div><div class="fs">${st.map(s=>`<span class="${s.ok?"ok":s.n?"todo":""}"></span>`).join("")}</div></div>${ic("chevR")}</div>
+  <div class="quick" style="margin-top:14px;">
+    <button class="btn dark" style="flex:1.3" onclick="$('#receiptInput').click()">${ic("cam")} 拍收据</button>
+    <button class="btn ghost" style="flex:1" onclick="newExpense({})">${ic("plus")} 手动记一笔</button>
+  </div>
+  <div class="quick">
+    <input id="qAmt" type="number" inputmode="decimal" placeholder="金额">
+    <select id="qCur" style="flex:0 0 86px;">${curList().map(c=>`<option ${c===defaultCur()?"selected":""}>${c}</option>`).join("")}</select>
+    <input id="qMemo" placeholder="备注,如 便利店" style="flex:1.4">
+  </div>
+  <div class="quick" style="margin-top:0">
+    <select id="qPay" style="flex:0 0 108px;"><option value="card">刷卡</option><option value="cash">现金/IC</option></select>
+    <button class="btn b" style="flex:1" onclick="quickAdd('business')">存为公司${defaultType(today())==="business"?" ✓":""}</button>
+    <button class="btn p" style="flex:1" onclick="quickAdd('personal')">存为私人${defaultType(today())==="personal"?" ✓":""}</button>
+  </div>
+  <div class="chips" style="margin-top:8px;">
+    ${[["all","全部"],["co","公司"],["pers","私人"],["paid",`待对账 ${pend.length}`],["issue",`待补资料 ${issues.length}`]].map(([k,l])=>`<button class="fchip ${expFilter===k?"on":""}" onclick="expFilter='${k}';render()">${l}</button>`).join("")}
+    <button class="fchip ${expView==="cat"?"on":""}" onclick="expView=expView==='cat'?'date':'cat';expCat='';render()">${expView==="cat"?"按分类 ✓":"按分类"}</button>
+  </div>`;
+  let list=ex;
+  if(expFilter==="co") list=ex.filter(isCo); else if(expFilter==="pers") list=ex.filter(e=>e.type==="personal"||e.type==="mixed");
+  else if(expFilter==="paid") list=pend; else if(expFilter==="issue") list=issues;
+  if(expFilter==="paid"&&pend.length) h+=`<div class="hint">打开银行 App,按每笔的日期和金额找到加币扣款,填进去就行。</div>`;
+  if(expView==="cat"){
+    const groups=catGroups(list); const max=Math.max(...groups.map(g=>g.cad),1);
+    h+=`<div class="cat-card"><div class="hd"><span>分类汇总 · ${list.length} 笔</span><span>CAD</span></div>${groups.map(g=>`<div class="cat-row ${expCat===g.cat?"on":expCat?"dim":""}" onclick="expCat=expCat==='${q(g.cat)}'?'':'${q(g.cat)}';render()"><span class="cn">${esc(catLabel(g.cat))}</span><span class="bar"><i style="width:${(g.cad/max*100).toFixed(1)}%;background:var(--indigo)"></i></span><span class="ca">${g.exact?"":"≈"}${c$(g.cad)}<small>${g.list.length} 笔</small></span></div>`).join("")}</div>`;
+    groups.filter(g=>!expCat||g.cat===expCat).forEach(g=>{ h+=`<div class="grp-hd"><span class="gt">${esc(catLabel(g.cat))}</span><span class="muted">${c$(g.cad)}</span></div>`+g.list.map(e=>expRow(e,true)).join(""); });
+  }else{
+    const byDay={}; list.forEach(e=>{ (byDay[e.date||""]=byDay[e.date||""]||[]).push(e); });
+    Object.keys(byDay).sort().reverse().forEach(d=>{ h+=`<div class="grp-hd"><span class="gt">${d?dstr(d)+" 周"+weekday(d):"无日期"}</span><span class="muted">${c$(sumBy(byDay[d],cadOf))}</span></div>`+byDay[d].map(e=>expRow(e)).join(""); });
+  }
+  if(!list.length) h+=`<div class="empty">${expFilter==="paid"?"没有待对账的刷卡记录 ✓":expFilter==="issue"?"资料都齐了 ✓":"还没有记录"}</div>`;
+  $("#view").innerHTML=h;
+}
+function typeTag(e){ return e.type==="business"?'<span class="tag b">公司</span>':e.type==="mixed"?`<span class="tag b">公司 ${c$(companyCAD(e))}</span>`:'<span class="tag p">私人</span>'; }
+function expRow(e,showDate,withPaid){
+  const iss=issuesOf(e);
+  return `<div class="exp-item">
+    ${e.receipt?`<img class="thumb" src="${e.receipt}" onclick="viewPhoto(this.src)">`:`<div class="thumb-ph" onclick="attachReceipt('${e.id}')">${ic("cam")}</div>`}
+    <div class="mid" onclick="openExpenseForm('${e.id}')"><div class="m1">${esc(e.merchant||"(无备注)")}</div>
+      <div class="m2">${showDate?dstr(e.date)+" · ":""}${esc(e.category||"未分类")} ${typeTag(e)} ${iss.map(i=>`<span class="tag ${i.c}">${i.t}</span>`).join(" ")}${e.confirmed&&isCo(e)?'<span class="tag g">已确认</span>':""}</div>
+      ${e.detail?`<div class="m2" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;">${esc(e.detail)}</div>`:""}</div>
+    <div class="amt" onclick="openExpenseForm('${e.id}')"><div class="y">${fmtLocal(e.amountLocal,e.currency)}</div><div class="c">${cadTxt(e)}</div></div>
+  </div>${needsPaid(e)&&(withPaid||(expFilter==="paid"&&expView!=="settle"))?`<div class="rec-row"><input id="pd_${e.id}" type="number" inputmode="decimal" step="0.01" placeholder="卡上实付 C$(估 ${estCAD(e).toFixed(2)})"><button class="btn indigo" onclick="savePaidInline('${e.id}')">保存</button></div>`:""}`;
+}
+function savePaidInline(id){ const v=parseFloat($("#pd_"+id).value); if(!(v>0)){ toast("填卡上扣的加币金额"); return; } save("expenses/"+id+"/paidCAD",Math.round(v*100)/100); toast("已按实付入账 ✓"); }
+function quickAdd(type){
+  const a=parseFloat($("#qAmt").value); if(!a){ toast("请填写金额"); return; }
+  const cur=$("#qCur").value, d=today();
+  push("expenses",{ amountLocal:a, currency:cur, type, pay:$("#qPay").value, merchant:$("#qMemo").value.trim(), date:d, rate:rate(cur), ts:Date.now() });
+  toast(type==="business"?"已存入公司 · 记得补拍收据":"已存入私人");
+}
+function attachReceipt(id){ window._attachExp=id; $("#receiptAttach").click(); }
+$("#receiptAttach").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value=""; if(!f) return;
+  const b64=await compressImage(f,1400,0.6);
+  if(window._attachExp==="__form"){ window._ex.receipt=b64; window._ex.rhash=strHash(b64); const p=$("#ex_rcbox"); if(p) p.innerHTML=rcBox(); ocrInto(b64); return; }
+  const id=window._attachExp; if(!id) return; patch("expenses/"+id,{receipt:b64,rhash:strHash(b64)}); toast("票据已补上 ✓");
+});
+
+/* ---- 记账表单(新增 / 编辑共用) ---- */
+function curList(){ return (S&&S.trip&&S.trip.currencies&&S.trip.currencies.length)?S.trip.currencies:Object.keys(CURRENCIES); }
+function catOptions(sel){ const base=CATS_EXP.includes(sel)?CATS_EXP:(sel?[sel,...CATS_EXP]:["",...CATS_EXP]); return base.map(c=>`<option value="${esc(c)}" ${c===sel?"selected":""}>${c||"—"}</option>`).join(""); }
+function curOf(date){ const h=hotelOn(date); return (h&&h.currency)||defaultCur(); }
+function newExpense(preset){ openExpenseForm(null,preset||{}); }
+function newExpenseFromEvent(id){
+  const e=ev(id); if(!e) return;
+  const cat={food:"餐饮",hotel:"住宿",flight:"交通",train:"交通",transit:"交通"}[e.kind]||"";
+  const h=e.hotelId&&S.hotels[e.hotelId];
+  openExpenseForm(null,{ merchant:h?h.name:(e.nameLocal&&e.kind==="food"?e.title:e.title), date:e.date, category:cat, eventId:id, type:e.expType||e.biz||defaultType(e.date),
+    attendees:e.party||"", purpose:e.purpose||"", currency:curOf(e.date), detail:e.kind==="train"||e.kind==="flight"?`${e.from||""} → ${e.to||""}`:"" });
+}
+function rcBox(){ const x=window._ex; return x.receipt?`<img class="receipt-preview" src="${x.receipt}" onclick="viewPhoto(this.src)"><div class="dbtns" style="margin-top:6px;"><button class="pbtn" onclick="window._attachExp='__form';$('#receiptAttach').click()">${ic("cam")} 换一张</button></div>`
+  : `<button class="btn ghost full" onclick="window._attachExp='__form';$('#receiptAttach').click()">${ic("cam")} 拍收据 / 选照片${localStorage.getItem("jt_apikey")?"(自动识别金额)":""}</button>`; }
+function evOptions(date,sel){
+  const L=evList().filter(e=>isImportant(e)&&Math.abs(daysBetween(e.date,date||e.date))<=1);
+  return `<option value="">— 不关联</option>`+L.map(e=>`<option value="${e.id}" ${e.id===sel?"selected":""}>${dstr(e.date)} ${esc(e.time)} ${esc(e.title)}</option>`).join("");
+}
+function openExpenseForm(id,preset){
+  const e=id?{...S.expenses[id]}:{ date:today(), currency:defaultCur(), pay:"card", ...preset };
+  if(!id&&!e.type) e.type=suggestType(e.date,e.category,e.eventId);
+  window._ex={ id, receipt:e.receipt||null, rhash:e.rhash||null, type:e.type||"business", pay:e.pay||"card", suggest:e.suggest||null };
+  const sug=suggestType(e.date,e.category,e.eventId);
+  sheet(`<h3>${id?"编辑记录":"记一笔"}</h3>
+    <div id="ex_rcbox" style="margin-bottom:12px;">${rcBox()}</div>
+    <div id="ex_ocr"></div>
+    <div class="f-row"><div class="f"><label>收据金额</label><div style="display:flex;gap:6px;"><input id="ex_amt" type="number" inputmode="decimal" value="${e.amountLocal||""}" style="flex:1;min-width:0;" oninput="estUpd()">
+      <select id="ex_cur" style="width:86px;flex:0 0 auto;padding:10px 6px;" onchange="estUpd()">${curList().map(c=>`<option ${c===e.currency?"selected":""}>${c}</option>`).join("")}</select></div></div>
+      <div class="f" style="flex:0 0 140px;"><label>日期</label><input id="ex_date" type="date" value="${esc(e.date||"")}" onchange="estUpd()"></div></div>
+    <div class="f"><label>支付方式</label><div class="seg mini"><button type="button" id="ex_pc" onclick="window._ex.pay='card';estUpd()">${ic("card")} 刷卡</button><button type="button" id="ex_pm" onclick="window._ex.pay='cash';estUpd()">现金 / IC 卡</button></div></div>
+    <div class="f" id="ex_paidbox"><label>实际支付 · 卡上扣的加币(看银行 App 推送;不知道先空着)</label>
+      <input id="ex_paid" type="number" inputmode="decimal" step="0.01" value="${e.paidCAD||""}" placeholder="如 52.37" oninput="estUpd()"><div class="muted" id="ex_est" style="margin-top:4px;"></div></div>
+    <div class="f"><label>商家</label><input id="ex_mer" value="${esc(e.merchant||"")}"></div>
+    <div class="f-row"><div class="f"><label>分类</label><select id="ex_cat">${catOptions(e.category||"")}</select></div></div>
+    <div class="f"><label>明细(交通区间 / 品项等)</label><input id="ex_detail" value="${esc(e.detail||"")}"></div>
+    <div class="f"><label>关联行程</label><select id="ex_ev">${evOptions(e.date,e.eventId)}</select></div>
+    <div class="f"><label>归属 ${sug?`<span class="muted">· 建议:${sug==="business"?"公司":"私人"}${e.suggest&&e.suggest!==sug?` · Claude 认为:${e.suggest==="business"?"公司":"私人"}`:""}</span>`:""}</label>
+      <div class="seg"><button id="sg_business" onclick="typePick('business')">公司</button><button id="sg_personal" onclick="typePick('personal')">私人</button><button id="sg_mixed" onclick="typePick('mixed')">部分公司</button></div></div>
+    <div id="ex_cobox">
+      <div class="f" id="ex_mixbox"><label>公司承担 C$(如回程机票:只报相当于原定回程的部分)</label><input id="ex_bizcad" type="number" inputmode="decimal" step="0.01" value="${e.bizCAD||""}"></div>
+      <div class="f"><label>商务目的</label><input id="ex_purpose" value="${esc(e.purpose||"")}" placeholder="如:与供应商洽谈 2027 年采购"></div>
+      <div class="f"><label>同席 / 参与人</label><input id="ex_att" value="${esc(e.attendees||"")}" placeholder="如:2 位 · 本人 + ○○ 社 田中"></div>
+      <label style="font-size:13px;display:flex;gap:8px;align-items:center;margin-bottom:8px;"><input type="checkbox" id="ex_norc" ${e.noReceipt?"checked":""}> 没有纸质收据(用确认邮件/账单截图代替)</label>
+      <label style="font-size:13px;display:flex;gap:8px;align-items:center;margin-bottom:8px;"><input type="checkbox" id="ex_conf" ${e.confirmed?"checked":""}> 已确认归属公司</label>
+    </div>
+    <div class="btns">${id?`<button class="btn ghost" style="color:var(--danger)" onclick="if(confirm('删除这笔记录?')){del('expenses/${id}');closeSheet()}">删除</button>`:""}<button class="btn indigo" onclick="saveExpense()">保存</button></div>`);
+  typePick(window._ex.type); estUpd();
+}
+function typePick(t){ window._ex.type=t; ["business","personal","mixed"].forEach(k=>{ const b=$("#sg_"+k); if(b) b.className=k===t?"on "+(k==="business"?"b":k==="personal"?"p":"m"):""; });
+  const cb=$("#ex_cobox"); if(cb) cb.classList.toggle("hidden",t==="personal"); const mb=$("#ex_mixbox"); if(mb) mb.classList.toggle("hidden",t!=="mixed"); }
+function estUpd(){
+  const x=window._ex; if(!x) return; const pay=x.pay;
+  const c=$("#ex_pc"),m=$("#ex_pm"); if(c) c.className=pay==="card"?"on":""; if(m) m.className=pay==="cash"?"on":"";
+  const cur=$("#ex_cur").value; $("#ex_paidbox").classList.toggle("hidden",pay!=="card"||cur==="CAD");
+  const amt=parseFloat($("#ex_amt").value)||0, paid=parseFloat($("#ex_paid").value)||0, est=amt*rate(cur), el=$("#ex_est");
+  if(!amt){ el.textContent=""; return; }
+  el.textContent = paid ? `预估 C$${est.toFixed(2)} · 实付 C$${paid.toFixed(2)} · 实际汇率 1 ${cur} = C$${(paid/amt).toFixed(cur==="USD"?4:5)} · 差 C$${(paid-est).toFixed(2)}(手续费/汇差)` : `预估约 C$${est.toFixed(2)}(按今日汇率)· 实付待补`;
+}
+function findDuplicate(rec,selfId){
+  return expList().find(o=>o.id!==selfId && ( (rec.rhash&&o.rhash===rec.rhash) || (o.date===rec.date && o.currency===rec.currency && Math.abs((+o.amountLocal||0)-rec.amountLocal)<0.005) ));
+}
+function saveExpense(){
+  const x=window._ex, id=x.id, old=id?S.expenses[id]:{};
+  const a=parseFloat($("#ex_amt").value); if(!a){ toast("请填写金额"); return; }
+  const cur=$("#ex_cur").value; const paid=parseFloat($("#ex_paid").value);
+  const rec={ ...old, amountLocal:a, currency:cur, date:$("#ex_date").value, pay:x.pay, merchant:$("#ex_mer").value.trim(), category:$("#ex_cat").value,
+    detail:$("#ex_detail").value.trim(), eventId:$("#ex_ev").value||null, type:x.type, rate:old.rate||rate(cur), ts:old.ts||Date.now(),
+    paidCAD:(x.pay==="card"&&cur!=="CAD"&&paid>0)?Math.round(paid*100)/100:null, receipt:x.receipt||null, rhash:x.rhash||null };
+  if(x.type!=="personal"){ rec.purpose=$("#ex_purpose").value.trim()||null; rec.attendees=$("#ex_att").value.trim()||null; rec.noReceipt=$("#ex_norc").checked||null; rec.confirmed=$("#ex_conf").checked||null; }
+  else { rec.purpose=rec.attendees=rec.noReceipt=rec.confirmed=null; }
+  rec.bizCAD = x.type==="mixed" ? (parseFloat($("#ex_bizcad").value)||null) : null;
+  const dup=findDuplicate(rec,id);
+  if(dup && !confirm(`可能重复:${dstr(dup.date)} ${dup.merchant||""} ${fmtLocal(dup.amountLocal,dup.currency)} 已经记过${dup.rhash&&dup.rhash===rec.rhash?"(同一张收据)":""}。\n仍要保存吗?`)) return;
+  Object.keys(rec).forEach(k=>{ if(rec[k]===null||rec[k]==="") delete rec[k]; });
+  if(id) save("expenses/"+id,rec); else push("expenses",rec);
+  closeSheet(); window._ex=null;
+  toast(rec.paidCAD?`已保存 · 按实付 C$${rec.paidCAD.toFixed(2)} 入账`:(x.pay==="card"&&cur!=="CAD"?"已保存 · 实付可稍后补":"已保存"));
+}
+
+/* ---- 收据识别 ---- */
+$("#receiptInput").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value=""; if(!f) return;
+  const b64=await compressImage(f,1400,0.6);
+  openExpenseForm(null,{ receipt:b64, rhash:strHash(b64) });
+  window._ex.receipt=b64; window._ex.rhash=strHash(b64); $("#ex_rcbox").innerHTML=rcBox();
+  ocrInto(b64);
+});
+async function ocrInto(b64){
+  if(!localStorage.getItem("jt_apikey")){ $("#ex_ocr").innerHTML=`<div class="muted" style="margin:-4px 0 10px;">在设置里填 Claude API key,拍照后可自动识别金额与商家</div>`; return; }
+  if($("#ex_amt").value){ return; }
+  $("#ex_ocr").innerHTML=`<div class="hint blue">Claude 正在识别收据…</div>`;
+  const d=$("#ex_date").value||today(); const curs=curList();
+  const evs=evList().filter(e=>isImportant(e)&&Math.abs(daysBetween(e.date,d))<=1).map(e=>`${e.id}: ${e.date} ${e.time} ${e.title}`).join("\n");
+  try{
+    const txt=await askClaude([{type:"image",source:{type:"base64",media_type:"image/jpeg",data:b64.split(",")[1]}},
+      {type:"text",text:`这是一张旅行中的收据,货币是 ${curs.join("/")} 之一。今天大约是 ${d}。附近的行程(id: 日期 时间 标题):\n${evs||"无"}\n只返回 JSON:{"amount":数字(含税总额),"currency":"${curs.join("|")}","merchant":"商家名","date":"YYYY-MM-DD","category":"${CATS_EXP.join("|")}","detail":"一句话明细(交通写区间,没有就结合行程推断并标注(推断))","pay":"card|cash(有 クレジット/カード/VISA/신용카드/승인 等选 card;現金/お釣り/현금/交通IC卡 选 cash;看不出选 card)","eventId":"能对上的行程 id,对不上留空","suggest":"business|personal"}`}],500);
+    const p=parseJSON(txt);
+    const set=(id,v)=>{ const el=$("#"+id); if(el&&v!=null&&v!==""&&!el.value) el.value=v; };
+    set("ex_amt",p.amount); if(p.currency&&curs.includes(p.currency)) $("#ex_cur").value=p.currency;
+    set("ex_mer",p.merchant); if(p.date) $("#ex_date").value=p.date; if(p.category&&CATS_EXP.includes(p.category)) $("#ex_cat").value=p.category; set("ex_detail",p.detail);
+    window._ex.pay=p.pay==="cash"?"cash":"card";
+    if(p.eventId&&S.events[p.eventId]){ $("#ex_ev").innerHTML=evOptions(p.date||d,p.eventId); }
+    const sug=suggestType(p.date||d,p.category,p.eventId||null); typePick(sug); window._ex.suggest=p.suggest;
+    $("#ex_ocr").innerHTML=`<div class="hint blue">已识别 · 请核对金额${p.suggest&&p.suggest!==sug?` · Claude 认为这笔更像${p.suggest==="business"?"公司":"私人"}`:""}</div>`;
+    estUpd();
+  }catch(e){ $("#ex_ocr").innerHTML=`<div class="hint">识别失败:${esc(e.message)} · 请手动填写</div>`; }
+}
+
+/* ---- 结算向导 ---- */
+function goSettle(){ expView="settle"; goTab("money"); }
+function renderSettle(){
+  const ex=expList(), co=ex.filter(isCo), st=settleState();
+  const pend=ex.filter(needsPaid);
+  const miss=co.filter(e=>issuesOf(e).some(i=>["receipt","purpose","bizcad"].includes(i.k)));
+  const unconf=co.filter(e=>!e.confirmed);
+  const persInBiz=ex.filter(e=>e.type==="personal"&&inBiz(e.date));
+  const step=(i,body)=>`<div class="step"><div class="sh"><span class="sn ${st[i].ok?"ok":""}">${st[i].ok?"✓":i+1}</span>${st[i].t}${st[i].n?` <span class="tag w">${st[i].n}</span>`:""}</div>${body}</div>`;
+  let h=`<button class="back" onclick="expView='date';render()">${ic("back")} 花费</button>
+    <div class="bigdate" style="font-size:22px;margin:4px 2px 2px;">旅行结束结算</div>
+    <div class="muted" style="margin:0 2px 14px;">公司报销 ${c$(sumBy(co,companyCAD))} · ${co.length} 笔 · 私人 ${c$(sumBy(ex,personalCAD))}</div>`;
+  h+=step(0,`<div class="sd">对着信用卡账单,把每笔刷卡的加币扣款填上。填了就按实付入账。</div>${pend.length?pend.map(e=>expRow(e,true,true)).join(""):`<div class="muted" style="margin-left:34px;">全部对上了 ✓</div>`}`);
+  h+=step(1,`<div class="sd">公司报销的每一笔都要有票据;餐饮还要写商务目的和同席的人。</div>${miss.length?miss.map(e=>`${expRow(e,true)}<div class="dbtns" style="margin:-4px 0 10px 50px;">${!e.receipt&&!e.noReceipt?`<button class="pbtn warn" onclick="attachReceipt('${e.id}')">${ic("cam")} 补拍票据</button>`:""}<button class="pbtn" onclick="openExpenseForm('${e.id}')">${ic("edit")} 补资料</button></div>`).join(""):`<div class="muted" style="margin-left:34px;">资料齐全 ✓</div>`}`);
+  h+=step(2,`<div class="sd">不只看日期:出差期的退房账单、部分报销的机票都在这里确认。</div>
+    ${unconf.length?unconf.map(e=>`<div class="check" onclick="save('expenses/${e.id}/confirmed',true)"><span class="ck">${""}</span><div style="flex:1"><div class="ct">${dstr(e.date)} ${esc(e.merchant||"")} · ${esc(fmtLocal(e.amountLocal,e.currency))}</div><div class="cd">${e.type==="mixed"?"部分公司 "+c$(companyCAD(e)):"公司 "+c$(companyCAD(e))}${inBiz(e.date)?"":bizJustified(e)?" · 期外但属出差(关联行程/住宿)":" · 出差期外"}${e.purpose?" · "+esc(e.purpose):""}</div></div></div>`).join("")+`<button class="btn ghost full" style="margin-top:8px;" onclick="confirmAll()">全部确认</button>`:`<div class="muted" style="margin-left:34px;">${co.length?"都确认了 ✓":"还没有公司报销记录"}</div>`}
+    ${persInBiz.length?`<details class="more" style="margin-left:34px;"><summary>出差期内记为私人的 ${persInBiz.length} 笔(检查有没有漏报)</summary>${persInBiz.map(e=>expRow(e,true)).join("")}</details>`:""}`);
+  h+=step(3,`<div class="sd">打包:报销单 + 费用明细 CSV + 出差行程单 + 原始票据 + 说明。${S.trip.exportedAt?"上次导出 "+new Date(S.trip.exportedAt).toLocaleString():""}</div>
+    <button class="btn dark full" onclick="exportZip()">${ic("save")} 一键导出报销包(ZIP)</button>
+    <div class="dbtns"><button class="pbtn" onclick="exportCSV()">费用明细 CSV</button><button class="pbtn" onclick="exportReport()">报销单</button><button class="pbtn" onclick="exportItinerary()">出差行程单</button></div>
+    <div class="muted" style="margin-top:10px;line-height:1.6;">内部整理记录,非 CRA 认证;是否可报销 / 税前扣除以会计判断为准。</div>`);
+  $("#view").innerHTML=h;
+}
+function confirmAll(){ expList().filter(e=>isCo(e)&&!e.confirmed).forEach(e=>write("expenses/"+e.id+"/confirmed",true)); toast("已全部确认 ✓"); }
+
+/* ---- 导出 ---- */
+function csvCell(t){ return `"${(t==null?"":String(t)).replace(/"/g,'""')}"`; }
+function rcName(e,i){ return `receipts/${(e.date||"").replace(/-/g,"")}-${String(i).padStart(2,"0")}-${(e.merchant||"receipt").replace(/[\\/:*?"<>|\s]+/g,"_").slice(0,24)}.jpg`; }
+function receiptFiles(){ const m={}; let i=0; expList().slice().reverse().forEach(e=>{ if(e.receipt) m[e.id]=rcName(e,++i); }); return m; }
+function buildCSV(rcMap){
+  rcMap=rcMap||{};
+  const ex=expList().slice().reverse();
+  let csv="﻿日期,商家,分类,明细,归属,公司承担CAD,私人CAD,支付方式,货币,收据金额,记账汇率,预估CAD,卡上实付CAD,入账CAD,入账依据,商务目的,同席,关联行程,已确认,票据\n";
+  ex.forEach(e=>{ const cur=e.currency||defaultCur(); const evt=e.eventId&&S.events[e.eventId];
+    csv+=[e.date||"",csvCell(e.merchant),csvCell(e.category),csvCell(e.detail),e.type==="business"?"公司":e.type==="mixed"?"部分公司":"私人",
+      companyCAD(e).toFixed(2),personalCAD(e).toFixed(2),e.pay==="card"?"刷卡":"现金/IC卡",cur,e.amountLocal,cur==="CAD"?"1":(e.rate||rate(cur)).toFixed(cur==="USD"?4:5),
+      estCAD(e).toFixed(2),+e.paidCAD>0?(+e.paidCAD).toFixed(2):"",cadOf(e).toFixed(2),basisOf(e),csvCell(e.purpose),csvCell(e.attendees),csvCell(evt?evt.title:""),
+      isCo(e)?(e.confirmed?"是":"否"):"",csvCell(rcMap[e.id]||(e.noReceipt?"(以确认邮件代替)":""))].join(",")+"\n"; });
+  const co=ex.filter(isCo);
+  csv+=`\n公司承担合计,,,,,${sumBy(co,companyCAD).toFixed(2)}\n私人合计,,,,,,${sumBy(ex,personalCAD).toFixed(2)}\n`;
+  csv+=`\n公司 · 分类小计,笔数,,,,公司承担CAD\n`; catGroups(co,companyCAD).forEach(g=>{ csv+=`${csvCell(g.cat)},${g.list.length},,,,${g.cad.toFixed(2)}\n`; });
+  const pn=ex.filter(needsPaid).length; if(pn) csv+=`\n注意:还有 ${pn} 笔刷卡未填卡上实付,入账CAD 暂按汇率估算\n`;
+  return csv;
+}
+function exportCSV(){ dl(new Blob([buildCSV(receiptFiles())],{type:"text/csv"}),fileStem()+"-费用明细.csv"); }
+const DOC_CSS=`body{font-family:'Zen Kaku Gothic New','Hiragino Sans','PingFang SC',sans-serif;padding:28px;color:#23262D;max-width:960px;margin:0 auto;}h1{font-size:20px;margin-bottom:4px;}h2{font-size:15px;margin:20px 0 6px;}
+table{border-collapse:collapse;width:100%;font-size:12.5px;}td,th{border-bottom:1px solid #e5e2da;padding:7px 8px;text-align:left;vertical-align:top;}th{background:#f5f3ec;}tr.gh td{background:#f5f3ec;font-weight:700;}
+.r{text-align:right;white-space:nowrap;}.s{color:#888;font-size:11px;}.foot{color:#777;font-size:12px;margin-top:18px;line-height:1.7;}`;
+function reportHTML(rcMap){
+  const ex=expList().slice().reverse().filter(isCo); const T=S.trip;
+  const groups=catGroups(ex,companyCAD); let n=0;
+  const rows=groups.map(g=>`<tr class="gh"><td colspan="8">${esc(catLabel(g.cat))} · ${g.list.length} 笔 · 公司承担 ${c$(g.cad)}</td></tr>`+g.list.sort((a,b)=>(a.date||"").localeCompare(b.date||"")).map(e=>{
+    const img=rcMap?(rcMap[e.id]?`<a href="${rcMap[e.id]}">${rcMap[e.id].split("/")[1]}</a>`:(e.noReceipt?"确认邮件":"<b style='color:#B03A2E'>缺</b>")):(e.receipt?`<img src="${e.receipt}" style="max-width:260px;max-height:320px;border:1px solid #ddd;border-radius:6px;">`:(e.noReceipt?"确认邮件":"<b style='color:#B03A2E'>缺</b>"));
+    return `<tr><td>${++n}</td><td>${e.date||""}</td><td>${esc(e.merchant||"")}${e.detail?`<div class="s">${esc(e.detail)}</div>`:""}</td><td>${esc(e.purpose||"")}${e.attendees?`<div class="s">同席:${esc(e.attendees)}</div>`:""}</td>
+    <td class="r">${fmtLocal(e.amountLocal,e.currency)}<div class="s">${e.currency==="CAD"?"":"汇率 "+(e.rate||rate(e.currency)).toFixed(5)}</div></td><td class="r">${c$(cadOf(e))}<div class="s">${basisOf(e)}</div></td>
+    <td class="r"><b>${c$(companyCAD(e))}</b>${e.type==="mixed"?`<div class="s">部分公司</div>`:""}</td><td>${img}</td></tr>`; }).join("")).join("");
+  const pn=ex.filter(needsPaid).length;
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>差旅报销单</title><style>${DOC_CSS}</style></head><body>
+  <h1>${esc(T.title||"")} · 差旅报销单</h1>
+  <p>出行人:${esc(T.traveler||"")} · 出差期 ${esc(T.bizStart||T.start)} 至 ${esc(T.bizEnd||T.end)}<br>商务目的:${esc(T.purpose||"(未填)")}<br>导出时间:${new Date().toLocaleString()}</p>
+  <h2>分类汇总</h2><table style="width:auto;min-width:340px;"><tr><th>分类</th><th class="r">笔数</th><th class="r">公司承担 CAD</th></tr>${groups.map(g=>`<tr><td>${esc(catLabel(g.cat))}</td><td class="r">${g.list.length}</td><td class="r">${c$(g.cad)}</td></tr>`).join("")}
+  <tr><td><b>合计</b></td><td class="r"><b>${ex.length}</b></td><td class="r"><b>${c$(sumBy(ex,companyCAD))}</b></td></tr></table>
+  <h2>明细</h2><table><tr><th>#</th><th>日期</th><th>商家</th><th>商务目的</th><th class="r">收据金额</th><th class="r">入账 CAD</th><th class="r">公司承担</th><th>票据</th></tr>${rows}</table>
+  <div class="foot">汇率依据:刷卡且已填卡上实付的,按信用卡实际扣款入账(含银行手续费);现金/IC 卡及未对账的刷卡,按记账当天汇率估算(frankfurter.dev / 手动汇率)。${pn?`<br><b style="color:#8A4225;">尚有 ${pn} 笔刷卡未填实付,以信用卡账单为准。</b>`:""}
+  <br>内部整理记录,非 CRA 认证;是否可报销 / 税前扣除以会计判断为准。</div></body></html>`;
+}
+function exportReport(){ if(!expList().some(isCo)){ toast("还没有公司报销记录"); return; } dl(new Blob([reportHTML(null)],{type:"text/html"}),fileStem()+"-报销单.html"); toast("已下载报销单(打开后可打印成 PDF)"); }
+function itineraryHTML(){
+  const T=S.trip; const evs=evList().filter(e=>e.biz==="business"&&isImportant(e));
+  const rows=evs.map(e=>`<tr><td>${e.date}(周${weekday(e.date)})</td><td>${esc(e.time||"")}${e.tz&&e.tz!==TZ?` <span class="s">${esc(tzName(e.tz))}</span>`:""}</td><td>${esc(evTitle(e))}${e.sub?`<div class="s">${esc(e.sub)}</div>`:""}</td><td>${esc(e.localAddress||e.fromPlace||"")}</td></tr>`).join("");
+  const hs=hotelsList().filter(h=>h.biz==="business").map(h=>`<tr><td>${h.checkIn} → ${h.checkOut}</td><td colspan="3">${esc(h.name)} · ${esc(h.localAddress||"")}</td></tr>`).join("");
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>出差行程单</title><style>${DOC_CSS}</style></head><body>
+  <h1>出差行程单 · Business Travel Itinerary</h1><div class="s">${esc(T.title||"")} · ${esc(T.start)} 至 ${esc(T.end)} · ${esc(T.city||"")}</div>
+  <p style="line-height:1.9">出行人 Traveler:${esc(T.traveler||"")}<br>出差目的 Purpose:${esc(T.purpose||"(未填)")}<br>出差期 Business period:${esc(T.bizStart||T.start)} 至 ${esc(T.bizEnd||T.end)}(其余日期为私人行程,相关费用另行记录,不计入报销)</p>
+  <h2>商务行程</h2><table><tr><th>日期</th><th>时间</th><th>事项</th><th>地点</th></tr>${rows}</table>
+  <h2>出差住宿</h2><table>${hs}</table>
+  <div class="foot">生成时间:${new Date().toLocaleString()} · 与「差旅报销单」「费用明细」配套存档。<br>内部整理记录,非 CRA 认证;是否可报销 / 税前扣除以会计判断为准。</div></body></html>`;
+}
+function exportItinerary(){ dl(new Blob([itineraryHTML()],{type:"text/html"}),fileStem()+"-出差行程单.html"); toast("已下载出差行程单"); }
+function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=()=>rej(new Error("加载失败")); document.head.appendChild(s); }); }
+async function exportZip(){
+  toast("正在打包…",2500);
+  try{ if(!window.JSZip) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"); }
+  catch(e){ toast("打包工具没加载(没网?)· 改为分别下载",4000); exportCSV(); exportReport(); exportItinerary(); return; }
+  const zip=new JSZip(), rc=receiptFiles();
+  zip.file("报销单.html",reportHTML(rc)); zip.file("费用明细.csv",buildCSV(rc)); zip.file("出差行程单-CRA存档.html",itineraryHTML());
+  expList().forEach(e=>{ if(e.receipt&&rc[e.id]) zip.file(rc[e.id],e.receipt.split(",")[1],{base64:true}); });
+  const ex=expList(), co=ex.filter(isCo);
+  zip.file("说明.txt",[`${S.trip.title} · 报销包`,`导出时间:${new Date().toLocaleString()}`,`出行人:${S.trip.traveler||""}`,`出差期:${S.trip.bizStart||S.trip.start} 至 ${S.trip.bizEnd||S.trip.end}`,`商务目的:${S.trip.purpose||"(未填)"}`,"",
+    `公司承担合计:${c$(sumBy(co,companyCAD))}(${co.length} 笔,已确认 ${co.filter(e=>e.confirmed).length} 笔)`,`私人合计:${c$(sumBy(ex,personalCAD))}`,`未对账刷卡:${ex.filter(needsPaid).length} 笔`,`缺票据:${co.filter(e=>!e.receipt&&!e.noReceipt).length} 笔`,"",
+    "文件:","  报销单.html —— 公司承担部分,按分类分组,链接到 receipts/ 里的原始票据","  费用明细.csv —— 全部花费(公司+私人),含汇率、实付、入账依据","  出差行程单-CRA存档.html —— 出差期的商务行程与住宿(文件名中的 CRA 仅表示存档用途)","  receipts/ —— 原始票据照片(日期-序号-商家.jpg)","",
+    "汇率依据:刷卡已填卡上实付的按实际扣款;其余按记账当天汇率估算。","","内部整理记录,非 CRA 认证;是否可报销 / 税前扣除以会计判断为准。"].join("\r\n"));
+  const blob=await zip.generateAsync({type:"blob"});
+  dl(blob,`${fileStem()}-报销包-${today()}.zip`); save("trip/exportedAt",Date.now()); toast("报销包已下载 ✓");
+}
+
+/* ================= 地图(不自建地图:把正确的目的地和路线交给 Google / Apple 地图) ================= */
+function stopsOf(d){
+  const stops=[]; const add=(s)=>{ if(!s||!s.name) return; const last=stops[stops.length-1]; if(last&&last.name===s.name) return; stops.push(s); };
+  const last=hotelOn(addDays(d,-1)); if(last) add({name:last.name, o:last, kind:"hotel", note:"出发"});
+  arrivalsOn(d).forEach(a=>add({name:a.toPlace||a.to, o:{name:a.toPlace||a.to,localAddress:a.toPlace||""}, kind:a.kind, note:`${a.endTime} ${a.title} 抵达`, via:a}));
+  evOn(d).forEach(e=>{
+    if(e.kind==="transit"){ if(stops.length) stops[stops.length-1].legOut=e; return; }
+    if(e.kind==="flight"||e.kind==="train"){
+      add({name:e.fromPlace||e.from, o:{name:e.fromPlace||e.from,localAddress:e.fromPlace||"",lang:e.lang}, kind:e.kind, note:`${e.time} ${e.title} 出发`, ev:e});
+      stops[stops.length-1].ride=e;
+      if(!e.endDate||e.endDate===d) add({name:e.toPlace||e.to, o:{name:e.toPlace||e.to,localAddress:e.toPlace||"",lang:e.lang}, kind:e.kind, note:`${e.endTime} 抵达`, ev:e});
+      return;
+    }
+    const o=e.kind==="hotel"&&e.hotelId&&S.hotels[e.hotelId]?S.hotels[e.hotelId]:e;
+    add({name:o.nameLocal||o.name||e.title, o, kind:e.kind, note:`${e.time} ${e.title}`, ev:e});
+  });
+  const h=hotelOn(d); if(h) add({name:h.name, o:h, kind:"hotel", note:"今晚住宿"});
+  return stops;
+}
+function renderMap(){
+  const days=tripDays(); const t=today(); if(!mapDay||!days.includes(mapDay)) mapDay=days.includes(t)?t:days[0];
+  let h=`<div class="day-pills">${days.map(d=>`<button class="pill ${d===mapDay?"on":""}" onclick="mapDay='${d}';render()"><b>${dstr(d)}</b><small>周${weekday(d)}</small></button>`).join("")}</div>`;
+  const stops=stopsOf(mapDay);
+  const app=mapApp();
+  h+=`<div class="sec-h" style="margin-top:6px;"><h2>${dstr(mapDay)} 路线</h2>
+    <div class="seg mini" style="width:150px;">${["google","apple"].map(a=>`<button class="${app===a?"on":""}" onclick="localStorage.setItem('jt_mapapp','${a}');render()">${a==="google"?"Google":"Apple"}</button>`).join("")}</div></div>`;
+  if(!stops.length) h+=`<div class="empty">这天没有地点</div>`;
+  else{
+    h+=`<div class="rowlist" style="padding:4px 14px;">`;
+    stops.forEach((s,i)=>{
+      const nx=stops[i+1];
+      h+=`<div class="stop"><span class="num ${s.kind==="hotel"?"h":""}">${i+1}</span><div class="sm"><div class="sn">${esc(s.name)}</div><div class="ss">${esc(s.note||"")}${s.o&&s.o.localAddress&&s.o.localAddress!==s.name?" · "+esc(s.o.localAddress):""}</div>
+        <div class="dbtns" style="margin-top:6px;"><button class="pbtn hot" onclick="openUrl('${q(navUrl(s.o))}')">${ic("nav")} 导航</button>${s.o&&s.o.localAddress&&s.kind!=="flight"&&s.kind!=="train"?`<button class="pbtn" onclick="openTaxi('${q(s.o.nameLocal||s.name)}','${q(s.o.localAddress)}','${langOf(s.o)}')">${ic("taxi")} 打车卡</button>`:""}${langOf(s.o)==="ko"?`<button class="pbtn" onclick="openUrl('${q(navUrl(s.o,"naver"))}')">Naver</button>`:""}</div></div></div>`;
+      if(nx){
+        if(s.ride) h+=`<div class="leg"><span class="chip">${ic(KIND[s.ride.kind].icon)} ${esc(s.ride.title)} ${esc(s.ride.time)}–${esc(s.ride.endTime||"")}</span></div>`;
+        else { const lg=s.legOut; const mode=lg?lg.mode:"taxi"; const md=MODE[mode]||MODE.taxi;
+          h+=`<div class="leg"><span class="lnk" style="font-size:13px;color:var(--indigo);cursor:pointer;" onclick="openUrl('${q(dirUrl(s.o,nx.o,mode))}')">${ic(md[1])} ${md[0]}路线${lg&&lg.durMax?` · 约 ${lg.durMin||lg.durMax}–${lg.durMax} 分钟`:""}${lg?" · "+esc(lg.time)+" 出发":""} ›</span></div>`; }
+      }
+    });
+    h+=`</div>`;
+  }
+  // 收藏地点
+  const CATS=["全部","餐厅","咖啡","甜品","采购","景点","购物"];
+  const ps=Object.entries(S.places||{}).map(([id,p])=>({...p,id}));
+  let list=placeFilter==="全部"?ps:ps.filter(p=>p.category===placeFilter);
+  if(userPos) list.forEach(p=>{ if(p.lat&&p.lng) p._d=haversine(userPos,p); });
+  list.sort((a,b)=>(a._d??999)-(b._d??999)||(a.name>b.name?1:-1));
+  h+=`<div class="sec-h"><h2>收藏地点</h2><button class="lnk" onclick="openPlaceForm()">＋ 添加</button></div>
+    <div class="chips">${CATS.map(c=>`<button class="fchip ${c===placeFilter?"on":""}" onclick="placeFilter='${c}';render()">${c}</button>`).join("")}<button class="fchip" onclick="locate()">${userPos?"重新定位":"按距离排序"}</button></div>`;
+  h+=list.length?list.map(placeCard).join(""):`<div class="empty">还没有收藏地点 · 看到想去的店就加进来</div>`;
+  $("#view").innerHTML=h;
+}
+function haversine(a,b){ const R=6371,r=x=>x*Math.PI/180; const dLat=r(b.lat-a.lat),dLng=r(b.lng-a.lng); const x=Math.sin(dLat/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dLng/2)**2; return 2*R*Math.asin(Math.sqrt(x)); }
+function locate(){ if(!navigator.geolocation){ toast("此设备不支持定位"); return; } toast("定位中…",1500);
+  navigator.geolocation.getCurrentPosition(p=>{ userPos={lat:p.coords.latitude,lng:p.coords.longitude}; render(); },()=>toast("定位失败,请检查权限"),{enableHighAccuracy:true,timeout:8000}); }
+function placeCard(p){
+  const open=openPlaceId===p.id;
+  return `<div class="place"><div class="row1" onclick="openPlaceId=openPlaceId==='${p.id}'?null:'${p.id}';render()">
+    <div><div class="nm">${esc(p.name)}${p.visited?' <span class="tag g">去过</span>':""}</div><div class="cat">${esc(p.category||"")}${p.nameLocal?" · "+esc(p.nameLocal):""}</div></div>
+    ${p._d!=null?`<div class="dist">${p._d<1?Math.round(p._d*1000)+" m":p._d.toFixed(1)+" km"}</div>`:""}</div>
+    <div class="p-actions"><button class="pbtn hot" onclick="openUrl('${q(navUrl(p))}')">${ic("nav")} 导航</button>
+      ${p.localAddress?`<button class="pbtn" onclick="openTaxi('${q(p.nameLocal||p.name)}','${q(p.localAddress)}','${langOf(p)}')">${ic("taxi")} 打车卡</button>`:""}
+      <button class="pbtn" onclick="addPlaceToDay('${p.id}')">${ic("plus")} 加入行程</button>
+      <button class="pbtn" onclick="save('places/${p.id}/visited',${!p.visited})">${p.visited?"取消去过":"✓ 去过"}</button></div>
+    ${open?`<textarea class="note" style="margin-top:10px;" placeholder="笔记:口味 / 定价 / 值得学的地方" onchange="save('places/${p.id}/note',this.value.trim())">${esc(p.note||"")}</textarea>
+      <div class="p-actions"><button class="pbtn" onclick="openPlaceForm('${p.id}')">${ic("edit")} 编辑</button><button class="pbtn" style="color:var(--danger)" onclick="if(confirm('删除?')){del('places/${p.id}');openPlaceId=null}">删除</button></div>`:""}
+  </div>`;
+}
+function addPlaceToDay(id){
+  const p=S.places[id]; const d=mapDay||today(); const tz=curTz();
+  const e={ date:d, time:hm(NOW(),tz), tz, kind:/餐厅|甜品|咖啡/.test(p.category||"")?"food":"activity", title:p.name, nameLocal:p.nameLocal||null, localAddress:p.localAddress||null, lat:p.lat||null, lng:p.lng||null, mapUrl:p.mapUrl||null, lang:p.lang||defaultLang(), biz:defaultType(d), note:p.note||null };
+  Object.keys(e).forEach(k=>{ if(e[k]==null) delete e[k]; });
+  push("events",e); logChange(d,`加入:${p.name}`); toast(`已加入 ${dstr(d)} 的行程,可在「行程」里改时间`);
+}
+function openPlaceForm(id){
+  const p=id?{...S.places[id]}:{category:"餐厅"};
+  sheet(`<h3>${id?"编辑地点":"收藏地点"}</h3>${fld("名称","pl_name",p.name)}${geoRowHTML("pl")}${fld("当地名称","pl_nameLocal",p.nameLocal)}
+    <div class="f"><label>分类</label><select id="pl_cat">${["餐厅","咖啡","甜品","采购","景点","购物"].map(c=>`<option ${c===p.category?"selected":""}>${c}</option>`).join("")}</select></div>
+    ${fld("当地地址","pl_addr",p.localAddress)}<div class="f-row">${fld("纬度","pl_lat",p.lat,'type="number" step="any"')}${fld("经度","pl_lng",p.lng,'type="number" step="any"')}</div>
+    <input type="hidden" id="pl_map" value="${esc(p.mapUrl||"")}">${fld("备注","pl_note",p.note)}
+    <div class="btns"><button class="btn indigo" onclick="savePlace('${id||""}')">保存</button></div>`);
+}
+function savePlace(id){
+  const v=k=>$("#pl_"+k).value.trim(); const n=k=>{ const x=parseFloat(v(k)); return isNaN(x)?null:x; };
+  const p={...(id?S.places[id]:{}), name:v("name"), nameLocal:v("nameLocal")||null, category:v("cat"), localAddress:v("addr")||null, lat:n("lat"), lng:n("lng"), mapUrl:v("map")||null, note:v("note")||null};
+  if(!p.name){ toast("名称不能为空"); return; } Object.keys(p).forEach(k=>{ if(p[k]==null) delete p[k]; });
+  if(id) save("places/"+id,p); else push("places",p); closeSheet();
+}
+
+/* ================= 工具 ================= */
+function goTool(v){ toolView=v; tab="tools"; localStorage.setItem("jt_tab","tools"); render(); window.scrollTo(0,0); }
+function checkItems(){
+  const out=[]; const now=NOW(); const d=today();
+  evList().forEach(e=>{ if(e._s<now) return; const b=bufferOf(e); if(b&&b.status!=="ok") out.push({lv:b.status==="bad"?"high":"mid", t:`${dstr(e.date)} ${e.time} ${evTitle(e)}:${b.gap!=null?"换乘 "+b.gap+" 分钟":"余量 "+b.slack+" 分钟"}`, d:`${b.why}${b.suggest?` · 建议 ${b.suggest} 出发`:""}`, go:`selDay='${e.date}';goTab('plan')`}); });
+  bookTasks().forEach(t=>out.push({lv:t.due<=addDays(d,2)?"high":"mid", t:`还没订:${t.text}`, d:`${t.due?"建议 "+dstr(t.due)+" 前订 · ":""}${t.note}`, go:`openBookFlow('${q(t.group)}')`}));
+  evList().filter(e=>e.status==="tbc"&&e._s>now).forEach(e=>out.push({lv:"mid",t:`待确认:${dstr(e.date)} ${e.title}`,d:e.note?e.note.split("\n")[0]:"",go:`selDay='${e.date}';openCard['${e.id}']=true;goTab('plan')`}));
+  [...evList().filter(e=>e.cancelBy),...hotelsList().filter(h=>h.cancelBy)].forEach(x=>{ if(x.cancelBy>=d&&x.cancelBy<=addDays(d,5)) out.push({lv:"low",t:`${dstr(x.cancelBy)} 前可免费取消:${x.name||x.title}`,d:"计划有变就在这之前处理",go:x.checkIn?`openHotel('${x.id}')`:`selDay='${x.date}';goTab('plan')`}); });
+  // 有没有没住处的晚上
+  tripDays().slice(0,-1).forEach(day=>{ if(!hotelOn(day)&&!overnightFlight(day)) out.push({lv:"high",t:`${dstr(day)} 晚上还没有住宿`,d:"",go:`selDay='${day}';goTab('plan')`}); });
+  evList().filter(e=>(e.kind==="food")&&e.status==="booked"&&!e.conf&&e._s>now).forEach(e=>out.push({lv:"low",t:`${dstr(e.date)} ${e.title} 没记预约号`,d:"到门口要报预约号时用得上",go:`openEventForm('${e.id}')`}));
+  const ex=expList(); const np=ex.filter(needsPaid).length, nr=ex.filter(e=>isCo(e)&&!e.receipt&&!e.noReceipt).length, npu=ex.filter(e=>issuesOf(e).some(i=>i.k==="purpose")).length;
+  if(np) out.push({lv:"low",t:`${np} 笔刷卡还没补实付`,d:"",go:"expFilter='paid';goTab('money')"});
+  if(nr) out.push({lv:"mid",t:`${nr} 笔公司花费缺票据`,d:"",go:"expFilter='issue';goTab('money')"});
+  if(npu) out.push({lv:"mid",t:`${npu} 笔商务餐缺用途/同席`,d:"",go:"expFilter='issue';goTab('money')"});
+  if(!S.trip.purpose) out.push({lv:"low",t:"还没填出差目的",d:"出差行程单、报销单要用",go:"openSettings()"});
+  return out.sort((a,b)=>PRIO[a.lv]-PRIO[b.lv]);
+}
+function renderTools(){
+  if(toolView==="tasks") return renderTasks(); if(toolView==="check") return renderCheck(); if(toolView==="import") return renderImport();
+  if(toolView==="guide") return renderGuide(); if(toolView==="archive") return renderArchive();
+  const open=tasksAll().filter(t=>!t.done).length, ck=checkItems().filter(x=>x.lv!=="low").length;
+  const T=(v,icon,b,s,cnt)=>`<button class="tool" onclick="${v}">${ic(icon)}<b>${b}</b><small>${s}</small>${cnt?`<span class="cnt chip ${cnt.c||"amber"}">${cnt.n}</span>`:""}</button>`;
+  $("#view").innerHTML=`<div class="tools" style="margin-top:8px;">
+    ${T("goTool('tasks')","list","清单","出发前 · 途中 · 回程后",open?{n:open}:null)}
+    ${T("goTool('check')","shield","行程体检","换乘余量、没订的票、缺的票据",ck?{n:ck,c:"red"}:null)}
+    ${T("trSheet()","trans","翻译","对话 · 拍菜单 · 常用句")}
+    ${T("goTool('import')","inbox","导入预订","把确认邮件/截图交给 Claude")}
+    ${T("goTool('guide')","book","攻略","出差规则 · 交通 · 入境")}
+    ${T("goTool('archive')","archive","行程档案","住过、吃过、花了多少")}
+    ${T("backupSheet()","save","备份与恢复","下载一份,丢不了")}
+    ${T("openSettings()","gear","设置","API key · 出差期 · 汇率")}
+  </div>
+  <div class="muted" style="text-align:center;margin-top:18px;">${esc(BUILD)}${SHELL?" · 空壳版":""}</div>`;
+}
+function backTools(){ return `<button class="back" onclick="toolView=null;render()">${ic("back")} 工具</button>`; }
+
+/* ---- 清单 ---- */
+function renderTasks(){
+  const all=tasksAll(); const d=today(); const soon=addDays(d,3);
+  const undone=all.filter(t=>!t.done).sort(sortTasks), done=all.filter(t=>t.done);
+  const urgent=undone.filter(t=>t.due&&t.due<=soon);
+  const rest=undone.filter(t=>!urgent.includes(t));
+  let h=backTools()+`<div class="bigdate" style="font-size:22px;margin:4px 2px 12px;">清单</div>
+    <div class="task-add"><input id="tk_text" placeholder="加一条,如:买 15cm 慕斯圈 ×20" onkeydown="if(event.key==='Enter')addTask()">
+      <input id="tk_due" type="date" style="flex:0 0 118px;font-size:13px;padding:8px 6px;"><button class="btn indigo" onclick="addTask()">${ic("plus")}</button></div>`;
+  const block=(title,list)=>list.length?`<div class="sec-h"><h2 style="font-size:16px;">${title}</h2><span class="muted">${list.length}</span></div><div class="rowlist">${list.map(t=>taskRowFull(t)).join("")}</div>`:"";
+  h+=block("即将截止",urgent);
+  ["pre","trip","post"].forEach(p=>{ h+=block(PHASE[p],rest.filter(t=>phaseOf(t)===p)); });
+  if(!undone.length) h+=`<div class="empty">全部完成 ✓</div>`;
+  if(done.length) h+=`<details class="more"><summary>已完成 ${done.length}</summary><div class="rowlist">${done.map(t=>taskRowFull(t)).join("")}</div></details>`;
+  $("#view").innerHTML=h;
+}
+function taskRowFull(t){
+  if(t.virtual) return taskRow(t);
+  return `<div class="row ${t.done?"done":""}"><span class="ck ${t.done?"on":""}" onclick="toggleTask('${t.id}')">${t.done?"✓":""}</span>
+    <div class="rm" onclick="openTaskForm('${t.id}')"><div class="rt"><span class="lv ${t.prio||"mid"}" style="display:inline-block;width:7px;height:7px;border-radius:50%;vertical-align:2px;margin-right:6px;"></span>${esc(t.text)}</div>${t.note||t.due?`<div class="rs">${dueChip(t.due)} ${esc(t.note||"")}</div>`:""}</div></div>`;
+}
+function addTask(){ const t=$("#tk_text").value.trim(); if(!t) return; push("tasks",{text:t,due:$("#tk_due").value||null,prio:"mid",done:false,ts:Date.now()}); }
+function openTaskForm(id){
+  const t={...S.tasks[id]};
+  sheet(`<h3>编辑待办</h3>${fld("内容","tf_text",t.text)}${fld("备注","tf_note",t.note)}
+    <div class="f-row"><div class="f"><label>截止日期</label><input id="tf_due" type="date" value="${esc(t.due||"")}"></div>
+      <div class="f"><label>优先级</label><select id="tf_prio">${[["high","重要"],["mid","普通"],["low","有空再做"]].map(([k,l])=>`<option value="${k}" ${k===(t.prio||"mid")?"selected":""}>${l}</option>`).join("")}</select></div></div>
+    <div class="f"><label>阶段(不选则按日期自动)</label><select id="tf_phase"><option value="">自动</option>${Object.entries(PHASE).map(([k,l])=>`<option value="${k}" ${k===t.phase?"selected":""}>${l}</option>`).join("")}</select></div>
+    <div class="btns"><button class="btn ghost" style="color:var(--danger)" onclick="del('tasks/${id}');closeSheet()">删除</button><button class="btn indigo" onclick="saveTask('${id}')">保存</button></div>`);
+}
+function saveTask(id){ const v=k=>$("#tf_"+k).value.trim(); patch("tasks/"+id,{text:v("text"),note:v("note")||null,due:v("due")||null,prio:v("prio"),phase:v("phase")||null}); closeSheet(); }
+
+/* ---- 行程体检 ---- */
+function renderCheck(){
+  const items=checkItems();
+  let h=backTools()+`<div class="bigdate" style="font-size:22px;margin:4px 2px 2px;">行程体检</div><div class="muted" style="margin:0 2px 12px;">规则检查实时更新;想更细可以让 Claude 再看一遍</div>`;
+  h+=`<div class="rowlist">${items.length?items.map(x=>`<div class="check" onclick="${x.go}"><span class="lv ${x.lv}"></span><div style="flex:1"><div class="ct">${esc(x.t)}</div>${x.d?`<div class="cd">${esc(x.d)}</div>`:""}</div>${ic("chevR")}</div>`).join(""):`<div class="empty">没发现问题 ✓</div>`}</div>`;
+  h+=`<button class="btn dark full" onclick="aiCheck()">${ic("sparkle")} 让 Claude 深度检查</button><div id="aiCheckOut" style="margin-top:12px;">${window._aiCheck||""}</div>`;
+  $("#view").innerHTML=h;
+}
+function compactTrip(){
+  return { trip:{start:S.trip.start,end:S.trip.end,home:S.trip.home,bizStart:S.trip.bizStart,bizEnd:S.trip.bizEnd},
+    hotels:hotelsList().map(h=>({id:h.id,name:h.name,city:h.city,checkIn:h.checkIn,checkOut:h.checkOut,conf:h.conf||"",biz:h.biz})),
+    events:evList().map(e=>{ const o={id:e.id,kind:e.kind,date:e.date,time:e.time,tz:e.tz||TZ,title:e.title}; ["endDate","endTime","endTz","from","to","status","conf","durMin","durMax","mode","fixed","bookBy","cancelBy","party","biz","sub"].forEach(k=>{ if(e[k]!=null) o[k]=e[k]; }); if(e.note) o.note=e.note.slice(0,200); return o; }) };
+}
+async function aiCheck(){
+  const box=$("#aiCheckOut"); box.innerHTML=`<div class="hint blue">Claude 正在检查整趟行程…</div>`;
+  try{
+    const out=await askClaude(`你是细心的旅行助理。下面是一趟行程的 JSON(时间都是 tz 字段所在地的当地时间)。今天是 ${today()}。
+请找出真正需要处理的问题:换乘太紧(考虑等出租车、堵车、找入口、进站)、跨时区/跨日期错误、没订的票和订票时机、公休日、营业时间/最后点单、接驳车班次、入境手续、取消期限、住宿空档、行李。
+只列有依据的问题,按紧急程度排序,每条一行:「⚠/•  日期 · 问题 → 建议」,最多 12 条,简体中文。不要客套。
+${JSON.stringify(compactTrip())}`,1500);
+    window._aiCheck=`<div class="g-card"><h3>${ic("sparkle")} Claude 的检查</h3><div style="white-space:pre-line;font-size:13.5px;line-height:1.7;">${esc(out)}</div></div>`;
+    box.innerHTML=window._aiCheck;
+  }catch(e){ box.innerHTML=`<div class="hint">${esc(e.message)}</div>`; }
+}
+
+/* ---- 导入预订:确认邮件 / 截图 → Claude → 预览 → 一键更新 ---- */
+function renderImport(){
+  let h=backTools()+`<div class="bigdate" style="font-size:22px;margin:4px 2px 2px;">导入预订</div>
+    <div class="muted" style="margin:0 2px 12px;">机票、酒店、餐厅、车票的确认邮件或截图交给 Claude,先预览,确认后才写进行程。已有的会更新,不会重复。</div>
+    <div class="f"><textarea id="im_text" rows="6" placeholder="把确认邮件全文粘贴到这里(可以一次贴好几封)"></textarea></div>
+    <div class="dbtns" style="margin:0 0 12px;"><button class="pbtn" onclick="$('#importImg').click()">${ic("cam")} 选截图(可多张)</button><span class="muted" id="im_imgs">${(window._imImgs||[]).length?`已选 ${window._imImgs.length} 张`:""}</span></div>
+    <button class="btn dark full" onclick="aiImport()">${ic("sparkle")} 让 Claude 识别</button>
+    <div id="im_out" style="margin-top:14px;">${window._imPreview?importPreviewHTML():""}</div>`;
+  $("#view").innerHTML=h;
+}
+$("#importImg").addEventListener("change", async ev=>{
+  const fs=[...ev.target.files]; ev.target.value=""; window._imImgs=window._imImgs||[];
+  for(const f of fs.slice(0,6)) window._imImgs.push(await compressImage(f,1600,0.7));
+  const el=$("#im_imgs"); if(el) el.textContent=`已选 ${window._imImgs.length} 张`;
+});
+async function aiImport(){
+  const text=$("#im_text").value.trim(), imgs=window._imImgs||[];
+  if(!text&&!imgs.length){ toast("先粘贴邮件或选截图"); return; }
+  $("#im_out").innerHTML=`<div class="hint blue">Claude 正在读…</div>`;
+  const schema=`返回 JSON:{"items":[{"op":"add|update","target":"event|hotel|expense","id":"update 时填已有的 id","summary":"一句中文说明","data":{...}}]}
+event 字段:kind(flight|train|transit|hotel|food|activity|work), title, date(YYYY-MM-DD), time(HH:MM 当地时间), tz(IANA 时区), endDate, endTime, endTz, from, to, fromCity, toCity, fromPlace, toPlace, carrier, seat, intl(bool), conf, phone, party, sub(一句关键信息), localAddress(当地语言地址), nameLocal, city, lang(ja|ko), status(booked), cancelBy, biz(business|personal), note。
+hotel 字段:name, nameLocal, checkIn, checkOut, inTime, outTime, conf, phone, room, prepaid, localAddress, city, currency, lang, cancelBy, biz, note。
+expense 字段(仅当邮件里有已付款金额):date, merchant, category(${CATS_EXP.join("|")}), detail, currency, amountLocal, pay(card), type(business|personal)。
+规则:同一预订(预约号/日期+名称相同)用 update + 已有 id,只放需要改的字段;待订(status todo)的行程被这封确认邮件订好时,update 它为 status:"booked" 并写 conf;出差期 ${S.trip.bizStart||""}~${S.trip.bizEnd||""} 内默认 biz:business,其余 personal;只返回 JSON。`;
+  const content=[...imgs.map(b=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:b.split(",")[1]}})),
+    {type:"text",text:`现有行程(用来判断是更新还是新增):\n${JSON.stringify(compactTrip())}\n\n${schema}\n\n要导入的内容:\n${text||"(见图片)"}`}];
+  try{ const out=await askClaude(content,3000); const j=parseJSON(out); window._imPreview=(j.items||[]).map((it,i)=>({...it,_on:true,_i:i})); $("#im_out").innerHTML=importPreviewHTML(); }
+  catch(e){ $("#im_out").innerHTML=`<div class="hint">${esc(e.message)}</div>`; }
+}
+function importPreviewHTML(){
+  const L=window._imPreview||[]; if(!L.length) return `<div class="empty">没有识别到预订信息</div>`;
+  const lab={event:"行程",hotel:"住宿",expense:"花费"};
+  return `<div class="rowlist">${L.map(it=>{ const ex=it.op==="update"&&it.id?((it.target==="hotel"?S.hotels:it.target==="expense"?S.expenses:S.events)||{})[it.id]:null;
+    return `<div class="check" onclick="window._imPreview[${it._i}]._on=!window._imPreview[${it._i}]._on;$('#im_out').innerHTML=importPreviewHTML()"><span class="ck ${it._on?"on":""}">${it._on?"✓":""}</span>
+    <div style="flex:1"><div class="ct">${it.op==="update"?"更新":"新增"}${lab[it.target]||""} · ${esc(it.summary||"")}</div>
+    <div class="cd">${ex?`原:${esc(ex.title||ex.name||ex.merchant||it.id)} → `:""}${esc(Object.entries(it.data||{}).filter(([k])=>!["note"].includes(k)).map(([k,v])=>k+": "+v).join(" · ").slice(0,220))}</div></div></div>`; }).join("")}</div>
+  <div class="btns"><button class="btn ghost" onclick="window._imPreview=null;window._imImgs=[];render()">放弃</button><button class="btn b" onclick="applyImport()">写进行程</button></div>`;
+}
+function applyImport(){
+  const L=(window._imPreview||[]).filter(x=>x._on); let n=0;
+  L.forEach(it=>{
+    const col=it.target==="hotel"?"hotels":it.target==="expense"?"expenses":"events"; const d={...(it.data||{})};
+    Object.keys(d).forEach(k=>{ if(d[k]===null||d[k]==="") delete d[k]; });
+    if(col!=="expenses") d.edited=Date.now();
+    if(col==="expenses"){ d.ts=Date.now(); d.rate=rate(d.currency); d.noReceipt=true; }
+    if(it.op==="update"&&it.id&&(S[col]||{})[it.id]){ patch(col+"/"+it.id,d); }
+    else { push(col,d); }
+    logChange(d.date||d.checkIn||today(),`导入:${it.summary||d.title||d.name||""}`); n++;
+  });
+  window._imPreview=null; window._imImgs=[]; toast(`已写入 ${n} 项 ✓`); render();
+}
+
+/* ---- 攻略 ---- */
+function renderGuide(){
+  let h=backTools()+`<div class="bigdate" style="font-size:22px;margin:4px 2px 12px;">攻略</div>`;
+  h+=((S.guide)||[]).map(s=>`<div class="g-card"><h3>${s.t}</h3><ul>${(s.items||[]).map(i=>`<li>${i}</li>`).join("")}</ul></div>`).join("")||`<div class="empty">还没有攻略</div>`;
+  $("#view").innerHTML=h;
+}
+
+/* ---- 行程档案:住过的、吃过的、每天的变化、最终花费 ---- */
+function archiveData(){
+  const hotels=hotelsList(); const foods=evList().filter(e=>e.kind==="food"||e.kind==="activity"||e.kind==="work");
+  const byCity={}; const addC=(c,x)=>{ (byCity[c||"其他"]=byCity[c||"其他"]||[]).push(x); };
+  hotels.forEach(h=>addC(h.city,{t:"hotel",o:h})); foods.forEach(e=>addC(e.city||(hotelOn(e.date)||{}).city,{t:e.kind,o:e}));
+  return byCity;
+}
+function renderArchive(){
+  const byCity=archiveData(), ex=expList(), co=ex.filter(isCo);
+  const logs=Object.values(S.log||{}).sort((a,b)=>(a.ts||0)-(b.ts||0)); const jr=S.journal||{};
+  let h=backTools()+`<div class="bigdate" style="font-size:22px;margin:4px 2px 2px;">行程档案</div><div class="muted" style="margin:0 2px 12px;">${esc(S.trip.title)} · ${dstr(S.trip.start)}–${dstr(S.trip.end)} · 下次找回喜欢的店</div>
+  <div class="stat-grid"><div class="stat"><div class="lb"><span class="dot b"></span>公司</div><div class="big">${c$(sumBy(co,companyCAD))}</div><div class="sm">${co.length} 笔</div></div>
+  <div class="stat"><div class="lb"><span class="dot p"></span>私人</div><div class="big">${c$(sumBy(ex,personalCAD))}</div><div class="sm">未对账 ${ex.filter(needsPaid).length} · 缺票据 ${co.filter(e=>!e.receipt&&!e.noReceipt).length}</div></div></div>`;
+  Object.entries(byCity).forEach(([city,list])=>{
+    h+=`<div class="sec-h"><h2 style="font-size:16px;">${esc(city)}</h2></div><div class="rowlist">${list.map(x=>{ const o=x.o, r=+o.rating||0, isH=x.t==="hotel";
+      return `<div class="row" onclick="${isH?`openHotel('${o.id}')`:`selDay='${o.date}';openCard['${o.id}']=true;goTab('plan')`}"><span class="ri ${isH?"green":"blue"}">${ic(isH?"bed":KIND[o.kind].icon)}</span>
+      <div class="rm"><div class="rt">${esc(isH?o.name:o.title)}</div><div class="rs">${isH?`${dstr(o.checkIn)}–${dstr(o.checkOut)}`:dstr(o.date)}${r?" · "+"★".repeat(r):""}${o.review?" · "+esc(o.review):""}</div></div></div>`; }).join("")}</div>`;
+  });
+  h+=`<div class="sec-h"><h2 style="font-size:16px;">每天的记录</h2></div><div class="rowlist">`+tripDays().map(d=>{ const lg=logs.filter(l=>l.date===d); const j=jr[d]||{}; const ph=Object.values(j.photos||{});
+    return `<div style="padding:10px 0;border-top:1px solid var(--line);"><div style="display:flex;justify-content:space-between;align-items:center;"><b style="font-size:14px;">${dstr(d)} 周${weekday(d)} · ${esc(dayCities(d).join(" → "))}</b><button class="mini" onclick="addJournalPhoto('${d}')">${ic("cam")} 照片</button></div>
+      ${lg.length?`<div class="muted" style="margin-top:3px;">${lg.map(l=>"· "+esc(l.text)).join("<br>")}</div>`:""}
+      <textarea class="note" style="margin-top:6px;min-height:40px;" placeholder="这天的一句话" onchange="save('journal/${d}/note',this.value.trim())">${esc(j.note||"")}</textarea>
+      ${ph.length?`<div class="thumbs">${ph.map(p=>`<img src="${p}" onclick="viewPhoto(this.src)">`).join("")}</div>`:""}</div>`; }).join("")+`</div>`;
+  h+=`<div class="dbtns" style="justify-content:center;"><button class="pbtn hot" onclick="exportArchive()">${ic("save")} 导出档案(HTML)</button><button class="pbtn" onclick="exportArchiveJSON()">导出数据(JSON)</button></div>`;
+  $("#view").innerHTML=h;
+}
+function addJournalPhoto(d){ window._jDay=d; $("#noteInput").click(); }
+$("#noteInput").addEventListener("change", async ev=>{ const f=ev.target.files[0]; ev.target.value=""; if(!f||!window._jDay) return; const b=await compressImage(f,1200,0.65); push("journal/"+window._jDay+"/photos",b); toast("照片已保存 ✓"); });
+function exportArchive(){
+  const byCity=archiveData(), ex=expList(), co=ex.filter(isCo), logs=Object.values(S.log||{}), jr=S.journal||{};
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(S.trip.title)} · 行程档案</title><style>${DOC_CSS} img{max-width:180px;border-radius:6px;margin:4px;}</style></head><body>
+  <h1>${esc(S.trip.title)} · 行程档案</h1><p>${esc(S.trip.start)} 至 ${esc(S.trip.end)} · ${esc(S.trip.city||"")}<br>公司 ${c$(sumBy(co,companyCAD))} · 私人 ${c$(sumBy(ex,personalCAD))} · 未对账 ${ex.filter(needsPaid).length} 笔 · 缺票据 ${co.filter(e=>!e.receipt&&!e.noReceipt).length} 笔</p>
+  ${Object.entries(byCity).map(([c,l])=>`<h2>${esc(c)}</h2><table>${l.map(x=>{ const o=x.o; return `<tr><td>${x.t==="hotel"?"住宿":KIND[o.kind].label}</td><td><b>${esc(o.name||o.title)}</b>${o.nameLocal?`<div class="s">${esc(o.nameLocal)}</div>`:""}</td><td>${x.t==="hotel"?o.checkIn+" → "+o.checkOut:o.date}</td><td>${"★".repeat(+o.rating||0)}</td><td>${esc(o.review||"")}</td><td class="s">${esc(o.localAddress||"")}</td></tr>`; }).join("")}</table>`).join("")}
+  <h2>每天</h2>${tripDays().map(d=>{ const j=jr[d]||{}; const lg=logs.filter(l=>l.date===d); return `<p><b>${d}</b> ${esc(dayCities(d).join(" → "))}${j.note?`<br>${esc(j.note)}`:""}${lg.length?`<br><span class="s">${lg.map(l=>esc(l.text)).join(" · ")}</span>`:""}<br>${Object.values(j.photos||{}).map(p=>`<img src="${p}">`).join("")}</p>`; }).join("")}
+  </body></html>`;
+  dl(new Blob([html],{type:"text/html"}),fileStem()+"-行程档案.html");
+}
+function exportArchiveJSON(){
+  const d=clone(S); Object.values(d.expenses||{}).forEach(e=>delete e.receipt); [d.events,d.hotels].forEach(c=>Object.values(c||{}).forEach(x=>delete x.docs)); delete d.journal;
+  dl(new Blob([JSON.stringify(d,null,1)],{type:"application/json"}),fileStem()+"-档案数据.json");
+}
+
+/* ---- 备份 ---- */
+function backupSheet(){
+  const lb=+localStorage.getItem("jt_lastBackup")||0;
+  sheet(`<h3>${ic("save")} 备份与恢复</h3>
+    <div class="hint blue">App 已经自动把数据存在这台手机上(没网也能打开)。下载备份是再多一层保险:万一云端或手机出问题,用它能恢复全部行程、花费和票据。</div>
+    <div class="muted" style="margin-bottom:12px;">上次下载:${lb?new Date(lb).toLocaleString():"从未"} · 本机待上传 ${OUTBOX.length} 条</div>
+    <button class="btn dark full" onclick="backupDownload()">下载备份(JSON)</button>
+    <button class="btn ghost full" style="margin-top:10px;" onclick="backupRestore()">从备份恢复…</button>`);
+}
+
+/* ---- 翻译 ---- */
+function curLangList(){ return (S&&S.trip&&S.trip.langs&&S.trip.langs.length)?S.trip.langs:Object.keys(LANGS); }
+function trLangNow(){ const ls=curLangList(); return window._trLang&&ls.includes(window._trLang)?window._trLang:(ls.includes(defaultLang())?defaultLang():ls[0]); }
+function trSheet(){
+  const langs=curLangList(), lang=trLangNow(), d=window._trDir||"cj", L=(LANGS[lang]&&LANGS[lang].label)||lang, ph=(LANGS[lang]&&LANGS[lang].phrases)||[];
+  sheet(`<h3>${ic("trans")} 翻译</h3>
+  ${langs.length>1?`<div class="seg mini" style="margin-bottom:8px;">${langs.map(l=>`<button class="${l===lang?"on":""}" onclick="window._trLang='${l}';trSheet()">${LANGS[l].label}</button>`).join("")}</div>`:""}
+  <div class="seg mini" style="margin-bottom:10px;"><button class="${d==="cj"?"on":""}" onclick="window._trDir='cj';trSheet()">中 → ${L}</button><button class="${d==="jc"?"on":""}" onclick="window._trDir='jc';trSheet()">${L} → 中</button></div>
+  <div class="f"><textarea id="tr_in" rows="3" placeholder="${d==="cj"?"输入中文,或点键盘上的麦克风说话":"输入/粘贴"+L}"></textarea></div>
+  <button class="btn indigo full" onclick="trDo()">翻译</button><div id="tr_out" style="margin-top:10px;"></div>
+  <div class="muted" style="margin:14px 0 6px;">常用句(点一下大字显示并朗读,没网也能用)</div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;">${ph.map((p,i)=>`<button class="chip" onclick="trPhrase(${i})">${p[0]}</button>`).join("")}</div>
+  <button class="btn ghost full" style="margin-top:14px;" onclick="$('#trPhoto').click()">${ic("cam")} 拍菜单 / 成分标签翻译</button><div id="tr_photo_out" style="margin-top:8px;"></div>`);
+}
+function trShowLocal(loc,cn,lang){
+  $("#tr_out").innerHTML=`<div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;"><div style="font-family:var(--disp);font-size:22px;line-height:1.5;">${esc(loc)}</div>${cn?`<div class="muted" style="margin-top:4px;">${esc(cn)}</div>`:""}
+    <div class="btns" style="margin-top:10px;"><button class="btn indigo" onclick="speakLocal('${q(loc)}','${lang}')">${ic("sound")} 朗读</button><button class="btn ghost" onclick="copyText('${q(loc)}')">复制</button></div></div>`;
+}
+function trPhrase(i){ const lang=trLangNow(); const p=(LANGS[lang].phrases||[])[i]; if(!p) return; trShowLocal(p[1],p[0],lang); speakLocal(p[1],lang); }
+async function trDo(){
+  const txt=$("#tr_in").value.trim(); if(!txt){ toast("先输入内容"); return; } const lang=trLangNow(), L=LANGS[lang].label, d=window._trDir||"cj";
+  $("#tr_out").innerHTML=`<div class="muted">翻译中…</div>`;
+  try{ const out=await askClaude((d==="cj"?`把下面的中文翻译成自然、礼貌的${L}口语,适合旅行者当面使用。只返回${L}译文:\n`:`把下面的${L}翻译成简体中文,只返回译文:\n`)+txt,400);
+    if(d==="cj"){ trShowLocal(out,"",lang); speakLocal(out,lang); } else $("#tr_out").innerHTML=`<div style="background:var(--paper);border-radius:12px;padding:14px;font-size:15px;line-height:1.7;">${esc(out)}</div>`;
+  }catch(e){ $("#tr_out").innerHTML=`<div class="hint">${esc(e.message)}</div>`; }
+}
+$("#trPhoto").addEventListener("change", async ev=>{
+  const f=ev.target.files[0]; ev.target.value=""; if(!f) return; $("#tr_photo_out").innerHTML=`<div class="muted">识别翻译中…</div>`;
+  try{ const b64=await compressImage(f,1100,0.72);
+    const out=await askClaude([{type:"image",source:{type:"base64",media_type:"image/jpeg",data:b64.split(",")[1]}},{type:"text",text:"这是旅行中拍的菜单/商品标签/说明。用简体中文:1)翻译主要内容;2)如是食品,标出关键原料与常见过敏原;3)一句点单或购买建议。简洁分点。"}],900);
+    $("#tr_photo_out").innerHTML=`<div style="background:var(--paper);border-radius:12px;padding:14px;font-size:14px;line-height:1.7;white-space:pre-line;">${esc(out)}</div>`;
+  }catch(e){ $("#tr_photo_out").innerHTML=`<div class="hint">${esc(e.message)}</div>`; }
+});
+
+/* ---- 设置 ---- */
+function openSettings(){
+  const key=localStorage.getItem("jt_apikey")||"", T=S.trip||{}, manual=T.rateManual||{};
+  sheet(`<h3>${ic("gear")} 设置</h3>
+    <div class="f"><label>Claude API key(只存这台手机;收据识别、翻译、导入预订、体检要用)</label><input id="st_key" type="password" value="${esc(key)}" placeholder="sk-ant-..."></div>
+    <div class="f"><label>导航默认用</label><select id="st_map"><option value="google" ${mapApp()==="google"?"selected":""}>Google 地图</option><option value="apple" ${mapApp()==="apple"?"selected":""}>Apple 地图</option></select></div>
+    <div class="fs-h">报销</div>
+    ${fld("出行人(报销单抬头)","st_trav",T.traveler)}
+    <div class="f"><label>出差目的(出差行程单 / 报销单)</label><textarea id="st_purp" rows="2">${esc(T.purpose||"")}</textarea></div>
+    <div class="f-row"><div class="f"><label>出差期 · 开始</label><input id="st_bs" type="date" value="${esc(T.bizStart||"")}"></div><div class="f"><label>结束</label><input id="st_be" type="date" value="${esc(T.bizEnd||"")}"></div></div>
+    <div class="muted" style="margin:-6px 0 12px;">出差期只是默认建议;关联了行程或住宿的花费,跟着那一项的归属走。</div>
+    ${curList().filter(c=>c!=="CAD").map(c=>`<div class="f"><label>手动汇率 1 ${c} = C$?(空着用实时 ${(liveRates[c]||DEFAULT_RATES[c]).toFixed(c==="USD"?4:5)})</label><input id="st_rate_${c}" type="number" step="any" value="${manual[c]||""}"></div>`).join("")}
+    <div class="btns"><button class="btn indigo" onclick="saveSettings()">保存</button></div>
+    <div class="fs-h">数据</div>
+    <div class="muted" style="margin-bottom:10px;">${esc(BUILD)}${SHELL?" · 空壳版":""} · 节点 ${esc(NODE)} · 本机待上传 ${OUTBOX.length} 条</div>
+    <button class="btn ghost full" onclick="backupSheet()">备份与恢复</button>
+    ${SHELL?"":`<button class="btn ghost full" style="margin-top:8px;" onclick="forceSync()">同步初始数据到云端(保留花费/清单)</button>
+    <button class="btn ghost full" style="margin-top:8px;color:var(--danger)" onclick="if(confirm('清空全部数据并恢复初始行程?不可撤销'))resetAll()">重置全部数据</button>`}`);
+}
+function saveSettings(){
+  const k=$("#st_key").value.trim(); if(k) localStorage.setItem("jt_apikey",k); else localStorage.removeItem("jt_apikey");
+  localStorage.setItem("jt_mapapp",$("#st_map").value);
+  const manual={}; curList().filter(c=>c!=="CAD").forEach(c=>{ const v=parseFloat($("#st_rate_"+c).value); if(!isNaN(v)) manual[c]=v; });
+  if(!LOCAL){ patch("trip",{ rateManual:Object.keys(manual).length?manual:null, traveler:$("#st_trav").value.trim()||null, purpose:$("#st_purp").value.trim()||null, bizStart:$("#st_bs").value||null, bizEnd:$("#st_be").value||null }); }
+  else toast("预览模式:行程设置不会保存(API key 已存本机)");
+  closeSheet(); toast("设置已保存 ✓");
+}
+
+/* ================= 启动 ================= */
+if("serviceWorker" in navigator && (location.protocol==="https:"||location.hostname==="localhost"||location.hostname==="127.0.0.1")){
+  navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+renderTabs();
+boot();
+fetchRates();
+setTimeout(fetchWeather,800);
+setInterval(()=>{ if(S&&(tab==="today"||tab==="plan")&&!$("#modalRoot").innerHTML&&document.activeElement.tagName!=="INPUT") render(); },60000);
+if("speechSynthesis" in window) speechSynthesis.getVoices();
+
+</script>
+</body>
+</html>
