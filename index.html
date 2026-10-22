@@ -303,7 +303,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <script>
 /* ================= 每次出差 · 只改这一块 ================= */
 const BUILD = "jpkr-2026 · v3 · 2026-10-21";
-const SHELL = false;                     // 空壳版(无数据版)设为 true:不会把空数据写回云端
+const SHELL = true;                     // 空壳版(无数据版)设为 true:不会把空数据写回云端
 const FB_URL = "https://trip-7e9d5-default-rtdb.asia-southeast1.firebasedatabase.app";  // 差旅专用 Firebase 项目「Trip」(与 lotus inventory 分开)
 const NODE = "trip-jpkr-2026";      // ← 这趟的 Firebase 节点名,如 trip-jpkr-2026
 const TZ = "Asia/Tokyo";                 // ← 行程主时区(事件没写 tz 时用这个)
@@ -328,212 +328,11 @@ const LANGS = {
 };
 
 /* @@SEED-START */
-/* ================= SEED · 日韩行 2026(10/22–11/9)· v3 ================= */
+/* ================= SEED(空壳版:行程数据只存在 Firebase 云端和手机缓存里)================= */
 const SEED = {
-  trip: { title:"日韩行 2026", start:"2026-10-22", end:"2026-11-09",
-          city:"东京 · 花巻 · 秋田 · 角馆 · 青森 · 札幌 · 首尔", home:"温哥华", homeTz:"America/Vancouver",
-          lat:35.6912, lng:139.6920, seedVersion:3,
-          traveler:"Ya Qian Liang (Stacy)", purpose:"",
-          bizStart:"2026-10-22", bizEnd:"2026-10-29",
-          currencies:["JPY","KRW","CAD","USD"], langs:["ja","ko"], defaultCurrency:"JPY",
-          bookGroups:{ ekinet:"えきねっと订车票", seiryukan:"联系清流館:接驳车" } },
-
-  hotels: {
-    h1:{ name:"Hyatt Regency Tokyo", nameLocal:"ハイアット リージェンシー 東京", city:"东京", checkIn:"2026-10-23", checkOut:"2026-10-27", inTime:"14:00", outTime:"11:00",
-         phone:"03-3348-1234", localAddress:"東京都新宿区西新宿2-7-2", lat:35.6912, lng:139.6920, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"business" },
-    h2:{ name:"Park Hyatt Tokyo", nameLocal:"パーク ハイアット 東京", city:"东京", checkIn:"2026-10-27", checkOut:"2026-10-29", inTime:"15:00", outTime:"12:00",
-         phone:"03-5322-1234", localAddress:"東京都新宿区西新宿3-7-1-2", lat:35.6856, lng:139.6907, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"business" },
-    h3:{ name:"Hotel Toranomon Hills", nameLocal:"ホテル虎ノ門ヒルズ", city:"东京", checkIn:"2026-10-29", checkOut:"2026-10-30", inTime:"15:00", outTime:"12:00",
-         localAddress:"東京都港区虎ノ門2-6-4", lat:35.6668, lng:139.7484, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"business",
-         note:"出差最后一晚。退房账单日期是 10/30,但属于出差住宿 → 记公司(在这里点「记住宿费」会自动选公司)" },
-    h4:{ name:"山の神温泉 別墅 清流館", nameLocal:"山の神温泉 別墅 清流館", city:"花巻", checkIn:"2026-10-30", checkOut:"2026-10-31", inTime:"16:00", outTime:"11:00",
-         conf:"T8A9234FF1D80", phone:"0198-38-5526", cancelBy:"2026-10-26", room:"1F 和洋室 65㎡ · 半露天源泉风呂 · 美食升级方案", prepaid:"已预付 C$816.03",
-         localAddress:"岩手県花巻市下シ沢字中野66", lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
-         note:"大堂 18:00–21:30 免费葡萄酒\n接驳车预约:0198-29-4126(须提前 4 天)" },
-    h5:{ name:"ANA Crowne Plaza Akita", nameLocal:"ANAクラウンプラザホテル秋田", city:"秋田", checkIn:"2026-10-31", checkOut:"2026-11-01", inTime:"15:00", outTime:"11:00",
-         phone:"018-832-1111", room:"俱乐部房含早餐", prepaid:"Advance Saver · 不可退改",
-         localAddress:"秋田県秋田市中通2-6-1", lat:39.7176, lng:140.1226, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
-         note:"6F 酒廊:下午茶 15:00–17:00 · cocktail 17:30–19:30(秋田地酒)· 早餐 6:30–10:30" },
-    h6:{ name:"角館山荘 侘桜", nameLocal:"角館山荘 侘桜", city:"角馆", checkIn:"2026-11-01", checkOut:"2026-11-02", inTime:"15:00–19:00", outTime:"11:00",
-         conf:"No.000000009238", phone:"0187-47-3511", room:"和洋室",
-         localAddress:"秋田県仙北市西木町門屋字笹山2-8", lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
-         note:"套餐含武家屋敷通 ¥6,000 购物额度\n18:00 后到要先打电话" },
-    h7:{ name:"ReLabo Medical Spa & Stay", nameLocal:"ReLabo(リラボ)", city:"青森", checkIn:"2026-11-02", checkOut:"2026-11-03", inTime:"15:00", outTime:"11:00",
-         conf:"X-ETM3KMDEW50", phone:"017-762-0151", room:"茧房 20㎡", prepaid:"已预付 ¥34,580",
-         localAddress:"青森県青森市柳川1-1-5", lat:40.8286, lng:140.7343, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal",
-         note:"JR 青森站直通 · 天然温泉 + 津轻海峡景观休息室" },
-    h8:{ name:"Hyatt Centric Sapporo", nameLocal:"ハイアット セントリック 札幌", city:"札幌", checkIn:"2026-11-03", checkOut:"2026-11-06", inTime:"15:00", outTime:"11:00",
-         localAddress:"北海道札幌市中央区北1条西5丁目1-4", lat:43.0627, lng:141.3497, lang:"ja", currency:"JPY", tz:"Asia/Tokyo", biz:"personal" },
-    h9:{ name:"Andaz Seoul Gangnam", nameLocal:"안다즈 서울 강남", city:"首尔", checkIn:"2026-11-06", checkOut:"2026-11-09", inTime:"15:00", outTime:"11:00",
-         localAddress:"서울특별시 강남구 논현로 854", lat:37.5250, lng:127.0290, lang:"ko", currency:"KRW", tz:"Asia/Seoul", biz:"personal" }
-  },
-
-  events: {
-    /* 10/22 出发 */
-    e00:{ kind:"transit", date:"2026-10-22", time:"09:30", tz:"America/Vancouver", mode:"taxi", durMin:20, durMax:40, title:"前往温哥华机场 YVR", toLabel:"机场",
-          sub:"建议时间 · 国际线提前 2 小时到", biz:"business", city:"温哥华" },
-    e01:{ kind:"flight", date:"2026-10-22", time:"12:35", tz:"America/Vancouver", endDate:"2026-10-23", endTime:"14:55", endTz:"Asia/Tokyo",
-          title:"AC3", carrier:"Air Canada", from:"YVR", to:"NRT", fromCity:"温哥华", toCity:"东京", intl:true,
-          fromPlace:"Vancouver International Airport (YVR)", toPlace:"成田国際空港 第1ターミナル",
-          conf:"B2KBRE", seat:"商务舱候补中", status:"booked", biz:"business",
-          note:"落地前打开 Visit Japan Web 的入境 + 海关二维码\nAir Canada 在成田 T1 南翼" },
-    /* 10/23 抵达东京 */
-    e02:{ kind:"transit", date:"2026-10-23", time:"16:10", tz:"Asia/Tokyo", mode:"train", durMin:80, durMax:100, title:"成田 → 新宿", toLabel:"Hyatt Regency",
-          sub:"N'EX 或利木津巴士", note:"N'EX 到新宿站约 80 分钟,再打车 5 分钟\n利木津巴士直达酒店门口(85–120 分钟,看路况)", biz:"business" },
-    e03:{ kind:"hotel", hotelId:"h1", date:"2026-10-23", time:"18:00", tz:"Asia/Tokyo", title:"入住 Hyatt Regency Tokyo", city:"东京", biz:"business", sub:"4 晚 · 10/27 11:00 退房" },
-    /* 10/24 Torisho */
-    e04:{ kind:"transit", date:"2026-10-24", time:"16:45", tz:"Asia/Tokyo", mode:"taxi", durMin:20, durMax:30, title:"前往南麻布", toLabel:"南麻布",
-          sub:"周六傍晚", note:"上车给司机看打车卡,说东侧入口", biz:"business" },
-    e05:{ kind:"food", date:"2026-10-24", time:"17:30", tz:"Asia/Tokyo", title:"Torisho Ishii Hina", nameLocal:"Torisho Ishii Hina", city:"东京",
-          sub:"Chef's Tasting · ¥15,000/位(含税)另收服务费", party:"2 位 · 吧台", conf:"QIITOE9G", phone:"03-6722-0034", status:"booked", biz:"business",
-          localAddress:"東京都港区南麻布1-27-7 B1F", moreLabel:"详细地址、停车与入店说明",
-          note:"入口在东侧(麻布十番站一侧),养老院「グランダ南麻布」正后方\n车停到 2 楼那层就打电话,店里会出来接" },
-    /* 10/26 黒牛 */
-    e06:{ kind:"transit", date:"2026-10-26", time:"17:50", tz:"Asia/Tokyo", mode:"taxi", durMin:10, durMax:15, title:"前往代々木", toLabel:"黒牛", biz:"business" },
-    e07:{ kind:"food", date:"2026-10-26", time:"18:30", endTime:"20:30", tz:"Asia/Tokyo", title:"焼肉 黒牛 KOKUGYU", nameLocal:"焼肉 黒牛", city:"东京",
-          sub:"料理長コース · ¥16,000/位(含税,酒水另计)", party:"2 位", conf:"#36058", cancelBy:"2026-10-25", status:"booked", biz:"business",
-          localAddress:"東京都渋谷区代々木3-1-11 パシフィックスクエア代々木ビルB1", note:"改期 / 取消须前一天打电话" },
-    /* 10/27、10/29 换酒店 */
-    e08:{ kind:"hotel", hotelId:"h2", date:"2026-10-27", time:"11:00", tz:"Asia/Tokyo", title:"Hyatt Regency 退房 → Park Hyatt Tokyo", city:"东京", biz:"business",
-          sub:"Park Hyatt 15:00 入住 · 2 晚", note:"两家都在西新宿,打车约 5 分钟;可先去 Park Hyatt 寄存行李" },
-    e09:{ kind:"hotel", hotelId:"h3", date:"2026-10-29", time:"12:00", tz:"Asia/Tokyo", title:"Park Hyatt 退房 → Hotel Toranomon Hills", city:"东京", biz:"business",
-          sub:"15:00 入住 · 出差最后一晚" },
-    /* 10/30 私人行程开始:东京 → 花巻 */
-    e10:{ kind:"transit", date:"2026-10-30", time:"10:40", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:25, title:"虎之门退房 → 东京站", toLabel:"东京站", biz:"personal",
-          note:"虎之门的退房账单日期是 10/30,但属于 10/29 出差住宿 → 记公司" },
-    e11:{ kind:"train", date:"2026-10-30", time:"11:36", endTime:"14:38", tz:"Asia/Tokyo", title:"やまびこ59号", carrier:"JR 东北新干线",
-          from:"東京", to:"新花巻", fromCity:"东京", toCity:"花巻", fromPlace:"東京駅", toPlace:"新花巻駅",
-          status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal",
-          note:"备选 やまびこ61号 12:36 → 15:38(只能赶 16:10 那班接驳车)" },
-    e12:{ kind:"transit", fixed:true, date:"2026-10-30", time:"15:10", tz:"Asia/Tokyo", mode:"shuttle", durMin:50, durMax:50, title:"清流館接驳车", toLabel:"清流館",
-          sub:"新花巻站西口巴士站 · 约 50 分钟 · ¥100/人", fromPlace:"新花巻駅 西口", phone:"0198-29-4126",
-          status:"todo", bookGroup:"seiryukan", bookBy:"2026-10-26", biz:"personal", lang:"ja",
-          note:"只有 15:10 / 16:10 / 17:10 三班,须提前 4 天预约\n接驳预约 0198-29-4126 · 旅馆总机 0198-38-5526" },
-    e13:{ kind:"hotel", hotelId:"h4", date:"2026-10-30", time:"16:00", tz:"Asia/Tokyo", title:"入住 山の神温泉 別墅 清流館", city:"花巻", biz:"personal" },
-    /* 10/31 花巻 → 秋田 */
-    e14:{ kind:"transit", fixed:true, date:"2026-10-31", time:"11:00", tz:"Asia/Tokyo", mode:"shuttle", durMin:50, durMax:50, title:"清流館接驳车 → 新花巻站", toLabel:"新花巻站",
-          sub:"退房后 · 发车时间待旅馆确认", fromPlace:"山の神温泉 別墅 清流館", phone:"0198-38-5526",
-          status:"todo", bookGroup:"seiryukan", bookBy:"2026-10-26", biz:"personal", lang:"ja", note:"和去程接驳一起打电话确认 · 车费退房时付" },
-    e15:{ kind:"train", date:"2026-10-31", time:"12:42", endTime:"12:58", tz:"Asia/Tokyo", title:"やまびこ", carrier:"JR 东北新干线",
-          from:"新花巻", to:"盛岡", fromCity:"花巻", toCity:"盛冈", fromPlace:"新花巻駅", toPlace:"盛岡駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal" },
-    e16:{ kind:"train", date:"2026-10-31", time:"13:35", endTime:"15:04", tz:"Asia/Tokyo", title:"こまち19号", carrier:"JR 秋田新干线",
-          from:"盛岡", to:"秋田", fromCity:"盛冈", toCity:"秋田", fromPlace:"盛岡駅", toPlace:"秋田駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal" },
-    e17:{ kind:"hotel", hotelId:"h5", date:"2026-10-31", time:"15:20", tz:"Asia/Tokyo", title:"入住 ANA Crowne Plaza Akita", city:"秋田", biz:"personal", sub:"秋田站步行约 10 分钟" },
-    e18:{ kind:"transit", date:"2026-10-31", time:"18:25", tz:"Asia/Tokyo", mode:"taxi", durMin:5, durMax:10, title:"前往 Sot l'y laisse", toLabel:"南通", note:"步行约 15 分钟也可以", biz:"personal" },
-    e19:{ kind:"food", date:"2026-10-31", time:"19:00", tz:"Asia/Tokyo", title:"比内地鶏串 Sot l'y laisse", nameLocal:"比内地鶏串 Sot l'y laisse", city:"秋田",
-          party:"2 位", conf:"9P4PRC", phone:"050-3145-1538", status:"booked", biz:"personal",
-          localAddress:"秋田県秋田市南通亀の町3-44 川原田ビル1F" },
-    /* 11/1 秋田 → 角馆 */
-    e20:{ kind:"train", date:"2026-11-01", time:"12:13", endTime:"12:56", tz:"Asia/Tokyo", title:"こまち20号", carrier:"JR 秋田新干线",
-          from:"秋田", to:"角館", fromCity:"秋田", toCity:"角馆", fromPlace:"秋田駅", toPlace:"角館駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal",
-          note:"ANA 11:00 退房,可在秋田站附近吃午饭\n备选 こまち24号 13:06 → 13:49" },
-    e21:{ kind:"activity", date:"2026-11-01", time:"13:00", tz:"Asia/Tokyo", title:"角馆武家屋敷通", nameLocal:"角館武家屋敷通り", city:"角馆",
-          localAddress:"秋田県仙北市角館町東勝楽丁", sub:"午饭 + 逛街 · 用侘桜的 ¥6,000 购物额度", biz:"personal" },
-    e22:{ kind:"transit", date:"2026-11-01", time:"15:00", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:25, title:"打车去侘桜", toLabel:"侘桜", biz:"personal" },
-    e23:{ kind:"hotel", hotelId:"h6", date:"2026-11-01", time:"15:30", tz:"Asia/Tokyo", title:"入住 角館山荘 侘桜", city:"角馆", biz:"personal" },
-    /* 11/2 角馆 → 青森 */
-    e24a:{ kind:"transit", date:"2026-11-02", time:"12:05", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:25, title:"侘桜退房 → 角館駅", toLabel:"角館駅", note:"可以问旅馆有没有送站", biz:"personal" },
-    e24:{ kind:"train", date:"2026-11-02", time:"12:56", endTime:"13:48", tz:"Asia/Tokyo", title:"こまち20号", carrier:"JR 秋田新干线",
-          from:"角館", to:"盛岡", fromCity:"角馆", toCity:"盛冈", fromPlace:"角館駅", toPlace:"盛岡駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal" },
-    e25:{ kind:"train", date:"2026-11-02", time:"14:15", endTime:"15:07", tz:"Asia/Tokyo", title:"はやぶさ21号", carrier:"JR 东北新干线",
-          from:"盛岡", to:"新青森", fromCity:"盛冈", toCity:"青森", fromPlace:"盛岡駅", toPlace:"新青森駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-23", biz:"personal",
-          note:"想早点到:こまち18号 11:57 + はやぶさ17号 13:05 → 13:57" },
-    e26:{ kind:"transit", date:"2026-11-02", time:"15:15", tz:"Asia/Tokyo", mode:"train", durMin:6, durMax:20, title:"新青森 → 青森", toLabel:"ReLabo",
-          sub:"奥羽本线一站 6 分钟(班次少)/ 打车约 15 分钟", biz:"personal" },
-    e27:{ kind:"hotel", hotelId:"h7", date:"2026-11-02", time:"15:40", tz:"Asia/Tokyo", title:"入住 ReLabo(青森)", city:"青森", biz:"personal" },
-    /* 11/3 青森 → 札幌(文化之日) */
-    e28:{ kind:"transit", date:"2026-11-03", time:"10:30", tz:"Asia/Tokyo", mode:"taxi", durMin:15, durMax:20, title:"ReLabo 退房 → 新青森站", toLabel:"新青森站",
-          note:"奥羽本线班次少,打车最稳", biz:"personal" },
-    e29:{ kind:"train", date:"2026-11-03", time:"11:18", endTime:"12:15", tz:"Asia/Tokyo", title:"はやぶさ5号", carrier:"JR 北海道新干线",
-          from:"新青森", to:"新函館北斗", fromCity:"青森", toCity:"函馆", fromPlace:"新青森駅", toPlace:"新函館北斗駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-21", biz:"personal",
-          note:"文化之日,最先订\n备选 はやぶさ11号 12:36 + 北斗13号 13:50 → 17:30" },
-    e30:{ kind:"train", date:"2026-11-03", time:"12:33", endTime:"16:03", tz:"Asia/Tokyo", title:"北斗11号", carrier:"JR 北海道特急",
-          from:"新函館北斗", to:"札幌", fromCity:"函馆", toCity:"札幌", fromPlace:"新函館北斗駅", toPlace:"札幌駅", status:"todo", bookGroup:"ekinet", bookBy:"2026-10-21", biz:"personal",
-          note:"同站换乘 18 分钟,下车直接跟「在来線」指示走" },
-    e31:{ kind:"hotel", hotelId:"h8", date:"2026-11-03", time:"16:30", tz:"Asia/Tokyo", title:"入住 Hyatt Centric Sapporo", city:"札幌", biz:"personal", sub:"3 晚 · 札幌站步行约 10 分钟" },
-    e32:{ kind:"transit", date:"2026-11-03", time:"18:45", tz:"Asia/Tokyo", mode:"taxi", durMin:12, durMax:20, title:"前往円山", toLabel:"鮨 草平",
-          note:"或东西线到圆山公园站步行 5 分钟", biz:"personal" },
-    e33:{ kind:"food", date:"2026-11-03", time:"19:30", tz:"Asia/Tokyo", title:"鮨 草平 [円山]", nameLocal:"鮨 草平", city:"札幌",
-          sub:"Chef's Tasting · 第二部 19:30 全员同时开席", party:"2 位 · 吧台", conf:"OH5ER7GF", phone:"011-215-7757", cancelBy:"2026-10-24", status:"booked", biz:"personal",
-          localAddress:"北海道札幌市中央区南2条西28丁目1-10 エビスビル1F", note:"不能迟到\n取消:10 天前 20% · 5 天前 50% · 3 天前 100%" },
-    /* 11/6 札幌 → 首尔 */
-    e34:{ kind:"transit", date:"2026-11-06", time:"10:40", tz:"Asia/Tokyo", mode:"train", durMin:50, durMax:60, title:"退房 → 新千岁机场(国际线)", toLabel:"新千岁机场",
-          sub:"JR 快速エアポート 约 40 分钟 + 步行", biz:"personal" },
-    e35:{ kind:"flight", date:"2026-11-06", time:"14:15", tz:"Asia/Tokyo", endTime:"17:30", endTz:"Asia/Seoul",
-          title:"KE766", carrier:"Korean Air", from:"CTS", to:"ICN T2", fromCity:"札幌", toCity:"首尔", intl:true,
-          fromPlace:"新千歳空港 国際線ターミナル", toPlace:"인천국제공항 제2여객터미널", conf:"FI46VD", seat:"Prestige 07J · 托运 2 件",
-          status:"booked", biz:"personal", note:"入境韩国前确认 K-ETA" },
-    e36a:{ kind:"transit", date:"2026-11-06", time:"18:30", tz:"Asia/Seoul", mode:"bus", durMin:60, durMax:80, title:"仁川 T2 → 江南", toLabel:"Andaz",
-          sub:"机场大巴或出租车", lang:"ko", biz:"personal" },
-    e36:{ kind:"hotel", hotelId:"h9", date:"2026-11-06", time:"20:00", tz:"Asia/Seoul", title:"入住 Andaz Seoul Gangnam", city:"首尔", lang:"ko", biz:"personal", sub:"3 晚 · 11/9 11:00 退房" },
-    /* 11/7 VINHO */
-    e37:{ kind:"transit", date:"2026-11-07", time:"16:50", tz:"Asia/Seoul", mode:"taxi", durMin:10, durMax:15, title:"前往论岘洞", toLabel:"VINHO", lang:"ko", biz:"personal" },
-    e38:{ kind:"food", date:"2026-11-07", time:"17:30", tz:"Asia/Seoul", title:"VINHO 빈호", nameLocal:"빈호 VINHO", city:"首尔", lang:"ko",
-          sub:"米其林一星现代韩餐 · CatchTable 预约", party:"2 位", phone:"+82-10-9677-2302", status:"booked", biz:"personal",
-          localAddress:"서울특별시 강남구 학동로43길 38 논현웰스톤 162호" },
-    /* 11/9 回温哥华 */
-    e39:{ kind:"hotel", hotelId:"h9", date:"2026-11-09", time:"11:00", tz:"Asia/Seoul", title:"Andaz 退房", city:"首尔", lang:"ko", biz:"personal", sub:"可寄存行李到下午" },
-    e40:{ kind:"transit", date:"2026-11-09", time:"15:00", tz:"Asia/Seoul", mode:"bus", durMin:70, durMax:90, title:"前往仁川机场 T1", toLabel:"仁川 T1",
-          sub:"机场大巴或出租车", note:"⚠ 回程走 T1(来时是 T2)", lang:"ko", biz:"personal" },
-    e41:{ kind:"flight", date:"2026-11-09", time:"18:55", tz:"Asia/Seoul", endTime:"12:45", endTz:"America/Vancouver",
-          title:"AC64", carrier:"Air Canada", from:"ICN T1", to:"YVR", fromCity:"首尔", toCity:"温哥华", intl:true,
-          fromPlace:"인천국제공항 제1여객터미널", toPlace:"Vancouver International Airport (YVR)", conf:"B9F9JL", seat:"Premium Economy",
-          status:"booked", biz:"business", expType:"mixed", lang:"ko",
-          note:"按出差回程报销:公司承担 = 当时东京→温哥华同舱报价(比直接回程便宜约 C$2,000),保留报价截图\n同日 12:45 到温哥华" }
-  },
-
-  places: {},
-
-  tasks: {
-    t01:{ text:"填 Visit Japan Web(入境 + 海关)", note:"二维码截图存进 AC3 的「机票凭证」", due:"2026-10-22", prio:"high", phase:"pre", done:false, ts:1 },
-    t02:{ text:"确认护照是否需要韩国 K-ETA", note:"11/6 入境,需要的话至少提前 72 小时", due:"2026-10-22", prio:"high", phase:"pre", done:false, ts:2 },
-    t03:{ text:"检查护照、机票、信用卡、少量日元现金", due:"2026-10-22", prio:"high", phase:"pre", done:false, ts:3 },
-    t04:{ text:"下载一份备份", note:"工具 → 备份与恢复,存进「文件」App", due:"2026-10-22", prio:"mid", phase:"pre", done:false, ts:4 },
-    t05:{ text:"补录 AC3 / AC64 机票金额", note:"AC64 记「部分公司」,同时存东京→温哥华同舱报价截图", due:"2026-10-29", prio:"mid", done:false, ts:5 },
-    t06:{ text:"设置里填出差目的", note:"出差行程单、报销单要用", due:"2026-10-29", prio:"mid", done:false, ts:6 },
-    t07:{ text:"对信用卡账单,补齐「待对账」实付", due:"2026-11-20", prio:"mid", phase:"post", done:false, ts:7 },
-    t08:{ text:"花费 → 旅行结束结算 → 导出报销包", due:"2026-11-30", prio:"mid", phase:"post", done:false, ts:8 }
-  },
-
-  expenses: {
-    x01:{ date:"2026-10-30", merchant:"山の神温泉 別墅 清流館", category:"住宿", detail:"10/30 1 晚 · 预约号 T8A9234FF1D80 · 已预付",
-          type:"personal", pay:"card", currency:"CAD", amountLocal:816.03, rate:1, ts:1001 },
-    x02:{ date:"2026-11-02", merchant:"ReLabo(青森)", category:"住宿", detail:"11/2 1 晚 · 预约号 X-ETM3KMDEW50 · 已预付",
-          type:"personal", pay:"card", currency:"JPY", amountLocal:34580, ts:1002 },
-    x03:{ date:"2026-11-06", merchant:"大韩航空 KE766", category:"交通", detail:"札幌 CTS → 首尔 ICN · 票号 1802250552182 · 订单 FI46VD",
-          type:"personal", pay:"card", currency:"USD", amountLocal:508.10, ts:1003, eventId:"e35" }
-  },
-
-  guide: [
-    { t:"💼 公司 / 私人怎么分", items:[
-      "<b>10/22–10/29 是出差期</b>(东京),10/30 起是私人行程。但归属<b>不只看日期</b>:从行程卡片上「记一笔」,会跟着那一项的归属走。",
-      "Hotel Toranomon Hills 的退房账单日期是 10/30,但属于 10/29 出差住宿 → 记公司(在酒店详情里点「记住宿费」会自动选对)。",
-      "回程 AC64 记「部分公司」:公司承担 = 当时东京 → 温哥华同舱报价,其余私人。报价截图存进花费记录。",
-      "出差期的餐饮,写上商务目的和同席的人,结算时会检查。"
-    ]},
-    { t:"💳 三个金额", items:[
-      "<b>预估金额</b>:收据金额 × 当天汇率,记账时自动算。",
-      "<b>实际支付</b>:信用卡上真实扣的加币(含手续费)。看银行 App 推送填进去;当场不知道就先空着,「待对账」会提醒你。",
-      "<b>公司报销</b>:按规则确认后由公司承担的部分。结算时逐笔确认。",
-      "同一张收据拍两次、同一天同金额记两次,保存时会提示可能重复。"
-    ]},
-    { t:"🚄 交通要点", items:[
-      "新干线和北斗都在 えきねっと 订。<b>11/3 是文化之日,先订 はやぶさ5号 + 北斗11号</b>。订好后在清单里点「えきねっと订车票」→ 标记已订,行程会自动变成已订。",
-      "清流館接驳车只在 <b>15:10 / 16:10 / 17:10</b> 从新花巻站西口发车,约 50 分钟,须提前 4 天(10/26 前)预约。回程那班几点要一起问。",
-      "10/31:接驳车回到新花巻后坐 <b>やまびこ 12:42 → 盛冈 12:58</b>,换 <b>こまち19号 13:35 → 秋田 15:04</b>。",
-      "仁川机场:11/6 大韩航空到 <b>T2</b>,11/9 Air Canada 从 <b>T1</b> 走。"
-    ]},
-    { t:"🍽 预约餐厅提醒", items:[
-      "10/24 Torisho Ishii Hina:入口在东侧,车停到 2 楼那层就打 03-6722-0034。",
-      "10/26 黒牛:改期或取消须前一天打电话。",
-      "11/3 鮨 草平:全员同时开席,不能迟到;10 天内取消开始收费。",
-      "11/7 VINHO:CatchTable 预约,电话 +82-10-9677-2302。"
-    ]},
-    { t:"🛂 入境", items:[
-      "日本:出发前在 Visit Japan Web 填入境和海关申报,二维码截图存进 AC3 的机票凭证。",
-      "韩国:K-ETA 是否需要取决于你用的护照;需要的话至少在出发前 72 小时申请。"
-    ]}
-  ]
+  trip: { title:"差旅行程", start:"2026-01-01", end:"2026-01-07", city:"", home:"", homeTz:"America/Vancouver", lat:35.68, lng:139.69, seedVersion:3,
+          traveler:"", purpose:"", bizStart:"", bizEnd:"", currencies:["JPY","KRW","CAD","USD"], langs:["ja","ko"], defaultCurrency:"JPY", bookGroups:{} },
+  hotels:{}, events:{}, places:{}, tasks:{}, expenses:{}, guide:[]
 };
 /* @@SEED-END */
 
@@ -998,6 +797,13 @@ function cadOf(e){ return +e.paidCAD>0 ? +e.paidCAD : estCAD(e); }
 function cadTxt(e){ return (isExact(e)?"":"≈")+c$(cadOf(e)); }
 function companyCAD(e){ if(e.type==="business") return cadOf(e); if(e.type==="mixed") return Math.min(+e.bizCAD||0, cadOf(e)); return 0; }
 function personalCAD(e){ return cadOf(e)-companyCAD(e); }
+/* 住宿与机票(大额、多半行前就付了)单独算,「旅途花费」只看吃、买、当地交通这些 */
+function isBig(e){
+  if(e.big===true) return true; if(e.big===false) return false;
+  if(e.category==="住宿") return true;
+  const ev0=e.eventId&&S.events&&S.events[e.eventId]; if(ev0&&ev0.kind==="flight") return true;
+  return e.category==="交通"&&/航空|航班|机票|Air|Airline|\b(AC|KE|NH|JL|OZ)\s?\d{2,4}\b/i.test((e.merchant||"")+" "+(e.detail||""));
+}
 function isCo(e){ return e.type==="business"||e.type==="mixed"; }
 function basisOf(e){ return +e.paidCAD>0?"卡上实付":(e.currency==="CAD"?"加币原价":(e.pay==="card"?"汇率估算(待对账)":"汇率估算")); }
 /* 出差期外但有依据:关联了公司行程,或是公司住宿的退房日账单 */
@@ -1528,13 +1334,19 @@ function settleState(){
 function renderMoney(){
   if(expView==="settle"){ renderSettle(); return; }
   const ex=expList(), co=ex.filter(isCo);
-  const coTot=sumBy(co,companyCAD), coConf=sumBy(co.filter(e=>e.confirmed),companyCAD), per=sumBy(ex,personalCAD);
+  const coTot=sumBy(co,companyCAD), coConf=sumBy(co.filter(e=>e.confirmed),companyCAD);
+  const trip=ex.filter(e=>!isBig(e)), big=ex.filter(isBig);
+  const tripPer=sumBy(trip,personalCAD), bigPer=sumBy(big,personalCAD), bigCo=sumBy(big,companyCAD);
+  const topCats=catGroups(trip.filter(e=>personalCAD(e)>0),personalCAD).slice(0,3);
   const exact=ex.filter(e=>+e.paidCAD>0), fee=sumBy(exact,e=>e.paidCAD-estCAD(e)), pend=ex.filter(needsPaid);
   const issues=ex.filter(e=>issuesOf(e).some(i=>i.k!=="paid"));
   const st=settleState();
   let h=`<div class="stat-grid">
-    <div class="stat"><div class="lb"><span class="dot b"></span>公司报销</div><div class="big">${c$(coTot)}</div><div class="sm">${co.length} 笔 · 已确认 ${c$(coConf)}</div></div>
-    <div class="stat"><div class="lb"><span class="dot p"></span>私人</div><div class="big">${c$(per)}</div><div class="sm">${ex.filter(e=>personalCAD(e)>0).length} 笔</div></div>
+    <div class="stat" onclick="expFilter='co';render()"><div class="lb"><span class="dot b"></span>公司报销</div><div class="big">${c$(coTot)}</div><div class="sm">${co.length} 笔 · 已确认 ${c$(coConf)}</div></div>
+    <div class="stat" onclick="expFilter='trip';render()"><div class="lb"><span class="dot p"></span>私人 · 旅途花费</div><div class="big">${c$(tripPer)}</div><div class="sm">${topCats.length?topCats.map(g=>`${esc(g.cat)} ${c$(g.cad)}`).join(" · "):"吃、买、当地交通 · 不含住宿机票"}</div></div>
+    <div class="stat wide" onclick="expFilter='big';render()" style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+      <div><div class="lb">${ic("bed")} 住宿与机票</div><div class="sm" style="font-size:13px;color:var(--ink);margin-top:3px;">私人 <b>${c$(bigPer)}</b>${bigCo?` · 公司 <b>${c$(bigCo)}</b>`:""}</div></div>
+      <div class="muted" style="white-space:nowrap;">${big.length} 笔 ${ic("chevR")}</div></div>
     <div class="stat wide"><div class="lb"><span class="dot a"></span>预估 vs 实际支付</div>
       <div class="sm" style="font-size:13px;color:var(--ink);margin-top:4px;">预估合计 <b>${c$(sumBy(ex,estCAD))}</b> · 入账合计 <b>${c$(sumBy(ex,cadOf))}</b></div>
       <div class="sm">${exact.length} 笔按卡上实付入账${exact.length?`(比汇率估算${fee>=0?"多":"少"} ${c$(Math.abs(fee))},含银行手续费)`:""}${pend.length?` · <b style="color:var(--amber-dk)">${pend.length} 笔待对账</b>`:""}</div></div>
@@ -1555,11 +1367,12 @@ function renderMoney(){
     <button class="btn p" style="flex:1" onclick="quickAdd('personal')">存为私人${defaultType(today())==="personal"?" ✓":""}</button>
   </div>
   <div class="chips" style="margin-top:8px;">
-    ${[["all","全部"],["co","公司"],["pers","私人"],["paid",`待对账 ${pend.length}`],["issue",`待补资料 ${issues.length}`]].map(([k,l])=>`<button class="fchip ${expFilter===k?"on":""}" onclick="expFilter='${k}';render()">${l}</button>`).join("")}
+    ${[["all","全部"],["trip","旅途花费"],["big","住宿机票"],["co","公司"],["pers","私人"],["paid",`待对账 ${pend.length}`],["issue",`待补资料 ${issues.length}`]].map(([k,l])=>`<button class="fchip ${expFilter===k?"on":""}" onclick="expFilter='${k}';render()">${l}</button>`).join("")}
     <button class="fchip ${expView==="cat"?"on":""}" onclick="expView=expView==='cat'?'date':'cat';expCat='';render()">${expView==="cat"?"按分类 ✓":"按分类"}</button>
   </div>`;
   let list=ex;
-  if(expFilter==="co") list=ex.filter(isCo); else if(expFilter==="pers") list=ex.filter(e=>e.type==="personal"||e.type==="mixed");
+  if(expFilter==="trip") list=trip; else if(expFilter==="big") list=big;
+  else if(expFilter==="co") list=ex.filter(isCo); else if(expFilter==="pers") list=ex.filter(e=>e.type==="personal"||e.type==="mixed");
   else if(expFilter==="paid") list=pend; else if(expFilter==="issue") list=issues;
   if(expFilter==="paid"&&pend.length) h+=`<div class="hint">打开银行 App,按每笔的日期和金额找到加币扣款,填进去就行。</div>`;
   if(expView==="cat"){
@@ -1635,6 +1448,7 @@ function openExpenseForm(id,preset){
     <div class="f-row"><div class="f"><label>分类</label><select id="ex_cat">${catOptions(e.category||"")}</select></div></div>
     <div class="f"><label>明细(交通区间 / 品项等)</label><input id="ex_detail" value="${esc(e.detail||"")}"></div>
     <div class="f"><label>关联行程</label><select id="ex_ev">${evOptions(e.date,e.eventId)}</select></div>
+    <label style="font-size:13px;display:flex;gap:8px;align-items:center;margin:-2px 0 12px;"><input type="checkbox" id="ex_big" ${isBig(e)?"checked":""}> 算作住宿/机票(不计入旅途花费)</label>
     <div class="f"><label>归属 ${sug?`<span class="muted">· 建议:${sug==="business"?"公司":"私人"}${e.suggest&&e.suggest!==sug?` · Claude 认为:${e.suggest==="business"?"公司":"私人"}`:""}</span>`:""}</label>
       <div class="seg"><button id="sg_business" onclick="typePick('business')">公司</button><button id="sg_personal" onclick="typePick('personal')">私人</button><button id="sg_mixed" onclick="typePick('mixed')">部分公司</button></div></div>
     <div id="ex_cobox">
@@ -1667,6 +1481,7 @@ function saveExpense(){
   const rec={ ...old, amountLocal:a, currency:cur, date:$("#ex_date").value, pay:x.pay, merchant:$("#ex_mer").value.trim(), category:$("#ex_cat").value,
     detail:$("#ex_detail").value.trim(), eventId:$("#ex_ev").value||null, type:x.type, rate:old.rate||rate(cur), ts:old.ts||Date.now(),
     paidCAD:(x.pay==="card"&&cur!=="CAD"&&paid>0)?Math.round(paid*100)/100:null, receipt:x.receipt||null, rhash:x.rhash||null };
+  { const auto=isBig({...rec,big:undefined}), want=$("#ex_big").checked; rec.big = want===auto ? null : want; }
   if(x.type!=="personal"){ rec.purpose=$("#ex_purpose").value.trim()||null; rec.attendees=$("#ex_att").value.trim()||null; rec.noReceipt=$("#ex_norc").checked||null; rec.confirmed=$("#ex_conf").checked||null; }
   else { rec.purpose=rec.attendees=rec.noReceipt=rec.confirmed=null; }
   rec.bizCAD = x.type==="mixed" ? (parseFloat($("#ex_bizcad").value)||null) : null;
@@ -1739,15 +1554,16 @@ function receiptFiles(){ const m={}; let i=0; expList().slice().reverse().forEac
 function buildCSV(rcMap){
   rcMap=rcMap||{};
   const ex=expList().slice().reverse();
-  let csv="﻿日期,商家,分类,明细,归属,公司承担CAD,私人CAD,支付方式,货币,收据金额,记账汇率,预估CAD,卡上实付CAD,入账CAD,入账依据,商务目的,同席,关联行程,已确认,票据\n";
+  let csv="﻿日期,商家,分类,明细,花费类型,归属,公司承担CAD,私人CAD,支付方式,货币,收据金额,记账汇率,预估CAD,卡上实付CAD,入账CAD,入账依据,商务目的,同席,关联行程,已确认,票据\n";
   ex.forEach(e=>{ const cur=e.currency||defaultCur(); const evt=e.eventId&&S.events[e.eventId];
-    csv+=[e.date||"",csvCell(e.merchant),csvCell(e.category),csvCell(e.detail),e.type==="business"?"公司":e.type==="mixed"?"部分公司":"私人",
+    csv+=[e.date||"",csvCell(e.merchant),csvCell(e.category),csvCell(e.detail),isBig(e)?"住宿机票":"旅途花费",e.type==="business"?"公司":e.type==="mixed"?"部分公司":"私人",
       companyCAD(e).toFixed(2),personalCAD(e).toFixed(2),e.pay==="card"?"刷卡":"现金/IC卡",cur,e.amountLocal,cur==="CAD"?"1":(e.rate||rate(cur)).toFixed(cur==="USD"?4:5),
       estCAD(e).toFixed(2),+e.paidCAD>0?(+e.paidCAD).toFixed(2):"",cadOf(e).toFixed(2),basisOf(e),csvCell(e.purpose),csvCell(e.attendees),csvCell(evt?evt.title:""),
       isCo(e)?(e.confirmed?"是":"否"):"",csvCell(rcMap[e.id]||(e.noReceipt?"(以确认邮件代替)":""))].join(",")+"\n"; });
   const co=ex.filter(isCo);
-  csv+=`\n公司承担合计,,,,,${sumBy(co,companyCAD).toFixed(2)}\n私人合计,,,,,,${sumBy(ex,personalCAD).toFixed(2)}\n`;
-  csv+=`\n公司 · 分类小计,笔数,,,,公司承担CAD\n`; catGroups(co,companyCAD).forEach(g=>{ csv+=`${csvCell(g.cat)},${g.list.length},,,,${g.cad.toFixed(2)}\n`; });
+  csv+=`\n公司承担合计,,,,,,${sumBy(co,companyCAD).toFixed(2)}\n私人合计,,,,,,,${sumBy(ex,personalCAD).toFixed(2)}\n私人 · 旅途花费,,,,,,,${sumBy(ex.filter(e=>!isBig(e)),personalCAD).toFixed(2)}\n私人 · 住宿机票,,,,,,,${sumBy(ex.filter(isBig),personalCAD).toFixed(2)}\n`;
+  csv+=`\n公司 · 分类小计,笔数,,,,,公司承担CAD\n`; catGroups(co,companyCAD).forEach(g=>{ csv+=`${csvCell(g.cat)},${g.list.length},,,,,${g.cad.toFixed(2)}\n`; });
+  csv+=`\n私人旅途花费 · 分类小计,笔数,,,,,,私人CAD\n`; catGroups(ex.filter(e=>!isBig(e)&&personalCAD(e)>0),personalCAD).forEach(g=>{ csv+=`${csvCell(g.cat)},${g.list.length},,,,,,${g.cad.toFixed(2)}\n`; });
   const pn=ex.filter(needsPaid).length; if(pn) csv+=`\n注意:还有 ${pn} 笔刷卡未填卡上实付,入账CAD 暂按汇率估算\n`;
   return csv;
 }
@@ -2057,7 +1873,7 @@ function renderArchive(){
   const logs=Object.values(S.log||{}).sort((a,b)=>(a.ts||0)-(b.ts||0)); const jr=S.journal||{};
   let h=backTools()+`<div class="bigdate" style="font-size:22px;margin:4px 2px 2px;">行程档案</div><div class="muted" style="margin:0 2px 12px;">${esc(S.trip.title)} · ${dstr(S.trip.start)}–${dstr(S.trip.end)} · 下次找回喜欢的店</div>
   <div class="stat-grid"><div class="stat"><div class="lb"><span class="dot b"></span>公司</div><div class="big">${c$(sumBy(co,companyCAD))}</div><div class="sm">${co.length} 笔</div></div>
-  <div class="stat"><div class="lb"><span class="dot p"></span>私人</div><div class="big">${c$(sumBy(ex,personalCAD))}</div><div class="sm">未对账 ${ex.filter(needsPaid).length} · 缺票据 ${co.filter(e=>!e.receipt&&!e.noReceipt).length}</div></div></div>`;
+  <div class="stat"><div class="lb"><span class="dot p"></span>私人</div><div class="big">${c$(sumBy(ex,personalCAD))}</div><div class="sm">旅途花费 ${c$(sumBy(ex.filter(e=>!isBig(e)),personalCAD))} · 住宿机票 ${c$(sumBy(ex.filter(isBig),personalCAD))}<br>未对账 ${ex.filter(needsPaid).length} · 缺票据 ${co.filter(e=>!e.receipt&&!e.noReceipt).length}</div></div></div>`;
   Object.entries(byCity).forEach(([city,list])=>{
     h+=`<div class="sec-h"><h2 style="font-size:16px;">${esc(city)}</h2></div><div class="rowlist">${list.map(x=>{ const o=x.o, r=+o.rating||0, isH=x.t==="hotel";
       return `<div class="row" onclick="${isH?`openHotel('${o.id}')`:`selDay='${o.date}';openCard['${o.id}']=true;goTab('plan')`}"><span class="ri ${isH?"green":"blue"}">${ic(isH?"bed":KIND[o.kind].icon)}</span>
