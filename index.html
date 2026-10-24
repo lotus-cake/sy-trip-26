@@ -307,7 +307,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
 <script>
 /* ================= 每次出差 · 只改这一块 ================= */
-const BUILD = "jpkr-2026 · v3.1 · 2026-10-23";
+const BUILD = "jpkr-2026 · v3.2 · 2026-10-24";
 const SHELL = true;                     // 空壳版(无数据版)设为 true:不会把空数据写回云端
 const FB_URL = "https://trip-7e9d5-default-rtdb.asia-southeast1.firebasedatabase.app";  // 差旅专用 Firebase 项目「Trip」(与 lotus inventory 分开)
 const NODE = "trip-jpkr-2026";      // ← 这趟的 Firebase 节点名,如 trip-jpkr-2026
@@ -1885,12 +1885,12 @@ async function aiImport(){
   const schema=`返回 JSON:{"items":[{"op":"add|update","target":"event|hotel|expense|place","id":"update 时填已有的 id","summary":"一句中文说明","data":{...}}]}
 event 字段:kind(flight|train|transit|hotel|food|activity|work), title, date(YYYY-MM-DD), time(HH:MM 当地时间), tz(IANA 时区), endDate, endTime, endTz, from, to, fromCity, toCity, fromPlace, toPlace, carrier, seat, intl(bool), conf, phone, party, sub(一句关键信息), localAddress(当地语言地址), nameLocal, city, lang(ja|ko), status(booked), cancelBy, biz(business|personal), note。
 hotel 字段:name, nameLocal, checkIn, checkOut, inTime, outTime, conf, phone, room, prepaid, localAddress, city, currency, lang, cancelBy, biz, note。
-place 字段(只是想去、没有预约的店/景点,比如小红书截图):name, nameLocal, category(餐厅|咖啡|甜品|采购|景点|购物), localAddress, city, lang, note。
+place 字段(只是想去、没有预约的店/景点,比如小红书/Google 地图截图):name, nameLocal, category(餐厅|咖啡|甜品|采购|景点|购物), localAddress, city, lang, phone, hours(营业时间,如 10:00–18:00 · 周一二休), visitDate(用户说了哪天去就填 YYYY-MM-DD,"今天"=${today()}), visitTime(用户说了几点去就填 HH:MM), note(店的要点,如招牌、排队/堂食规则)。
 expense 字段(仅当邮件里有已付款金额):date, merchant, category(${CATS_EXP.join("|")}), detail, currency, amountLocal, pay(card), type(business|personal)。
 地址规则(很重要,打车卡和导航全靠它):每个 event(food/activity/work)、hotel、place 都必须给 nameLocal(当地语言名称)和 localAddress(当地语言完整地址,含楼层)。内容里没有地址时,用你对这家店的了解补上,并加 "addrSrc":"claude";实在不确定就留空,不要编。
 规则:同一预订(预约号/日期+名称相同)用 update + 已有 id,只放需要改的字段;待订(status todo)的行程被这封确认邮件订好时,update 它为 status:"booked" 并写 conf;出差期 ${S.trip.bizStart||""}~${S.trip.bizEnd||""} 内默认 biz:business,其余 personal;只返回 JSON。`;
   const content=[...imgs.map(b=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:b.split(",")[1]}})),
-    {type:"text",text:`现有行程(用来判断是更新还是新增):\n${JSON.stringify(compactTrip())}\n\n${schema}\n\n要导入的内容:\n${text||"(见图片)"}`}];
+    {type:"text",text:`现在是 ${today()} ${hm(NOW(),curTz())}(${tzName(curTz())}当地时间),今晚住 ${(hotelOn(today())||{}).name||"—"}。\n现有行程(用来判断是更新还是新增):\n${JSON.stringify(compactTrip())}\n\n${schema}\n\n要导入的内容(用户的话优先):\n${text||"(见图片)"}`}];
   try{ const out=await askClaude(content,3000); const j=parseJSON(out); window._imPreview=(j.items||[]).map((it,i)=>({...it,_on:true,_i:i})); $("#im_out").innerHTML=importPreviewHTML(); }
   catch(e){ $("#im_out").innerHTML=`<div class="hint">${esc(e.message)}</div>`; }
 }
@@ -1901,7 +1901,12 @@ function importPreviewHTML(){
     const d=it.data||{}; const needA=it.target!=="expense"&&!(it.target==="event"&&["flight","train","transit"].includes(d.kind))&&!(it.op==="update"&&ex&&ex.localAddress&&!d.localAddress);
     return `<div class="check" onclick="window._imPreview[${it._i}]._on=!window._imPreview[${it._i}]._on;$('#im_out').innerHTML=importPreviewHTML()"><span class="ck ${it._on?"on":""}">${it._on?"✓":""}</span>
     <div style="flex:1"><div class="ct">${it.op==="update"?"更新":"新增"}${lab[it.target]||""} · ${esc(it.summary||"")}</div>
-    <div class="cd">${ex?`原:${esc(ex.title||ex.name||ex.merchant||it.id)} → `:""}${esc(Object.entries(d).filter(([k])=>!["note","localAddress","nameLocal","addrSrc"].includes(k)).map(([k,v])=>k+": "+v).join(" · ").slice(0,220))}</div>
+    <div class="cd">${ex?`原:${esc(ex.title||ex.name||ex.merchant||it.id)} → `:""}${esc(Object.entries(d).filter(([k])=>!["note","localAddress","nameLocal","addrSrc","visitDate","visitTime"].includes(k)).map(([k,v])=>k+": "+v).join(" · ").slice(0,220))}</div>
+    ${it.target==="place"?`<div class="cd" style="margin-top:8px;color:var(--ink);display:flex;gap:6px;align-items:center;flex-wrap:wrap;">${ic("plan")} 加进行程:
+      <input onclick="event.stopPropagation()" type="date" value="${esc(d.visitDate||"")}" onchange="window._imPreview[${it._i}].data.visitDate=this.value" style="border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font-size:13px;">
+      <input onclick="event.stopPropagation()" type="time" value="${esc(d.visitTime||"")}" onchange="window._imPreview[${it._i}].data.visitTime=this.value" style="border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font-size:13px;">
+      <button class="mini" onclick="event.stopPropagation();const x=window._imPreview[${it._i}].data;x.visitDate='${today()}';if(!x.visitTime)x.visitTime='${(()=>{const t=hm(NOW()+60*60000,curTz());return t.slice(0,3)+(+t.slice(3)<30?"00":"30")})()}';$('#im_out').innerHTML=importPreviewHTML()">今天去</button>
+      <span class="muted">${d.visitDate?"":"(留空=只收藏)"}</span></div>`:""}
     ${needA?`<div class="cd" style="margin-top:6px;color:var(--ink);">${ic("taxi")} 打车卡地址${d.addrSrc==="claude"?' <span class="tag w">Claude 补的,请核对</span>':d.localAddress?"":' <span class="tag r">没有地址</span>'}</div>
       <input onclick="event.stopPropagation()" onchange="window._imPreview[${it._i}].data.localAddress=this.value.trim();window._imPreview[${it._i}].data.addrSrc=null" value="${esc(d.localAddress||"")}" placeholder="当地语言地址,可以直接改" style="width:100%;margin-top:4px;border:1px solid var(--line2);border-radius:8px;padding:7px 9px;font-size:14px;">`:""}
     </div></div>`; }).join("")}</div>
@@ -1915,6 +1920,15 @@ function applyImport(){
     if(col!=="expenses") d.edited=Date.now();
     if(col==="expenses"){ d.ts=Date.now(); d.rate=rate(d.currency); d.noReceipt=true; }
     if(d.localAddress&&!d.mapUrl) d.mapUrl=null;
+    if(col==="places"&&d.visitDate){
+      const tz=(hotelOn(d.visitDate)||{}).tz||TZ;
+      const evd={kind:/餐厅|甜品|咖啡/.test(d.category||"")?"food":"activity",date:d.visitDate,time:d.visitTime||"14:00",tz,title:(d.category==="甜品"||d.category==="咖啡"?"探店 · ":"")+d.name,
+        nameLocal:d.nameLocal||null,localAddress:d.localAddress||null,addrSrc:d.addrSrc||null,phone:d.phone||null,city:d.city||null,lang:d.lang||null,
+        sub:d.hours?("营业 "+d.hours):null,note:d.note||null,biz:defaultType(d.visitDate),edited:Date.now()};
+      Object.keys(evd).forEach(k=>{ if(evd[k]==null) delete evd[k]; }); push("events",evd); d.status="planned";
+      logChange(d.visitDate,`加入:${d.visitTime||""} ${d.name}`);
+    }
+    delete d.visitDate; delete d.visitTime;
     if(it.op==="update"&&it.id&&(S[col]||{})[it.id]){ patch(col+"/"+it.id,d); }
     else {
       const nid=push(col,d);
