@@ -307,7 +307,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
 <script>
 /* ================= 每次出差 · 只改这一块 ================= */
-const BUILD = "jpkr-2026 · v3.2 · 2026-10-24";
+const BUILD = "jpkr-2026 · v3.3 · 2026-10-24";
 const SHELL = true;                     // 空壳版(无数据版)设为 true:不会把空数据写回云端
 const FB_URL = "https://trip-7e9d5-default-rtdb.asia-southeast1.firebasedatabase.app";  // 差旅专用 Firebase 项目「Trip」(与 lotus inventory 分开)
 const NODE = "trip-jpkr-2026";      // ← 这趟的 Firebase 节点名,如 trip-jpkr-2026
@@ -599,6 +599,27 @@ async function askClaude(content, maxTokens, system){
   const j=await r.json(); if(j&&j.error) throw new Error(j.error.message||j.error.type);
   return (j.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("").trim();
 }
+/* 带网络搜索的调用:查地址、营业时间这类会变的信息,用搜到的资料,不凭记忆 */
+async function askClaudeWeb(prompt, maxTokens, loc){
+  const key=localStorage.getItem("jt_apikey"); if(!key) throw new Error("请先在设置里填入 Claude API key");
+  const tool={type:"web_search_20250305",name:"web_search",max_uses:3};
+  if(loc&&loc.country) tool.user_location={type:"approximate",country:loc.country,timezone:loc.tz||undefined};
+  let messages=[{role:"user",content:prompt}];
+  for(let round=0; round<3; round++){
+    const r=await fetch("https://api.anthropic.com/v1/messages",{ method:"POST",
+      headers:{ "Content-Type":"application/json", "x-api-key":key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" },
+      body:JSON.stringify({ model:MODEL, max_tokens:maxTokens||900, messages, tools:[tool] }) });
+    const j=await r.json();
+    if(j&&j.error){ if(/web.?search/i.test(j.error.message||"")) return { text: await askClaude(prompt,maxTokens), urls:[], noWeb:true }; throw new Error(j.error.message||j.error.type); }
+    const c=j.content||[];
+    if(j.stop_reason==="pause_turn"){ messages=messages.concat([{role:"assistant",content:c}]); continue; }
+    let last=-1; c.forEach((b,i)=>{ if(b.type==="web_search_tool_result") last=i; });
+    const after=c.slice(last+1).filter(b=>b.type==="text").map(b=>b.text).join("").trim();
+    const urls=[...new Set(c.filter(b=>b.type==="web_search_tool_result"&&Array.isArray(b.content)).flatMap(b=>b.content.map(x=>x.url)).filter(Boolean))];
+    return { text: after || c.filter(b=>b.type==="text").map(b=>b.text).join(""), urls };
+  }
+  throw new Error("查询超时,请再试一次");
+}
 function parseJSON(txt){ const m=txt.match(/[\[{][\s\S]*[\]}]/); if(!m) throw new Error("AI 没有返回结构化结果"); return JSON.parse(m[0]); }
 
 /* ================= 行程模型 ================= */
@@ -838,6 +859,19 @@ function suggestType(date,category,eventId){
 }
 function expensesOfEvent(id){ return expList().filter(x=>x.eventId===id); }
 function applySuggest(id,time){ const e=S.events[id]; if(!e) return; const old=e.time; patch("events/"+id,{time,edited:Date.now()}); logChange(e.date,`${e.title}:${old} → ${time}(按余量建议)`); toast(`已改成 ${time} 出发 ✓`); }
+/* 上网查一家店/地点的当地地址(打车卡用) */
+async function lookupAddress(o){
+  const name=o.nameLocal||o.name||o.title, city=o.city||((hotelOn(o.date||o.checkIn||o.visitDate||today())||{}).city)||"";
+  const lang=o.lang||defaultLang(); const loc=lang==="ko"?{country:"KR",tz:"Asia/Seoul"}:{country:"JP",tz:"Asia/Tokyo"};
+  const res=await askClaudeWeb(`用网络搜索查这家店/地点的正式地址,给${lang==="ko"?"韩国":"日本"}出租车司机看。
+名称:${name}${o.title&&o.title!==name?" / "+o.title:""}${o.name&&o.name!==name?" / "+o.name:""}
+城市/地区:${city}
+已知线索:${[o.category,o.sub,o.note,o.phone].filter(Boolean).join(" / ").slice(0,300)}
+只用搜索到的资料,优先官网、Google 地图、Tabelog、Naver、Instagram 等。最后只输出一个 JSON:
+{"nameLocal":"当地语言店名","localAddress":"完整地址(${lang==="ko"?"韩文":"日文"},含楼层)","phone":"","hours":"营业时间和休息日","confidence":"high|medium|low"}
+同名店不止一家时选${city}的那家;找不到就 localAddress 留空。`,1200,loc);
+  const j=parseJSON(res.text); j.source=res.urls[0]||""; j.noWeb=!!res.noWeb; return j;
+}
 function logChange(date,text){ if(!S||LOCAL) return; const id=uid(); write("log/"+id,{date:date||today(),text,ts:Date.now()}); }
 
 /* ================= 外壳 ================= */
@@ -1030,7 +1064,7 @@ function evDetail(e){
     ${e.kind==="flight"||e.kind==="train"?kv("出发",`${e.fromPlace||e.from||""}${e.tz&&e.endTz&&e.tz!==e.endTz?" · "+tzName(e.tz)+"时间 "+e.time:""}`)+kv("到达",`${e.toPlace||e.to||""}${e.tz&&e.endTz&&e.tz!==e.endTz?" · "+tzName(e.endTz)+"时间 "+dstr(e.endDate||e.date)+" "+e.endTime:""}`):""}
     ${e.kind==="transit"?kv("方式",`${(MODE[e.mode]||MODE.taxi)[0]}${e.durMax?` · 预计 ${e.durMin||e.durMax}–${e.durMax} 分钟`:""}${e.fixed?" · 准点发车":""}`):""}
     ${addrBlock(e.kind==="transit"||e.kind==="flight"||e.kind==="train"?null:e,null,e.kind==="transit"||e.kind==="flight"||e.kind==="train"||e.kind==="hotel"?null:"events/"+e.id)}
-    ${e.addrSrc==="claude"?`<div class="muted" style="margin:-2px 0 4px 66px;">地址由 Claude 查到,第一次去时核对一下</div>`:""}
+    ${e.addrSrc==="claude"||e.addrSrc==="web"?`<div class="muted" style="margin:-2px 0 4px 66px;">地址由 Claude ${e.addrSrc==="web"?"上网":""}查到,第一次去时核对一下${e.addrUrl?` · <a href="${esc(e.addrUrl)}" target="_blank">来源</a>`:""}</div>`:""}
     ${kv("预约号",e.conf)}${kv("人数",e.party)}
     ${e.phone?kv("电话",`<a href="${telHref(e.phone,langOf(e))}">${esc(e.phone)}</a>`,true):""}
     ${kv("订票期限",e.bookBy&&e.status!=="booked"?dstr(e.bookBy)+" 前":"")}
@@ -1137,16 +1171,13 @@ function needAddr(path,name){
 async function aiFindAddress(path,thenTaxi){
   const o=getPath(S,path); if(!o){ toast("找不到这一项"); return; }
   const name=o.nameLocal||o.name||o.title, city=o.city||((hotelOn(o.date||o.checkIn||today())||{}).city)||"";
-  sheet(`<h3>${ic("sparkle")} 正在查:${esc(name)}</h3><div class="hint blue">Claude 正在找当地语言的地址…</div>`);
+  sheet(`<h3>${ic("sparkle")} 正在查:${esc(name)}</h3><div class="hint blue">Claude 正在网上查当地语言的地址…(10–20 秒)</div>`);
   try{
-    const out=await askClaude(`查这家店/地点的正式地址,用当地语言(日本用日文,韩国用韩文),给出租车司机看。
-名称:${name}${o.title&&o.title!==name?" / "+o.title:""}
-城市:${city}
-已知信息:${[o.sub,o.note,o.phone].filter(Boolean).join(" / ").slice(0,300)}
-只返回 JSON:{"nameLocal":"当地语言店名","localAddress":"完整地址(含楼层)","phone":"电话或空","lat":数字或null,"lng":数字或null,"confidence":"high|medium|low","why":"一句话:依据是什么"}。不确定就 confidence 填 low,不要编造。`,500);
-    const j=parseJSON(out);
+    const j=await lookupAddress(o);
     if(!j.localAddress){ closeSheet(); toast("Claude 没查到,请手动填"); return; }
-    const up={localAddress:j.localAddress, addrSrc:"claude", addrConf:j.confidence||"medium", edited:Date.now()};
+    const up={localAddress:j.localAddress, addrSrc:j.noWeb?"claude":"web", addrConf:j.confidence||"medium", addrUrl:j.source||null, edited:Date.now()};
+    if(j.hours&&!o.sub&&path.startsWith("events/")) up.sub="营业 "+j.hours;
+    Object.keys(up).forEach(k=>{ if(up[k]==null) delete up[k]; });
     if(j.nameLocal&&!o.nameLocal) up.nameLocal=j.nameLocal; if(j.phone&&!o.phone) up.phone=j.phone;
     if(typeof j.lat==="number"&&!o.lat){ up.lat=j.lat; up.lng=j.lng; }
     patch(path,up); closeSheet();
@@ -1162,7 +1193,7 @@ function openTaxi(name,addr,lang,o){
   const T=S?taxiTargets():[]; const cur=T.findIndex(t=>t.o.localAddress===addr);
   const el=document.createElement("div"); el.className="taxi"; el.id="taxiCard";
   el.innerHTML=`<div class="lbl">${esc(phrase)}</div><div class="jp-name">${esc(name)}</div><div class="jp-addr">${esc(addr)}</div><div class="stamp">${lang==="ko"?"목적지":"行先"}</div>
-    ${o&&o.addrSrc==="claude"?`<div class="muted" style="margin-top:14px;">地址由 Claude 查到${o.addrConf==="low"?",可信度低":""} · 上车前和地图核对一下</div>`:""}
+    ${o&&(o.addrSrc==="claude"||o.addrSrc==="web")?`<div class="muted" style="margin-top:14px;">地址由 Claude ${o.addrSrc==="web"?"上网":""}查到${o.addrConf==="low"?",可信度低":""} · 第一次去时和地图核对一下</div>`:""}
     <div class="taxi-btns"><button class="btn indigo" onclick="speakLocal('${q(addr)}','${lang}')">${ic("sound")} 朗读</button>
       <button class="btn ghost" onclick="openUrl('${q(navUrl(o||{name,localAddress:addr}))}')">${ic("map")} 地图</button>
       <button class="btn ghost" onclick="document.getElementById('taxiCard').remove()">关闭</button></div>
@@ -1887,12 +1918,27 @@ event 字段:kind(flight|train|transit|hotel|food|activity|work), title, date(YY
 hotel 字段:name, nameLocal, checkIn, checkOut, inTime, outTime, conf, phone, room, prepaid, localAddress, city, currency, lang, cancelBy, biz, note。
 place 字段(只是想去、没有预约的店/景点,比如小红书/Google 地图截图):name, nameLocal, category(餐厅|咖啡|甜品|采购|景点|购物), localAddress, city, lang, phone, hours(营业时间,如 10:00–18:00 · 周一二休), visitDate(用户说了哪天去就填 YYYY-MM-DD,"今天"=${today()}), visitTime(用户说了几点去就填 HH:MM), note(店的要点,如招牌、排队/堂食规则)。
 expense 字段(仅当邮件里有已付款金额):date, merchant, category(${CATS_EXP.join("|")}), detail, currency, amountLocal, pay(card), type(business|personal)。
-地址规则(很重要,打车卡和导航全靠它):每个 event(food/activity/work)、hotel、place 都必须给 nameLocal(当地语言名称)和 localAddress(当地语言完整地址,含楼层)。内容里没有地址时,用你对这家店的了解补上,并加 "addrSrc":"claude";实在不确定就留空,不要编。
+地址规则:每个 event(food/activity/work)、hotel、place 都给 nameLocal(当地语言名称)和 city;内容里写了地址就照抄进 localAddress(当地语言,含楼层)。内容里没有地址就留空——App 会马上上网查,不要凭记忆写。
 规则:同一预订(预约号/日期+名称相同)用 update + 已有 id,只放需要改的字段;待订(status todo)的行程被这封确认邮件订好时,update 它为 status:"booked" 并写 conf;出差期 ${S.trip.bizStart||""}~${S.trip.bizEnd||""} 内默认 biz:business,其余 personal;只返回 JSON。`;
   const content=[...imgs.map(b=>({type:"image",source:{type:"base64",media_type:"image/jpeg",data:b.split(",")[1]}})),
     {type:"text",text:`现在是 ${today()} ${hm(NOW(),curTz())}(${tzName(curTz())}当地时间),今晚住 ${(hotelOn(today())||{}).name||"—"}。\n现有行程(用来判断是更新还是新增):\n${JSON.stringify(compactTrip())}\n\n${schema}\n\n要导入的内容(用户的话优先):\n${text||"(见图片)"}`}];
-  try{ const out=await askClaude(content,3000); const j=parseJSON(out); window._imPreview=(j.items||[]).map((it,i)=>({...it,_on:true,_i:i})); $("#im_out").innerHTML=importPreviewHTML(); }
+  try{ const out=await askClaude(content,3000); const j=parseJSON(out); window._imPreview=(j.items||[]).map((it,i)=>({...it,data:it.data||{},_on:true,_i:i})); $("#im_out").innerHTML=importPreviewHTML(); fillMissingAddrs(); }
   catch(e){ $("#im_out").innerHTML=`<div class="hint">${esc(e.message)}</div>`; }
+}
+function needsAddr(it){ const d=it.data||{}; if(it.target==="expense") return false; if(it.target==="event"&&["flight","train","transit"].includes(d.kind)) return false;
+  if(it.op==="update"&&it.id){ const ex=((it.target==="hotel"?S.hotels:it.target==="place"?S.places:S.events)||{})[it.id]; if(ex&&ex.localAddress) return false; } return !d.localAddress; }
+/* 预览出来后,没地址的自动上网查,查到就填进预览框 */
+async function fillMissingAddrs(){
+  const L=window._imPreview||[];
+  await Promise.all(L.filter(needsAddr).map(async it=>{
+    it._looking=true; if($("#im_out")) $("#im_out").innerHTML=importPreviewHTML();
+    try{ const d=it.data; const j=await lookupAddress({...d,title:d.title||d.name,date:d.date||d.visitDate,checkIn:d.checkIn});
+      if(j.localAddress&&!d.localAddress){ d.localAddress=j.localAddress; d.addrSrc=j.noWeb?"claude":"web"; d.addrConf=j.confidence; if(j.source) d.addrUrl=j.source;
+        if(j.nameLocal&&!d.nameLocal) d.nameLocal=j.nameLocal; if(j.phone&&!d.phone) d.phone=j.phone; if(j.hours&&!d.hours) d.hours=j.hours; }
+      else it._notFound=true;
+    }catch(e){ it._notFound=true; }
+    it._looking=false; if(window._imPreview===L&&$("#im_out")) $("#im_out").innerHTML=importPreviewHTML();
+  }));
 }
 function importPreviewHTML(){
   const L=window._imPreview||[]; if(!L.length) return `<div class="empty">没有识别到预订信息</div>`;
@@ -1901,13 +1947,13 @@ function importPreviewHTML(){
     const d=it.data||{}; const needA=it.target!=="expense"&&!(it.target==="event"&&["flight","train","transit"].includes(d.kind))&&!(it.op==="update"&&ex&&ex.localAddress&&!d.localAddress);
     return `<div class="check" onclick="window._imPreview[${it._i}]._on=!window._imPreview[${it._i}]._on;$('#im_out').innerHTML=importPreviewHTML()"><span class="ck ${it._on?"on":""}">${it._on?"✓":""}</span>
     <div style="flex:1"><div class="ct">${it.op==="update"?"更新":"新增"}${lab[it.target]||""} · ${esc(it.summary||"")}</div>
-    <div class="cd">${ex?`原:${esc(ex.title||ex.name||ex.merchant||it.id)} → `:""}${esc(Object.entries(d).filter(([k])=>!["note","localAddress","nameLocal","addrSrc","visitDate","visitTime"].includes(k)).map(([k,v])=>k+": "+v).join(" · ").slice(0,220))}</div>
+    <div class="cd">${ex?`原:${esc(ex.title||ex.name||ex.merchant||it.id)} → `:""}${esc(Object.entries(d).filter(([k])=>!["note","localAddress","nameLocal","addrSrc","addrConf","addrUrl","visitDate","visitTime"].includes(k)).map(([k,v])=>k+": "+v).join(" · ").slice(0,220))}</div>
     ${it.target==="place"?`<div class="cd" style="margin-top:8px;color:var(--ink);display:flex;gap:6px;align-items:center;flex-wrap:wrap;">${ic("plan")} 加进行程:
       <input onclick="event.stopPropagation()" type="date" value="${esc(d.visitDate||"")}" onchange="window._imPreview[${it._i}].data.visitDate=this.value" style="border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font-size:13px;">
       <input onclick="event.stopPropagation()" type="time" value="${esc(d.visitTime||"")}" onchange="window._imPreview[${it._i}].data.visitTime=this.value" style="border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font-size:13px;">
       <button class="mini" onclick="event.stopPropagation();const x=window._imPreview[${it._i}].data;x.visitDate='${today()}';if(!x.visitTime)x.visitTime='${(()=>{const t=hm(NOW()+60*60000,curTz());return t.slice(0,3)+(+t.slice(3)<30?"00":"30")})()}';$('#im_out').innerHTML=importPreviewHTML()">今天去</button>
       <span class="muted">${d.visitDate?"":"(留空=只收藏)"}</span></div>`:""}
-    ${needA?`<div class="cd" style="margin-top:6px;color:var(--ink);">${ic("taxi")} 打车卡地址${d.addrSrc==="claude"?' <span class="tag w">Claude 补的,请核对</span>':d.localAddress?"":' <span class="tag r">没有地址</span>'}</div>
+    ${needA?`<div class="cd" style="margin-top:6px;color:var(--ink);">${ic("taxi")} 打车卡地址${it._looking?' <span class="tag g">正在网上查…</span>':d.addrSrc==="web"?' <span class="tag w">网上查到,请核对</span>':d.addrSrc==="claude"?' <span class="tag w">Claude 补的,请核对</span>':d.localAddress?"":it._notFound?' <span class="tag r">没查到,可以手动填</span>':' <span class="tag r">没有地址</span>'}${d.addrUrl?` <a href="${esc(d.addrUrl)}" target="_blank" onclick="event.stopPropagation()" style="font-size:11.5px;">来源</a>`:""}</div>
       <input onclick="event.stopPropagation()" onchange="window._imPreview[${it._i}].data.localAddress=this.value.trim();window._imPreview[${it._i}].data.addrSrc=null" value="${esc(d.localAddress||"")}" placeholder="当地语言地址,可以直接改" style="width:100%;margin-top:4px;border:1px solid var(--line2);border-radius:8px;padding:7px 9px;font-size:14px;">`:""}
     </div></div>`; }).join("")}</div>
   <div class="btns"><button class="btn ghost" onclick="window._imPreview=null;window._imImgs=[];render()">放弃</button><button class="btn b" onclick="applyImport()">写进行程</button></div>`;
@@ -1920,10 +1966,11 @@ function applyImport(){
     if(col!=="expenses") d.edited=Date.now();
     if(col==="expenses"){ d.ts=Date.now(); d.rate=rate(d.currency); d.noReceipt=true; }
     if(d.localAddress&&!d.mapUrl) d.mapUrl=null;
+    if(col==="places"&&d.hours&&!d.note) d.note="营业 "+d.hours;
     if(col==="places"&&d.visitDate){
       const tz=(hotelOn(d.visitDate)||{}).tz||TZ;
       const evd={kind:/餐厅|甜品|咖啡/.test(d.category||"")?"food":"activity",date:d.visitDate,time:d.visitTime||"14:00",tz,title:(d.category==="甜品"||d.category==="咖啡"?"探店 · ":"")+d.name,
-        nameLocal:d.nameLocal||null,localAddress:d.localAddress||null,addrSrc:d.addrSrc||null,phone:d.phone||null,city:d.city||null,lang:d.lang||null,
+        nameLocal:d.nameLocal||null,localAddress:d.localAddress||null,addrSrc:d.addrSrc||null,addrUrl:d.addrUrl||null,addrConf:d.addrConf||null,phone:d.phone||null,city:d.city||null,lang:d.lang||null,
         sub:d.hours?("营业 "+d.hours):null,note:d.note||null,biz:defaultType(d.visitDate),edited:Date.now()};
       Object.keys(evd).forEach(k=>{ if(evd[k]==null) delete evd[k]; }); push("events",evd); d.status="planned";
       logChange(d.visitDate,`加入:${d.visitTime||""} ${d.name}`);
