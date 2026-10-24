@@ -307,7 +307,7 @@ img.rc-full{position:fixed; inset:0; width:100%; height:100%; object-fit:contain
 <script src="https://cdn.jsdelivr.net/npm/firebase@9.22.2/firebase-database-compat.js"></script>
 <script>
 /* ================= 每次出差 · 只改这一块 ================= */
-const BUILD = "jpkr-2026 · v3.3 · 2026-10-24";
+const BUILD = "jpkr-2026 · v3.4 · 2026-10-24";
 const SHELL = true;                     // 空壳版(无数据版)设为 true:不会把空数据写回云端
 const FB_URL = "https://trip-7e9d5-default-rtdb.asia-southeast1.firebasedatabase.app";  // 差旅专用 Firebase 项目「Trip」(与 lotus inventory 分开)
 const NODE = "trip-jpkr-2026";      // ← 这趟的 Firebase 节点名,如 trip-jpkr-2026
@@ -593,10 +593,12 @@ async function fetchWeather(){
 function wxIcon(c){ if(c===0) return "☀"; if(c<=3) return "⛅"; if(c<=48) return "🌫"; if(c<=67||[80,81,82].includes(c)) return "🌧"; if(c<=77) return "🌨"; if(c>=95) return "⛈"; return "☁"; }
 async function askClaude(content, maxTokens, system){
   const key=localStorage.getItem("jt_apikey"); if(!key) throw new Error("请先在设置里填入 Claude API key");
-  const body={ model:MODEL, max_tokens:maxTokens||600, messages:[{ role:"user", content }] }; if(system) body.system=system;
+  // 输出上限给足:新模型可能先思考再回答,上限太小会把 JSON 截断
+  const body={ model:MODEL, max_tokens:Math.max(maxTokens||0,2500), messages:[{ role:"user", content }] }; if(system) body.system=system;
   const r=await fetch("https://api.anthropic.com/v1/messages",{ method:"POST",
     headers:{ "Content-Type":"application/json", "x-api-key":key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" }, body:JSON.stringify(body) });
   const j=await r.json(); if(j&&j.error) throw new Error(j.error.message||j.error.type);
+  window._lastStop=j.stop_reason;
   return (j.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("").trim();
 }
 /* 带网络搜索的调用:查地址、营业时间这类会变的信息,用搜到的资料,不凭记忆 */
@@ -608,7 +610,7 @@ async function askClaudeWeb(prompt, maxTokens, loc){
   for(let round=0; round<3; round++){
     const r=await fetch("https://api.anthropic.com/v1/messages",{ method:"POST",
       headers:{ "Content-Type":"application/json", "x-api-key":key, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" },
-      body:JSON.stringify({ model:MODEL, max_tokens:maxTokens||900, messages, tools:[tool] }) });
+      body:JSON.stringify({ model:MODEL, max_tokens:Math.max(maxTokens||0,3000), messages, tools:[tool] }) });
     const j=await r.json();
     if(j&&j.error){ if(/web.?search/i.test(j.error.message||"")) return { text: await askClaude(prompt,maxTokens), urls:[], noWeb:true }; throw new Error(j.error.message||j.error.type); }
     const c=j.content||[];
@@ -620,7 +622,12 @@ async function askClaudeWeb(prompt, maxTokens, loc){
   }
   throw new Error("查询超时,请再试一次");
 }
-function parseJSON(txt){ const m=txt.match(/[\[{][\s\S]*[\]}]/); if(!m) throw new Error("AI 没有返回结构化结果"); return JSON.parse(m[0]); }
+function parseJSON(txt){
+  const t=(txt||"").replace(/```(?:json)?/gi,"");
+  const a=t.search(/[\[{]/), b=Math.max(t.lastIndexOf("}"),t.lastIndexOf("]"));
+  if(a<0||b<a){ console.warn("AI raw:",txt,window._lastStop); throw new Error(window._lastStop==="max_tokens"?"回答太长被截断了,请再试一次":"AI 这次没给出可用结果,请再试一次"+(txt?":"+txt.slice(0,40):"")); }
+  try{ return JSON.parse(t.slice(a,b+1)); }catch(e){ throw new Error("AI 结果格式有误,请再试一次"); }
+}
 
 /* ================= 行程模型 ================= */
 const KIND = {
@@ -1601,7 +1608,7 @@ async function ocrInto(b64){
   const evs=evList().filter(e=>isImportant(e)&&Math.abs(daysBetween(e.date,d))<=1).map(e=>`${e.id}: ${e.date} ${e.time} ${e.title}`).join("\n");
   try{
     const txt=await askClaude([{type:"image",source:{type:"base64",media_type:"image/jpeg",data:b64.split(",")[1]}},
-      {type:"text",text:`这是一张旅行中的收据,货币是 ${curs.join("/")} 之一。今天大约是 ${d}。附近的行程(id: 日期 时间 标题):\n${evs||"无"}\n只返回 JSON:{"amount":数字(含税总额),"currency":"${curs.join("|")}","merchant":"商家名","date":"YYYY-MM-DD","category":"${CATS_EXP.join("|")}","detail":"一句话明细(交通写区间,没有就结合行程推断并标注(推断))","pay":"card|cash(有 クレジット/カード/VISA/신용카드/승인 等选 card;現金/お釣り/현금/交通IC卡 选 cash;看不出选 card)","eventId":"能对上的行程 id,对不上留空","suggest":"business|personal"}`}],500);
+      {type:"text",text:`这是一张旅行中的收据,货币是 ${curs.join("/")} 之一。今天大约是 ${d}。附近的行程(id: 日期 时间 标题):\n${evs||"无"}\n只返回 JSON:只输出 JSON,不要任何解释:{"amount":数字(含税总额,合計/合计那一行),"currency":"${curs.join("|")}","merchant":"商家名","date":"YYYY-MM-DD","category":"${CATS_EXP.join("|")}","detail":"一句话明细(交通写区间,没有就结合行程推断并标注(推断))","pay":"card|cash(有 クレジット/カード/VISA/신용카드/승인 等选 card;現金/お釣り/현금/交通IC卡 选 cash;看不出选 card)","eventId":"能对上的行程 id,对不上留空","suggest":"business|personal"}`}],500);
     const p=parseJSON(txt);
     const set=(id,v)=>{ const el=$("#"+id); if(el&&v!=null&&v!==""&&!el.value) el.value=v; };
     set("ex_amt",p.amount); if(p.currency&&curs.includes(p.currency)) $("#ex_cur").value=p.currency;
