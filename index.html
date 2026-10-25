@@ -239,6 +239,13 @@ textarea.note{width:100%; border:1px solid var(--line2); border-radius:10px; pad
 /* 打车卡浮动按钮 */
 .fab{position:fixed; right:max(16px, calc(50% - 244px)); bottom:calc(74px + env(safe-area-inset-bottom)); z-index:60; background:var(--persim); color:#fff; border:none; border-radius:30px; padding:10px 18px 10px 14px; display:flex; align-items:center; gap:8px; box-shadow:0 6px 18px rgba(138,66,37,.35); font-family:var(--body); font-size:15px; font-weight:700; cursor:pointer;}
 .fab .i{font-size:24px;} .fab span{display:flex; flex-direction:column; line-height:1.15; text-align:left;} .fab small{font-size:11px; font-weight:500; opacity:.9;}
+/* 过闸票提示 */
+.tix{margin-top:10px; background:#F3F7FC; border:1px solid #D6E3F2; border-radius:12px; padding:10px 12px;}
+.tix-h{font-size:12.5px; font-weight:700; color:var(--indigo-dk); margin-bottom:6px; display:flex; align-items:center; gap:5px;}
+.tix-i{display:flex; gap:8px; align-items:flex-start; font-size:13.5px; line-height:1.45; padding:3px 0;}
+.tix-n{flex:0 0 20px; height:20px; border-radius:50%; background:var(--indigo); color:#fff; font-size:11.5px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px;}
+.tix-g{font-size:12.5px; color:var(--sub); margin-top:6px; line-height:1.55; white-space:pre-line;}
+.tix.big .tix-i{font-size:15px;} .tix.big{margin:0 0 12px;}
 /* tab bar */
 nav.tabs{position:fixed; bottom:0; left:0; right:0; max-width:520px; margin:0 auto; background:rgba(255,255,255,.96); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-top:1px solid var(--line); display:flex; padding-bottom:env(safe-area-inset-bottom); z-index:50;}
 nav.tabs button{flex:1; background:none; border:none; padding:9px 0 7px; font-size:11px; color:var(--faint); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px; position:relative;}
@@ -355,6 +362,27 @@ const PATCHES = [
     ["events/e29", {status:"booked", conf:"8号车 3-D / 3-E", edited:1}, "merge"],
     ["events/e30", {status:"booked", conf:"6号车 10-C / 10-D", edited:1}, "merge"],
     ["expenses/x04", {date:"2026-10-25", merchant:"JR 新宿站", category:"交通", detail:"新干线 / 特急车票 2 人份:东京→札幌乘车券 + 盛冈↔秋田 + 7 段特急券(10/30–11/3)", type:"personal", pay:"card", currency:"JPY", amountLocal:86440, ts:1761400000000}]
+  ] },
+{ id:"p20261026-tickets", date:"2026-10-26", log:"每段车标注过闸要放哪几张票;回程接驳车改为到旅馆再确认", toast:"已标注每段车要放哪几张票 ✓",
+  ops:[
+    ["events/e11", {tickets:["乘车券 · 东京都区内 → 札幌市内(10/30 起 7 天)","新干线特急券 · やまびこ59号 东京 → 新花巻"],
+      gate:"东京站新干线闸口:两张叠在一起放进去。\n新花巻出站时乘车券会退回来,一定收好,要一直用到 11/3 札幌;特急券会被收走。"}, "merge"],
+    ["events/e15", {tickets:["乘车券 · 东京都区内 → 札幌市内","新干线特急券 · 新花巻 → 秋田(这一张含新花巻→盛冈自由席 + こまち17号)","乘车券 · 盛冈 → 秋田(10/31)"],
+      gate:"新花巻进站:三张叠在一起放。\n盛冈站内直接换乘 こまち17号,不用出闸。"}, "merge"],
+    ["events/e16", {tickets:["乘车券 · 东京都区内 → 札幌市内","新干线特急券 · 新花巻 → 秋田","乘车券 · 盛冈 → 秋田(10/31)"],
+      gate:"秋田出站建议走有人窗口(有人改札),三张都给站员看,说:\n「東京―札幌の乗車券は、またあとで使うので返してください」(东京-札幌的票后面还要用,请还给我)"}, "merge"],
+    ["events/e20", {tickets:["乘车券 · 秋田 → 盛冈(11/1 起 2 天)","特急券 · こまち20号 秋田 → 角館"],
+      gate:"角館出站:乘车券要退回来,明天还要用。闸机没退的话跟站员说「途中下車です」(中途下车)。"}, "merge"],
+    ["events/e24", {tickets:["乘车券 · 秋田 → 盛冈","特急券 · こまち20号 角館 → 盛冈"],
+      ticketsNote:"每人一套 · 盛冈换车后见下一段",
+      gate:"角館进站:这两张叠在一起放。\n盛冈站内直接换乘 はやぶさ21号,不用出闸。"}, "merge"],
+    ["events/e25", {tickets:["乘车券 · 东京都区内 → 札幌市内","乘车券 · 秋田 → 盛冈","特急券 · こまち20号 角館 → 盛冈","新干线特急券 · はやぶさ21号 盛冈 → 新青森"],
+      gate:"新青森出站建议走有人窗口,把四张都给站员看,说「東京―札幌の乗車券は、明日も使うので返してください」(东京-札幌的票明天还要用,请还给我)。\n新青森→青森那一站不在票里,另外买票或刷交通卡。"}, "merge"],
+    ["events/e29", {tickets:["乘车券 · 东京都区内 → 札幌市内","新干线特急券 · はやぶさ5号 新青森 → 新函馆北斗","特急券 · 北斗11号 新函馆北斗 → 札幌"],
+      gate:"新青森进站:放第 1、2 张。\n新函馆北斗换乘:走「在来線のりかえ」(换乘在来线)闸口,三张一起放,同站换乘有 18 分钟。"}, "merge"],
+    ["events/e30", {tickets:["乘车券 · 东京都区内 → 札幌市内","特急券 · 北斗11号 新函馆北斗 → 札幌"],
+      gate:"札幌出站:两张都会被收走,这套票就用完了。想留作纪念,走有人窗口说「記念に持ち帰りたいです」,站员盖章后还给你。"}, "merge"],
+    ["events/e14", {status:"tbc", bookGroup:null, sub:"回程发车时间到旅馆后确认 · 要赶 11:54 前后的新干线", edited:1}, "merge"]
   ] }
 ];
 /* @@PATCHES-END */
@@ -941,6 +969,13 @@ function nextImportant(){
   const now=NOW();
   return evList().find(e=>isImportant(e) && Math.max(e._e, e._s+(e.kind==="food"||e.kind==="activity"||e.kind==="work"?60:15)*60000) > now) || null;
 }
+/* 过闸时要放哪几张票(乘车券 + 特急券) */
+function ticketsHTML(e,big){
+  const T=e.tickets; if(!T||!T.length) return "";
+  return `<div class="tix ${big?"big":""}"><div class="tix-h">${ic("ticket")} 过闸放这 ${T.length} 张${e.ticketsNote?" · "+esc(e.ticketsNote):" · 每人一套"}</div>
+    ${T.map((t,i)=>`<div class="tix-i"><span class="tix-n">${i+1}</span>${esc(t)}</div>`).join("")}
+    ${e.gate?`<div class="tix-g">${esc(e.gate)}</div>`:""}</div>`;
+}
 function evTitle(e){
   if((e.kind==="flight"||e.kind==="train")&&(e.fromCity||e.toCity)) return `${e.title} · ${e.fromCity||e.from||""} → ${e.toCity||e.to||""}`;
   return e.title;
@@ -969,7 +1004,7 @@ function panelNext(e){
     h+=`<div class="cols">
       <div><div class="cl">${cross?tzName(tz1)+"当地时间":"出发"}</div><div class="cv">${dstr(e.date)} ${esc(e.time)}</div><div class="cp">${esc(e.from||"")} 出发</div></div>
       <div><div class="cl">${cross?tzName(tz2)+"当地时间":"到达"}</div><div class="cv">${dstr(e.endDate||e.date)} ${esc(e.endTime||"")}</div><div class="cp">${esc(e.to||"")} 抵达</div></div>
-    </div>`;
+    </div>${ticketsHTML(e)}`;
   }else{
     const where=e.kind==="hotel"&&e.hotelId&&S.hotels[e.hotelId]?S.hotels[e.hotelId]:e;
     h+=`<div class="p-meta">${ic("clock")} ${dstr(e.date)} ${esc(e.time)}${e.endTime?"–"+esc(e.endTime):""}${e.party?" · "+esc(e.party):""}${e.kind!=="hotel"&&e.sub?" · "+esc(e.sub):""}</div>
@@ -1075,6 +1110,7 @@ function evCard(e){
       <div class="ev-title"><span>${esc(evTitle(e))}</span>${statusChip(e)}</div>
       ${e.kind==="flight"||e.kind==="train"?routeHTML(e):""}
       ${e.sub?`<div class="ev-sub">${esc(e.sub)}</div>`:""}
+      ${ticketsHTML(e)}
       ${keyinfo||e.conf?`<div class="ev-meta">${esc(e.kind==="flight"||e.kind==="train"?("订单 "+(e.conf||"—")+(e.seat?" · "+e.seat:"")):keyinfo)}${exs.length?` · 已记 ${exs.map(x=>fmtLocal(x.amountLocal,x.currency)).join(" + ")}`:""}</div>`:exs.length?`<div class="ev-meta">已记 ${exs.map(x=>fmtLocal(x.amountLocal,x.currency)).join(" + ")}</div>`:""}
     </div>
     <div class="ev-acts">${evActs(e)}</div>
@@ -1252,6 +1288,7 @@ function openDocs(id){
   sheet(`<h3>${ic(KIND[e.kind].icon)} ${esc(evTitle(e))}</h3>
     <div class="muted" style="margin:-8px 0 4px;">${dstr(e.date)} ${esc(e.time)} ${esc(e.from||"")} → ${dstr(e.endDate||e.date)} ${esc(e.endTime||"")} ${esc(e.to||"")}</div>
     <div class="bigconf">${esc(e.conf||"—")}</div>
+    ${ticketsHTML(e,true)}
     ${kv("航司/车次",[e.carrier,e.title].filter(Boolean).join(" "))}${kv("座位/舱位",e.seat||e.sub)}${kv("出发",e.fromPlace)}${kv("到达",e.toPlace)}
     ${e.note?`<div class="note" style="white-space:pre-line;font-size:13.5px;margin:8px 0 12px;">${esc(e.note)}</div>`:""}
     <div class="fs-h">凭证截图(存在本机,没网也能看)</div>
